@@ -46,6 +46,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\mp_cpp.yml = .github\workflows\mp_cpp.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_doc", "_doc", "{CEEC6B80-AC90-4F48-A89F-70234F5C40E7}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\..\..\MyGitRepos\mp_cpp\README.md = ..\..\..\..\..\..\..\..\MyGitRepos\mp_cpp\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Bessel_Exe_Debug|Win32 = Bessel_Exe_Debug|Win32
