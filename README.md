@@ -1,6 +1,11 @@
 mp_cpp
 ==================
 
+<p align="center">
+    <a href="https://github.com/ckormanyos/mp_cpp/actions">
+        <img src="https://github.com/ckormanyos/mp_cpp/actions/workflows/mp_cpp.yml/badge.svg" alt="Build Status"></a>
+</p>
+
 `mp_cpp` preserves the legacy multiple-precision C++ library with examples.
 This is the first attempt I had made at a multiple-precision big-float class
 in the C++ language.
