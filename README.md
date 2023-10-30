@@ -13,7 +13,8 @@ _big_-_float_ class in the C++ language.
 Initial work began sometime late last century in the early 1990's
 and wrapped up around 2002.
 
-Continuous maintenance has kept the library modern and compatible with modern C++.
+Continuous maintenance has kept the library up-to-date
+and compatible with modern C++.
 
 ## Description
 
