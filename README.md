@@ -33,6 +33,6 @@ _million_ (i.e., $10^{6}$) decimal-digit $\pi$-calculation.
 ## Licensing
 
 The big-number and mathematical-function implementations in `mp_cpp`
-are licensed under BSL. This also work uses [FFTW](https://www.fftw.org/)
+are licensed under BSL. This work uses [FFTW](https://www.fftw.org/)
 version 2.15 for fast FFT multiplication, which has its own
 [license](https://www.fftw.org/faq/section1.html#isfftwfree).
