@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++20 ]
+        standard: [ c++11, c++20 ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,3 +29,4 @@ jobs:
           make STD=${{ matrix.standard }} --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
+          grep '5779458151' ./unix/pi.out
