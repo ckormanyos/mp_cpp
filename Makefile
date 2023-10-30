@@ -274,4 +274,3 @@ $(PATH_UNIX)/test.exe   :   $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/tes
 
 clean:
 	rm -r $(PATH_OBJ)/*.o
-	rm -r $(PATH_UNIX)/*.*

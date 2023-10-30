@@ -291,19 +291,19 @@
     using vector_type = std::vector<value_type, allocator_type>;
 
     using allocator_of_pointer_type =
-      typename allocator_type::template rebind<pointer>::other;
+      typename std::allocator_traits<allocator_type>::template rebind_alloc<pointer>;
 
     using vector_of_pointer_type =
       typename std::vector<pointer, allocator_of_pointer_type>;
 
     using allocator_of_const_pointer_type =
-      typename allocator_type::template rebind<const_pointer>::other;
+      typename std::allocator_traits<allocator_type>::template rebind_alloc<const_pointer>;
 
     using vector_of_const_pointer_type =
       typename std::vector<const_pointer, allocator_of_const_pointer_type>;
 
     using allocator_of_vector_of_const_pointer_type =
-      typename allocator_type::template rebind<vector_of_const_pointer_type>::other;
+      typename std::allocator_traits<allocator_type>::template rebind_alloc<vector_of_const_pointer_type>;
 
     using vector_of_vector_of_const_pointer_type =
       std::vector<vector_of_const_pointer_type, allocator_of_vector_of_const_pointer_type>;

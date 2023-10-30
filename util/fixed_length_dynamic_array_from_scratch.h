@@ -30,10 +30,10 @@
       using size_type              = std::size_t;
       using difference_type        = std::ptrdiff_t;
       using value_type             = ValueType;
-      using pointer                = typename allocator_type::pointer;
-      using const_pointer          = typename allocator_type::const_pointer;
-      using reference              = typename allocator_type::reference;
-      using const_reference        = typename allocator_type::const_reference;
+      using pointer                = value_type*;
+      using const_pointer          = const value_type*;
+      using reference              = value_type&;
+      using const_reference        = const value_type&;
       using iterator               = pointer;
       using const_iterator         = const_pointer;
       using reverse_iterator       = std::reverse_iterator<iterator>;
@@ -124,7 +124,6 @@
       // Destructor.
       ~fixed_length_dynamic_array_from_scratch()
       {
-        xutils::xdestroy_range   (cbegin(), cend(), allocator_type());
         xutils::xdeallocate_range( begin(),  end(), allocator_type());
       }
 

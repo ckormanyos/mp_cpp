@@ -338,7 +338,7 @@ static bool DoJn(const int argc, const char* argv[])
                 << std::setprecision(1)
                 << std::fixed
                 << std::showpoint
-                << static_cast<double>(nx) / Jn_grain
+                << static_cast<double>(nx) / static_cast<double>(static_cast<int>(Jn_grain))
                 << std::endl;
 
     mp::mp_cpp x;
@@ -375,8 +375,8 @@ static bool DoJn(const int argc, const char* argv[])
       const std::uint32_t d10 = static_cast<std::uint32_t>(std::numeric_limits<mp::mp_cpp>::digits10);
 
       // Get the starting order for recursive calculations.
-      const std::int32_t n_start1 = Jn_algo::mstart1(double(nx) / Jn_grain,                d10);
-      const std::int32_t n_start2 = Jn_algo::mstart2(double(nx) / Jn_grain, Jn_orders - 1, d10);
+      const std::int32_t n_start1 = Jn_algo::mstart1(static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)), d10);
+      const std::int32_t n_start2 = Jn_algo::mstart2(static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)), static_cast<std::int32_t>(Jn_orders) - 1, d10);
 
       const std::int32_t n_start = ((n_start2 > n_start1) ? n_start2 : n_start1);
 

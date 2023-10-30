@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,121 +13,110 @@
   namespace xutils
   {
     template<typename value_type>
-    const value_type& xmin(const value_type& __value_a, const value_type& __value_b)
+    const value_type& xmin(const value_type& my_value_a, const value_type& my_value_b)
     {
-      return ((__value_a < __value_b) ? __value_a : __value_b);
+      return ((my_value_a < my_value_b) ? my_value_a : my_value_b);
     }
 
     template<typename value_type, typename binary_predicate>
-    const value_type& xmin(const value_type& __value_a, const value_type& __value_b, binary_predicate __cmp)
+    const value_type& xmin(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp)
     {
-      return (*__cmp)(__value_a, __value_b);
+      return (*my_cmp)(my_value_a, my_value_b);
     }
 
     template<typename value_type>
-    const value_type& xmax(const value_type& __value_a, const value_type& __value_b)
+    const value_type& xmax(const value_type& my_value_a, const value_type& my_value_b)
     {
-      return ((__value_a > __value_b) ? __value_a : __value_b);
+      return ((my_value_a > my_value_b) ? my_value_a : my_value_b);
     }
 
     template<typename value_type, typename binary_predicate>
-    const value_type& xmax(const value_type& __value_a, const value_type& __value_b, binary_predicate __cmp)
+    const value_type& xmax(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp)
     {
-      return (*__cmp)(__value_a, __value_b);
+      return (*my_cmp)(my_value_a, my_value_b);
     }
 
     template<typename input_iterator1, typename input_iterator2>
-    inline bool xequal(input_iterator1 __first1, input_iterator1 __last1, input_iterator2 __first2)
+    inline bool xequal(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
     {
-      typedef typename std::iterator_traits<input_iterator1>::value_type __first_type;
+      typedef typename std::iterator_traits<input_iterator1>::value_type my_first_type;
 
-      while(__first1 != __last1)
+      while(my_first1 != my_last1)
       {
-        if(*__first1 != __first_type(*__first2))
+        if(*my_first1 != my_first_type(*my_first2))
         {
           break;
         }
 
-        ++__first1;
-        ++__first2;
+        ++my_first1;
+        ++my_first2;
       }
 
-      return (__first1 == __last1);
+      return (my_first1 == my_last1);
     }
 
     template<typename input_iterator, typename function_type>
-    inline function_type xfor_each(input_iterator __first, input_iterator __last, function_type __func)
+    inline function_type xfor_each(input_iterator my_first, input_iterator my_last, function_type my_func)
     {
-      while(__first != __last)
+      while(my_first != my_last)
       {
-        __func(*__first);
+        my_func(*my_first);
 
-        ++__first;
+        ++my_first;
       }
 
-      return __func;
+      return my_func;
     }
 
     template<class input_iterator, class value_type>
-    void xfill(input_iterator __first, input_iterator __last, const value_type& __fill_value)
+    void xfill(input_iterator my_first, input_iterator my_last, const value_type& my_fill_value)
     {
-      while(__first != __last)
+      while(my_first != my_last)
       {
-        *__first = typename std::iterator_traits<input_iterator>::value_type(__fill_value);
+        *my_first = typename std::iterator_traits<input_iterator>::value_type(my_fill_value);
 
-        ++__first;
+        ++my_first;
       }
     }
 
     template<class input_iterator,
              class output_iterator>
-    output_iterator xcopy(input_iterator __first, input_iterator __last, output_iterator __copy_result)
+    output_iterator xcopy(input_iterator my_first, input_iterator my_last, output_iterator my_copy_result)
     {
-      while(__first != __last)
+      while(my_first != my_last)
       {
-        *__copy_result = typename std::iterator_traits<output_iterator>::value_type(*__first);
+        *my_copy_result = typename std::iterator_traits<output_iterator>::value_type(*my_first);
 
-        ++__first;
-        ++__copy_result;
+        ++my_first;
+        ++my_copy_result;
       }
 
-      return __copy_result;
+      return my_copy_result;
     }
 
     template<class input_iterator1, class input_iterator2>
-    input_iterator2 xswap_ranges(input_iterator1 __first1, input_iterator1 __last1, input_iterator2 __first2)
+    input_iterator2 xswap_ranges(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
     {
-      while(__first1 != __last1)
+      while(my_first1 != my_last1)
       {
-        typedef typename std::iterator_traits<input_iterator1>::value_type __first_type;
+        typedef typename std::iterator_traits<input_iterator1>::value_type my_first_type;
 
-        const __first_type __tmp1(*__first1);
+        const my_first_type my_tmp1(*my_first1);
 
-        *__first1 = *__first2;
-        *__first2 =  __tmp1;
+        *my_first1 = *my_first2;
+        *my_first2 =  my_tmp1;
 
-        ++__first1;
-        ++__first2;
+        ++my_first1;
+        ++my_first2;
       }
 
-      return __first2;
+      return my_first2;
     }
 
     template<typename input_iterator, typename allocator_type>
-    void xdestroy_range(input_iterator __first, input_iterator __last, const allocator_type& __alloc)
+    void xdeallocate_range(input_iterator my_first, input_iterator my_last, const allocator_type& my_alloc)
     {
-      while(__first != __last)
-      {
-        (allocator_type(__alloc)).destroy(__first);
-
-        ++__first;
-      }
-    }
-
-    template<typename input_iterator, typename allocator_type>
-    void xdeallocate_range(input_iterator __first, input_iterator __last, const allocator_type& __alloc)
-    {
-      (allocator_type(__alloc)).deallocate(__first, std::size_t(__last - __first));
+      (allocator_type(my_alloc)).deallocate(my_first, std::size_t(my_last - my_first));
     }
   }
 
