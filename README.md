@@ -6,6 +6,13 @@ mp_cpp
         <img src="https://github.com/ckormanyos/mp_cpp/actions/workflows/mp_cpp.yml/badge.svg" alt="Build Status"></a>
 </p>
 
+---
+**NOTE**
+
+`mp_cpp` preserves a _legacy_ library. More modern work can be found in the [wide-decimal](https://github.com/ckormanyos/wide-decimal) project.
+
+---
+
 `mp_cpp` preserves a legacy _Multiple_-_Precision_ _C++_ library.
 It is the first successful attempt I had ever made at a multiple-precision,
 _big_-_float_ class in the C++ language.
