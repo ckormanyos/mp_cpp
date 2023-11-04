@@ -129,8 +129,10 @@ prepare : UNIX_DIR
 	@echo
 	@echo Print compiler version
 	@$(CXX) -v
+	@echo
 	@echo Print compiler C++ flags
 	@echo $(CXXFLAGS)
+	@echo
 
 ###############################################################
 #
