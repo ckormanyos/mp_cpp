@@ -64,6 +64,8 @@
           my_digits10_padded(my_digits10 + ((my_digits10_extra < 16) ? 16 : ((my_digits10_extra > 32) ? 32 : my_digits10_extra))),
           my_elem_number    (2 + ((my_digits10_padded / mp_elem_digits10) + (((my_digits10_padded % mp_elem_digits10) != 0) ? 1 : 0))) { }
 
+      digit_characteristics_type() = delete;
+
       ~digit_characteristics_type() = default;
 
       std::int32_t mp_digits10    () const { return my_digits10; }
@@ -75,12 +77,6 @@
       const std::int32_t my_digits10_extra;
       const std::int32_t my_digits10_padded;
       const std::int32_t my_elem_number;
-
-      digit_characteristics_type() = delete;
-
-      digit_characteristics_type(const digit_characteristics_type&) = default;
-
-      digit_characteristics_type& operator=(const digit_characteristics_type&) = default;
     };
 
     class mp_core_memory_type final : private util::noncopyable
@@ -127,12 +123,6 @@
     static void forward_set_of_mp_cpp_numeric_limits(const std::int32_t n);
 
     bool is_valid() const { return m_valid; }
-
-    mp_core() = delete;
-
-    mp_core(const mp_core&) = delete;
-
-    mp_core& operator=(const mp_core&) = delete;
 
     friend class mp_base;
     friend class mp_cpp;
