@@ -10,6 +10,8 @@ on:
     branches:
       - '**'
   pull_request:
+  schedule:
+    - cron: '50 21 * * *' # run at 9:50 PM UTC
 jobs:
   gcc-native:
     runs-on: ubuntu-latest
@@ -75,3 +77,38 @@ jobs:
           MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=${{ matrix.example }}_Exe_Release -p:Platform=x64 /t:Build
           dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
           %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
+  msvc-release-boost-x64:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: clone-submods-bootstrap-headers-boost-develop
+        run: |
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
+          cd ../boost-root
+          git submodule update --init tools
+          git submodule update --init libs/config
+          git submodule update --init libs/math
+          git submodule update --init libs/multiprecision
+          ./bootstrap.bat
+          ./b2 headers
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
+      - name: msvc-release-lib-x64
+        shell: cmd
+        working-directory: ./
+        run: |
+          set INCLUDE=%cd%\fft\FFTW\215\fftw;%cd%\fft\FFTW\215\rfftw;%cd%\fft\FFTW\215\threads;%cd%;%INCLUDE%
+          MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=Mp_Cpp_Lib_Release -p:Platform=x64 /t:Rebuild
+          dir %cd%\_Out\mp_cpp\x64\Mp_Cpp_Lib_Release\Mp_Cpp_Lib_Release.lib
+      - name: msvc-release-boost-x64
+        shell: cmd
+        working-directory: ./
+        run: |
+          set INCLUDE=%cd%;%cd%\..\boost-root;%INCLUDE%
+          MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=Boost_Exe_Release -p:Platform=x64 /t:Build
+          dir %cd%\_Out\mp_cpp\x64\Boost_Exe_Release\Boost_Exe_Release.exe
+          %cd%\_Out\mp_cpp\x64\Boost_Exe_Release\Boost_Exe_Release.exe

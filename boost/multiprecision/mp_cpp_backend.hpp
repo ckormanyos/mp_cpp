@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 2015 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 2015 - 2023
 // 
 // Description : Provide a backend floating-point type based on mp_cpp
 //               that is intended to be used with Boost.Multiprecision.
@@ -59,8 +59,8 @@
   // interacting as a backend with boost::muliprecision.
   template<const std::int32_t MyDigits10,
            const int          MyFftThreadCount>
-  struct boost::multiprecision::number_category<mp_cpp_backend<MyDigits10, MyFftThreadCount>>
-    : public boost::mpl::int_<boost::multiprecision::number_kind_floating_point> { };
+  struct number_category<mp_cpp_backend<MyDigits10, MyFftThreadCount>>
+    : public std::integral_constant<int, number_kind_floating_point> { };
 
   // This is the mp_cpp_backend multiple precision class.
   template<const std::int32_t MyDigits10,
@@ -68,10 +68,10 @@
   class mp_cpp_backend : public detail::mp_cpp_backend_base<MyDigits10, MyFftThreadCount>
   {
   public:
-    typedef boost::mpl::list<  signed long long> signed_types;
-    typedef boost::mpl::list<unsigned long long> unsigned_types;
-    typedef boost::mpl::list<long double>        float_types;
-    typedef std::int64_t                         exponent_type;
+    using signed_types   = std::tuple<signed char, signed short, signed int, signed long, signed long long>;
+    using unsigned_types = std::tuple<unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long>;
+    using float_types    = std::tuple<float, double, long double>;
+    using exponent_type  = std::int64_t;
 
     mp_cpp_backend() : m_value() { }
 
@@ -588,32 +588,33 @@
 
   } } // namespace boost::multiprecision
 
+  #if defined(BOOST_MP_MATH_AVAILABLE)
   namespace boost { namespace math { namespace policies {
 
   // Specialization of the precision structure.
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ThisPolicy,
+           typename Policy,
            const boost::multiprecision::expression_template_option ExpressionTemplates>
   struct precision<boost::multiprecision::number<boost::multiprecision::mp_cpp_backend<MyDigits10, MyFftThreadCount>,
                                                  ExpressionTemplates>,
-                   ThisPolicy>
+                   Policy>
   {
-    typedef typename ThisPolicy::precision_type precision_type;
+  private:
+    using digits_2 = digits2<static_cast<int>(((MyDigits10 + 1LL) * 1000LL) / 301LL)>;
 
-    typedef digits2<((MyDigits10 + 1LL) * 1000LL) / 301LL> local_digits_2;
+  public:
+    using precision_type = typename Policy::precision_type;
 
-    typedef typename mpl::if_c
-      <
-        (   (local_digits_2::value <= precision_type::value)
-         || (precision_type::value <= 0)),
-        local_digits_2,
-        precision_type
-      >::type
-    type;
+    using type =
+      typename std::conditional<
+        ((digits_2::value <= precision_type::value) || (precision_type::value <= 0)),
+          digits_2,                  // Default case: Full precision for RealType.
+          precision_type>::type;     // User customized precision.
   };
 
   } } } // namespaces boost::math::policies
+  #endif
 
   namespace std
   {
