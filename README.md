@@ -48,6 +48,16 @@ This ties an old legacy project together with modern
 template representations of _big_-_floats_ and implementations
 of mathematical functions.
 
+## Continuous Integration
+
+Continuous integration runs on push using GitHub Actions.
+Various compilers, operating systems, and C++ standards
+ranging from C++11, 14, 17, 20 are included in CI.
+
+There is also a scheduled nightly build. This ensures compatibility
+with modern language evolution and Modular-Boost's
+Math/Multiprecision _develop_ branches.
+
 ## Licensing
 
 The big-number and mathematical-function implementations in `mp_cpp`

@@ -39,8 +39,8 @@ GCCFLAGS          = -Wall                                     \
 CFLAGS            = $(GCCFLAGS)                               \
                     -std=c11
 
-CXXFLAGS          = $(GCCFLAGS)                               \
-                    --std=$(MY_STD)
+CXXFLAGS          = --std=$(MY_STD)                           \
+                    $(GCCFLAGS)
 
 LDFLAGS           = $(CFLAGS)                                 \
                     -lpthread
@@ -97,16 +97,36 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/samples/samples.h
 
 
-all: UNIX_DIR $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
-
+.PHONY: all
+all: version UNIX_DIR $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
 
 ###############################################################
 #
-# Make the output directory if it is not yet present.
+# Print GNUmake and compiler versions.
 #
 ###############################################################
 
+.PHONY: version
+version :
+	@echo
+	@echo GNUmake version
+	@make -v
+	@echo
+	@echo Print compiler version
+	@$(CXX) -v
+	@echo Print compiler C++ flags
+	@echo $(CXXFLAGS)
+
+###############################################################
+#
+# Make the temporary directories if not yet present.
+#
+###############################################################
+
+.PHONY: UNIX_DIR
 UNIX_DIR :
+	@echo
+	@echo Create temporary directories
 	@mkdir -p $(PATH_UNIX)
 	@mkdir -p $(PATH_OBJ)
 
@@ -272,5 +292,6 @@ $(PATH_UNIX)/test.exe   :   $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/tes
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/test_main.o -o $(PATH_UNIX)/test.exe
 
+.PHONY: clean
 clean:
 	rm -r $(PATH_OBJ)/*.o
