@@ -59,8 +59,8 @@
   // interacting as a backend with boost::muliprecision.
   template<const std::int32_t MyDigits10,
            const int          MyFftThreadCount>
-  struct boost::multiprecision::number_category<mp_cpp_backend<MyDigits10, MyFftThreadCount>>
-    : public boost::mpl::int_<boost::multiprecision::number_kind_floating_point> { };
+  struct number_category<mp_cpp_backend<MyDigits10, MyFftThreadCount>>
+    : public std::integral_constant<int, number_kind_floating_point> { };
 
   // This is the mp_cpp_backend multiple precision class.
   template<const std::int32_t MyDigits10,
