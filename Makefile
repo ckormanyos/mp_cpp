@@ -98,7 +98,7 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
 
 
 .PHONY: all
-all: version UNIX_DIR $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
+all: UNIX_DIR $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
 
 ###############################################################
 #
@@ -124,7 +124,7 @@ version :
 ###############################################################
 
 .PHONY: UNIX_DIR
-UNIX_DIR :
+UNIX_DIR : version
 	@echo
 	@echo Create temporary directories
 	@mkdir -p $(PATH_UNIX)
