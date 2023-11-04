@@ -64,6 +64,7 @@ jobs:
         shell: cmd
         working-directory: ./
         run: |
+          set INCLUDE=%cd%;%INCLUDE%
           MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=${{ matrix.example }}_Exe_Release -p:Platform=x64 /t:Rebuild
           dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
           %cd%\_Out\mp_cpp\x64\Pi_Exe_Release\Pi_Exe_Release.exe
