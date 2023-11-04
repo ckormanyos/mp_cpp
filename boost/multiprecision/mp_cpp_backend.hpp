@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 2015 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 2015 - 2023
 // 
 // Description : Provide a backend floating-point type based on mp_cpp
 //               that is intended to be used with Boost.Multiprecision.
@@ -68,10 +68,10 @@
   class mp_cpp_backend : public detail::mp_cpp_backend_base<MyDigits10, MyFftThreadCount>
   {
   public:
-    typedef boost::mpl::list<  signed long long> signed_types;
-    typedef boost::mpl::list<unsigned long long> unsigned_types;
-    typedef boost::mpl::list<long double>        float_types;
-    typedef std::int64_t                         exponent_type;
+    using signed_types   = std::tuple<signed char, signed short, signed int, signed long, signed long long>;
+    using unsigned_types = std::tuple<unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long>;
+    using float_types    = std::tuple<float, double, long double>;
+    using exponent_type  = std::int64_t;
 
     mp_cpp_backend() : m_value() { }
 
