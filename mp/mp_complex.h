@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Implementation of mp::complex<mp_cpp> for multiple precision math.
 // 
@@ -23,6 +23,7 @@
   #define MP_COMPLEX_2002_10_09_H_
 
   #include <algorithm>
+  #include <array>
   #include <complex>
   #include <ostream>
   #include <istream>

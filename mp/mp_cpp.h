@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Declaration of mp_cpp class for multiple precision math
 // 
@@ -74,13 +74,13 @@
   class mp::mp_cpp : public mp::mp_base
   {
   public:
-    mp_cpp() throw() : my_neg(false),
+    mp_cpp() noexcept : my_neg(false),
                        my_exp(static_cast<std::int64_t>(0)) { }
 
     template<typename UnsignedIntegralType,
              typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
                                       && (std::numeric_limits<UnsignedIntegralType>::is_signed == false))>::type const* = nullptr>
-    mp_cpp(const UnsignedIntegralType u) throw() : my_neg(false),
+    mp_cpp(const UnsignedIntegralType u) noexcept : my_neg(false),
                                                    my_exp(static_cast<std::int64_t>(0))
     {
       from_uint64(u);
@@ -89,7 +89,7 @@
     template<typename SignedIntegralType,
              typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
                                       && (std::numeric_limits<SignedIntegralType>::is_signed == true))>::type const* = nullptr>
-    mp_cpp(const SignedIntegralType n) throw() : my_neg(n < static_cast<std::int64_t>(0)),
+    mp_cpp(const SignedIntegralType n) noexcept : my_neg(n < static_cast<std::int64_t>(0)),
                                                  my_exp(static_cast<std::int64_t>(0))
     {
       from_uint64((my_neg ? static_cast<std::uint64_t>(-n) : static_cast<std::uint64_t>(n)));
@@ -97,13 +97,13 @@
 
     template<typename FloatingPointType,
              typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type const* = nullptr>
-    mp_cpp(const FloatingPointType f) throw() : my_neg(false),
+    mp_cpp(const FloatingPointType f) noexcept : my_neg(false),
                                                 my_exp(static_cast<std::int64_t>(0))
     {
       from_long_double(static_cast<long double>(f));
     }
 
-    explicit mp_cpp(const char* const s) throw() : my_neg(false),
+    explicit mp_cpp(const char* const s) noexcept : my_neg(false),
                                                    my_exp(static_cast<std::int64_t>(0))
     {
       const bool read_is_ok = read_string(s);
@@ -111,7 +111,7 @@
       static_cast<void>(read_is_ok);
     }
 
-    explicit mp_cpp(const std::string& str) throw(): my_neg(false),
+    explicit mp_cpp(const std::string& str) noexcept: my_neg(false),
                                                      my_exp(static_cast<std::int64_t>(0))
     {
       const bool read_is_ok = read_string(str.c_str());
@@ -120,17 +120,17 @@
     }
 
     // Copy constructor.
-    mp_cpp(const mp_cpp& other) throw() : mp_base(other),
+    mp_cpp(const mp_cpp& other) noexcept : mp_base(other),
                                           my_neg(other.my_neg),
                                           my_exp(other.my_exp) { }
 
     // Move constructor.
-    mp_cpp(mp_cpp&& other) throw() : mp_base(other),
+    mp_cpp(mp_cpp&& other) noexcept : mp_base(other),
                                      my_neg(other.my_neg),
                                      my_exp(other.my_exp) { }
 
     // Constructor from the floating-point class.
-    explicit mp_cpp(const mp_fpclass_type other_fpclass) throw()
+    explicit mp_cpp(const mp_fpclass_type other_fpclass) noexcept
       : mp_base(other_fpclass),
         my_neg(false),
         my_exp(static_cast<std::int64_t>(0)) { }
@@ -240,10 +240,10 @@
     std::int64_t my_exp;
 
     // Constructor from mantissa and exponent.
-    mp_cpp(const double mantissa, const std::int64_t exponent) throw();
+    mp_cpp(const double mantissa, const std::int64_t exponent) noexcept;
 
     // Conversion from string to mp_cpp.
-    bool read_string(const char* const s) throw();
+    bool read_string(const char* const s) noexcept;
 
     static std::string factorial_binsplit(const std::int32_t n_hi, const std::int32_t n_lo);
 
@@ -251,9 +251,9 @@
     void add(const mp_cpp& v, const std::int64_t v_ofs = 0);
     void sub(const mp_cpp& v, const std::int64_t v_ofs = 0);
 
-    void from_uint64     (const std::uint64_t u)  throw();
-    void from_uint32     (const std::uint32_t u)  throw();
-    void from_long_double(const long double   ld) throw();
+    void from_uint64     (const std::uint64_t u)  noexcept;
+    void from_uint32     (const std::uint32_t u)  noexcept;
+    void from_long_double(const long double   ld) noexcept;
 
     template<typename builtin_float_type>
     static builtin_float_type convert_to_builtin_float(const mp_cpp& x)
@@ -315,6 +315,12 @@
 
       return value;
     }
+
+    template<typename char_type, typename traits_type>
+    friend std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, mp_cpp&);
+
+    template<class char_type, class traits_type>
+    friend std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const mp_cpp&);
   };
 
   namespace mp

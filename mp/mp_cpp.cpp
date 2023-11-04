@@ -27,7 +27,7 @@
 #include <mp/mp_cpp.h>
 
 mp::mp_cpp::mp_cpp(const double mantissa,
-                   const std::int64_t exponent) throw() : my_neg(false),
+                   const std::int64_t exponent) noexcept : my_neg(false),
                                                           my_exp(static_cast<std::int64_t>(0))
 {
   // Create a mp_cpp from mantissa and exponent.
@@ -84,7 +84,7 @@ mp::mp_cpp::mp_cpp(const double mantissa,
   }
 }
 
-void mp::mp_cpp::from_uint32(const std::uint32_t u) throw()
+void mp::mp_cpp::from_uint32(const std::uint32_t u) noexcept
 {
   if(u != static_cast<std::uint32_t>(0))
   {
@@ -104,7 +104,7 @@ void mp::mp_cpp::from_uint32(const std::uint32_t u) throw()
   }
 }
 
-void mp::mp_cpp::from_uint64(const std::uint64_t u) throw()
+void mp::mp_cpp::from_uint64(const std::uint64_t u) noexcept
 {
   if(u < static_cast<std::uint64_t>((std::numeric_limits<std::uint32_t>::max)()))
   {
@@ -144,7 +144,7 @@ void mp::mp_cpp::from_uint64(const std::uint64_t u) throw()
   }
 }
 
-void mp::mp_cpp::from_long_double(const long double ld) throw()
+void mp::mp_cpp::from_long_double(const long double ld) noexcept
 {
   if(ld == static_cast<long double>(0.0L))
   {
