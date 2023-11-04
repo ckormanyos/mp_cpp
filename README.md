@@ -38,9 +38,21 @@ The library offers many functions. This project also features tests
 and a variety of non-trivial examples, including a somewhat fast
 _million_ (i.e., $10^{6}$) decimal-digit $\pi$-calculation.
 
+
+## Boost.Multiprecision Backend
+
+`mp_cpp` also features a full [backend-wrapper](./boost/multiprecision/mp_cpp_backend.hpp)
+for use with [`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
+and [`Boost.Math`](https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html)
+This ties an old legacy project together with modern
+template representations of _big_-_floats_ and implementations
+of mathematical functions.
+
 ## Licensing
 
 The big-number and mathematical-function implementations in `mp_cpp`
-are licensed under BSL. This work uses [FFTW](https://www.fftw.org/)
+are licensed under BSL.
+
+This work makes additional use of [FFTW](https://www.fftw.org/)
 version 2.15 for fast FFT multiplication, which has its own
 [license](https://www.fftw.org/faq/section1.html#isfftwfree).
