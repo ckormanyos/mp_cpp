@@ -33,6 +33,25 @@ jobs:
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
           grep '5779458151' ./unix/pi.out
+  gcc-native-sanitize:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++11 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: gcc-native-sanitize
+        run: |
+          make STD=${{ matrix.standard }} SANITIZE=1 prepare
+          make STD=${{ matrix.standard }} SANITIZE=1 --jobs=8 all
+          ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
+          ./unix/pi.exe
   macos-native:
     runs-on: macos-latest
     strategy:

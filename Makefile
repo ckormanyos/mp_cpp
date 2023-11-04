@@ -6,10 +6,19 @@
 #
 
 # cd /mnt/c/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/mp_cpp
-# make STD=c++11 prepare
-# make --jobs=8 all
+# make STD=c++11 SANITIZE=0 prepare
+# make STD=c++11 SANITIZE=0 --jobs=8 all
 
+# To run sanitizers
+# make STD=c++11 SANITIZE=1 prepare
+# make STD=c++11 SANITIZE=1 --jobs=8 all
+
+MY_SANITIZE       = 0
 MY_STD            = c++20
+
+ifeq ($(SANITIZE),1)
+MY_SANITIZE      := 1
+endif
 
 ifneq ($(STD),)
 MY_STD            = $(STD)
@@ -28,6 +37,21 @@ CINCLUDES         = -I.                                       \
                     -I$(PATH_FFTW)/fftw                       \
                     -I$(PATH_FFTW)/rfftw
 
+ASAN_FLAGS        = -fsanitize=address                        \
+                    -fsanitize=leak
+
+UBSAN_FLAGS       = -fsanitize=shift                          \
+                    -fsanitize=shift-exponent                 \
+                    -fsanitize=shift-base                     \
+                    -fsanitize=integer-divide-by-zero         \
+                    -fsanitize=null                           \
+                    -fsanitize=signed-integer-overflow        \
+                    -fsanitize=bounds                         \
+                    -fsanitize=alignment                      \
+                    -fsanitize=float-divide-by-zero           \
+                    -fsanitize=float-cast-overflow            \
+                    -fsanitize=enum
+
 GCCFLAGS          = -Wall                                     \
                     -Wextra                                   \
                     -Wodr                                     \
@@ -36,6 +60,12 @@ GCCFLAGS          = -Wall                                     \
                     -march=native                             \
                     -mtune=native                             \
                     $(CINCLUDES)
+
+ifeq ($(MY_SANITIZE),1)
+GCCFLAGS         := $(GCCFLAGS)                               \
+                    $(ASAN_FLAGS)                             \
+                    $(UBSAN_FLAGS)
+endif
 
 CFLAGS            = $(GCCFLAGS)                               \
                     -std=c11
