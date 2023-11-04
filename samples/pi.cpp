@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Compute pi and print its value to a text file.
 // 
@@ -130,12 +130,12 @@ bool samples::pi(const int argc, const char* argv[])
     {
       str_outfile = str_outfile.substr(0U, pos + 1U) + "out";
 
-      if((pos = str_outfile.rfind(char('\\'))) != std::string::npos)
+      if((pos = str_outfile.rfind('\\')) != std::string::npos)
       {
         str_outfile = str_outfile.substr(0U, pos + 1U) + "pi.out";
       }
 
-      if((pos = str_outfile.rfind(char('/'))) != std::string::npos)
+      if((pos = str_outfile.rfind('/')) != std::string::npos)
       {
         str_outfile = str_outfile.substr(0U, pos + 1U) + "pi.out";
       }
@@ -249,9 +249,9 @@ void local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
 
   std::string::size_type pos;
 
-  if(   ((pos = str_pi.find(char('3'), 0U)) != std::string::npos)
-     && ((pos = str_pi.find(char('.'), 1U)) != std::string::npos)
-     && ((pos = str_pi.find(char('1'), 1U)) != std::string::npos))
+  if(   ((pos = str_pi.find('3', 0U)) != std::string::npos)
+     && ((pos = str_pi.find('.', 1U)) != std::string::npos)
+     && ((pos = str_pi.find('1', 1U)) != std::string::npos))
   {
     ;
   }
@@ -301,7 +301,7 @@ void local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
       if(this_line_is_finished)
       {
         // Print the running-digit count and start a new line.
-        os << ": " << number_of_digits << char('\n');
+        os << ": " << number_of_digits << '\n';
 
         const bool this_group_of_lines_is_finished =
           (std::size_t(number_of_digits % digits_per_group) == std::size_t(0U));

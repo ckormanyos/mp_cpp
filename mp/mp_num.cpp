@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Numerical constants for multiple precision math.
 // 
@@ -827,10 +827,8 @@ const mp::mp_cpp& mp::mp_cpp::value_eps()
 
   static const mp_cpp val
     (  std::string("0.")
-     + std::string(static_cast<std::string::size_type>(std::numeric_limits<mp_cpp>::digits10 - 2),
-                   static_cast<char>('0'))
-     + std::string(static_cast<std::string::size_type>(1U),
-                   static_cast<char>('1')));
+     + std::string(static_cast<std::string::size_type>(std::numeric_limits<mp_cpp>::digits10 - 2), '0')
+     + std::string(static_cast<std::string::size_type>(1U), '1'));
 
   return val;
 }
@@ -859,7 +857,7 @@ std::string mp::mp_cpp::factorial_binsplit(const std::int32_t n_hi, const std::i
   {
     case 0:
       // This is an error condition that should not occur.
-      factorial_binsplit_string = std::string(1U, char('0'));
+      factorial_binsplit_string = std::string(1U, '0');
 
       break;
 

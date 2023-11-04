@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,14 +13,14 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2020
+// Date        : 1999 - 2023
 // 
 // Description : Integer power template function pown_template().
 // 
 // *****************************************************************************
 
-#ifndef MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
-  #define MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
+#ifndef MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
+  #define MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
 
   namespace mp { namespace detail {
 
@@ -55,6 +55,7 @@
 
       local_floating_point_type y(b);
 
+      // TBD: Use the ladder method.
       for(local_unsigned_integral_type p_local(p); p_local != local_unsigned_integral_type(0U); p_local >>= 1U)
       {
         if((static_cast<unsigned>(p_local) & 1U) != 0U)
@@ -71,4 +72,4 @@
 
   } } // namespace mp::detail
 
-#endif // MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
+#endif // MP_DETAIL_POWN_TEMPLATE_2019_03_02_H

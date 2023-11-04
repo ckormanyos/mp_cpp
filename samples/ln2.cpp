@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Compute ln2 and print its value to a text file.
 // 
@@ -93,12 +93,12 @@ bool samples::ln2(const int argc, const char* argv[])
     {
       str_outfile = str_outfile.substr(0U, pos + 1U) + "out";
 
-      if((pos = str_outfile.rfind(char('\\'))) != std::string::npos)
+      if((pos = str_outfile.rfind('\\')) != std::string::npos)
       {
         str_outfile = str_outfile.substr(0U, pos + 1U) + "ln2.out";
       }
 
-      if((pos = str_outfile.rfind(char('/'))) != std::string::npos)
+      if((pos = str_outfile.rfind('/')) != std::string::npos)
       {
         str_outfile = str_outfile.substr(0U, pos + 1U) + "ln2.out";
       }
@@ -199,9 +199,9 @@ void local::print_ln2_output_result(std::ostream& os, const double time_for_ln2_
 
   std::string::size_type pos;
 
-  if(   ((pos = str_ln2.find(char('0'), 0U)) != std::string::npos)
-     && ((pos = str_ln2.find(char('.'), 1U)) != std::string::npos)
-     && ((pos = str_ln2.find(char('6'), 1U)) != std::string::npos))
+  if(   ((pos = str_ln2.find('0', 0U)) != std::string::npos)
+     && ((pos = str_ln2.find('.', 1U)) != std::string::npos)
+     && ((pos = str_ln2.find('6', 1U)) != std::string::npos))
   {
     ;
   }
@@ -223,7 +223,7 @@ void local::print_ln2_output_result(std::ostream& os, const double time_for_ln2_
   while(all_output_streaming_is_finished == false)
   {
     // Print a set of ten digits.
-    os << str_ln2.substr(pos, 10U) << char(' ');
+    os << str_ln2.substr(pos, 10U) << ' ';
 
     pos += 10U;
 
@@ -248,7 +248,7 @@ void local::print_ln2_output_result(std::ostream& os, const double time_for_ln2_
       if(this_line_is_finished)
       {
         // Print the running-digit count and start a new line.
-        os << ": " << number_of_digits << char('\n');
+        os << ": " << number_of_digits << '\n';
 
         const bool this_group_of_ten_lines_is_finished =
           (std::size_t(number_of_digits % 500U) == std::size_t(0U));
@@ -256,7 +256,7 @@ void local::print_ln2_output_result(std::ostream& os, const double time_for_ln2_
         if(this_group_of_ten_lines_is_finished)
         {
           // Insert a new line after a group of ten lines.
-          os << char('\n');
+          os << '\n';
         }
 
         // Insert spaces at the start of the new line.
