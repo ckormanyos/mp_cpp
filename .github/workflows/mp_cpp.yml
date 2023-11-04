@@ -10,6 +10,8 @@ on:
     branches:
       - '**'
   pull_request:
+  schedule:
+    - cron: '50 21 * * *' # run at 9:50 PM UTC
 jobs:
   gcc-native:
     runs-on: ubuntu-latest
