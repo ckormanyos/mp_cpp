@@ -28,6 +28,7 @@ jobs:
           fetch-depth: '0'
       - name: gcc-native
         run: |
+          make STD=${{ matrix.standard }} prepare
           make STD=${{ matrix.standard }} --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
@@ -44,6 +45,7 @@ jobs:
           fetch-depth: '0'
       - name: macos-native
         run: |
+          make STD=${{ matrix.standard }} prepare
           make STD=${{ matrix.standard }} --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe

@@ -6,6 +6,7 @@
 #
 
 # cd /mnt/c/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/mp_cpp
+# make STD=c++11 prepare
 # make --jobs=8 all
 
 MY_STD            = c++20
@@ -39,8 +40,8 @@ GCCFLAGS          = -Wall                                     \
 CFLAGS            = $(GCCFLAGS)                               \
                     -std=c11
 
-CXXFLAGS          = $(GCCFLAGS)                               \
-                    --std=$(MY_STD)
+CXXFLAGS          = --std=$(MY_STD)                           \
+                    $(GCCFLAGS)
 
 LDFLAGS           = $(CFLAGS)                                 \
                     -lpthread
@@ -97,18 +98,41 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/samples/samples.h
 
 
-all: UNIX_DIR $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
-
+.PHONY: all
+all: $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
 
 ###############################################################
 #
-# Make the output directory if it is not yet present.
+# Make the temporary directories if not yet present.
 #
 ###############################################################
 
+.PHONY: UNIX_DIR
 UNIX_DIR :
+	@echo
+	@echo Create temporary directories
 	@mkdir -p $(PATH_UNIX)
 	@mkdir -p $(PATH_OBJ)
+
+###############################################################
+#
+# Print GNUmake and compiler versions.
+# Make the temporary directories if not yet present.
+#
+###############################################################
+
+.PHONY: prepare
+prepare : UNIX_DIR
+	@echo
+	@echo Print GNUmake version
+	@make -v
+	@echo
+	@echo Print compiler version
+	@$(CXX) -v
+	@echo
+	@echo Print compiler C++ flags
+	@echo $(CXXFLAGS)
+	@echo
 
 ###############################################################
 #
@@ -252,25 +276,26 @@ $(PATH_OBJ)/test_main.o : $(PATH_SRC)/test/test_main.cpp $(MP_HEADERS)
 #
 ###############################################################
 
-$(PATH_UNIX)/bessel.exe :   $(FILES_OBJ)  $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
+$(PATH_UNIX)/bessel.exe : $(FILES_OBJ)  $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/bessel_main.o -o $(PATH_UNIX)/bessel.exe
 
-$(PATH_UNIX)/gamma.exe  :   $(FILES_OBJ) $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
+$(PATH_UNIX)/gamma.exe  : $(FILES_OBJ) $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/gamma_main.o -o $(PATH_UNIX)/gamma.exe
 
-$(PATH_UNIX)/ln2.exe    :   $(FILES_OBJ) $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
+$(PATH_UNIX)/ln2.exe    : $(FILES_OBJ) $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/ln2_main.o -o $(PATH_UNIX)/ln2.exe
 
-$(PATH_UNIX)/pi.exe     :   $(FILES_OBJ) $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
+$(PATH_UNIX)/pi.exe     :  $(FILES_OBJ) $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/pi_main.o -o $(PATH_UNIX)/pi.exe
 
-$(PATH_UNIX)/test.exe   :   $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
+$(PATH_UNIX)/test.exe   :  $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/test_main.o -o $(PATH_UNIX)/test.exe
 
+.PHONY: clean
 clean:
 	rm -r $(PATH_OBJ)/*.o
