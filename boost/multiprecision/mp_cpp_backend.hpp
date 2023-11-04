@@ -588,32 +588,33 @@
 
   } } // namespace boost::multiprecision
 
+  #if defined(BOOST_MP_MATH_AVAILABLE)
   namespace boost { namespace math { namespace policies {
 
   // Specialization of the precision structure.
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ThisPolicy,
+           typename Policy,
            const boost::multiprecision::expression_template_option ExpressionTemplates>
   struct precision<boost::multiprecision::number<boost::multiprecision::mp_cpp_backend<MyDigits10, MyFftThreadCount>,
                                                  ExpressionTemplates>,
-                   ThisPolicy>
+                   Policy>
   {
-    typedef typename ThisPolicy::precision_type precision_type;
+  private:
+    using digits_2 = digits2<static_cast<int>(((MyDigits10 + 1LL) * 1000LL) / 301LL)>;
 
-    typedef digits2<((MyDigits10 + 1LL) * 1000LL) / 301LL> local_digits_2;
+  public:
+    using precision_type = typename Policy::precision_type;
 
-    typedef typename mpl::if_c
-      <
-        (   (local_digits_2::value <= precision_type::value)
-         || (precision_type::value <= 0)),
-        local_digits_2,
-        precision_type
-      >::type
-    type;
+    using type =
+      typename std::conditional<
+        ((digits_2::value <= precision_type::value) || (precision_type::value <= 0)),
+          digits_2,                  // Default case: Full precision for RealType.
+          precision_type>::type;     // User customized precision.
   };
 
   } } } // namespaces boost::math::policies
+  #endif
 
   namespace std
   {
