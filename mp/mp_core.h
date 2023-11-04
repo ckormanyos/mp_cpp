@@ -58,7 +58,7 @@
     class digit_characteristics_type final : private util::noncopyable
     {
     public:
-      digit_characteristics_type(const std::int32_t input_digits10) throw()
+      digit_characteristics_type(const std::int32_t input_digits10) noexcept
         : my_digits10       ((input_digits10 < std::numeric_limits<float>::digits10) ? std::numeric_limits<float>::digits10 : input_digits10),
           my_digits10_extra (static_cast<std::int32_t>(static_cast<float>(my_digits10) * 0.15F)),
           my_digits10_padded(my_digits10 + ((my_digits10_extra < 16) ? 16 : ((my_digits10_extra > 32) ? 32 : my_digits10_extra))),
@@ -83,9 +83,9 @@
     {
     public:
       mp_core_memory_type(const std::size_t int_count,
-                          const std::size_t fft_count = 0U) throw();
+                          const std::size_t fft_count = 0U) noexcept;
 
-      ~mp_core_memory_type() throw();
+      ~mp_core_memory_type();
 
       double*        mem_a   () const { return mem_dbl + (fft_max_size * 0U); }
       double*        mem_b   () const { return mem_dbl + (fft_max_size * 1U); }

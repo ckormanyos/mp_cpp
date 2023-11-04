@@ -27,7 +27,7 @@
 
 // Implement various conversion functions.
 
-bool mp::mp_cpp::read_string(const char* const s) throw()
+bool mp::mp_cpp::read_string(const char* const s) noexcept
 {
   // Clear any existing value that might be present as a relic
   // left over from an existing static instance of mp_cpp.

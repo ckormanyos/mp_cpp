@@ -251,7 +251,7 @@ const mp::mp_fft_base* mp::mp_core::get_fft(const std::int32_t n) const
 }
 
 mp::mp_core::mp_core_memory_type::mp_core_memory_type(const std::size_t int_count,
-                                                      const std::size_t fft_count) throw()
+                                                      const std::size_t fft_count) noexcept
   : fft_max_size(fft_count),
     mem_dbl     (nullptr),
     mem_int     (nullptr),
