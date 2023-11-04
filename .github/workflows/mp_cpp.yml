@@ -46,3 +46,24 @@ jobs:
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
           grep '5779458151' ./unix/pi.out
+  msvc-release-x64:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [ Bessel, Gamma, Ln2, Pi, Test ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
+      - name: msvc-release-x64
+        shell: cmd
+        working-directory: ./
+        run: |
+          MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=${{ matrix.example }}_Exe_Release -p:Platform=x64 /t:Rebuild
+          dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
+          %cd%\_Out\mp_cpp\x64\Pi_Exe_Release\Pi_Exe_Release.exe
