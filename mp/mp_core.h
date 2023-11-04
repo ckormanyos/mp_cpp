@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Declaration of mp_core multiple precision class.
 // 
