@@ -32,6 +32,7 @@
 
   #include <mp/mp_cpp.h>
   #include <mp/mp_detail.h>
+  #include <mp/mp_detail_pown_template.h>
 
   // Make a separate complex class for mp::complex<mp::mp_cpp>.
 
@@ -1053,36 +1054,13 @@
 
     template<typename T> complex<T> pow(const complex<T>& my_z, int my_pn)
     {
-      if     (my_pn <  0) { return  T(1U) / pow(my_z, -my_pn); }
-      else if(my_pn == 0) { return  complex<T>(T(1U)); }
-      else if(my_pn == 1) { return  my_z; }
-      else if(my_pn == 2) { return  my_z * my_z; }
-      else if(my_pn == 3) { return (my_z * my_z) * my_z; }
-      else if(my_pn == 4) { const complex<T> __x2(my_z * my_z); return (__x2 * __x2); }
-      else
-      {
-        // The variable xn stores the binary powers of my_z.
-        complex<T> __result(((my_pn % 2) != 0) ? my_z : complex<T>(T(1U)));
-        complex<T> __xn      (my_z);
+      complex<T> result { };
 
-        int __p2 = my_pn;
+      if     (my_pn <  0) { result = T(1U) / detail::pown_template(my_z, static_cast<unsigned>(-my_pn)); }
+      else if(my_pn == 0) { result = complex<T>(T(1U)); }
+      else                { result = detail::pown_template(my_z, static_cast<unsigned>(my_pn)); }
 
-        while((__p2 /= 2) != 0)
-        {
-          // Square xn for each binary power.
-          __xn *= __xn;
-
-          const bool __has_binary_power = ((__p2 % 2) != 0);
-
-          if(__has_binary_power)
-          {
-            // Multiply the result with each binary power contained in the exponent.
-            __result *= __xn;
-          }
-        }
-
-        return __result;
-      }
+      return result;
     }
 
     template<typename T> complex<T> pow(const complex<T>& my_z, const T& my_a)
@@ -2002,24 +1980,11 @@
 
     template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, std::int64_t my_pn)
     {
-      using local_unsigned_integral_type = std::uint64_t;
-
       complex<mp_cpp> result { };
 
-      if(my_pn >= static_cast<std::int64_t>(INT8_C(0)))
-      {
-        result = detail::pown_template(my_z, static_cast<local_unsigned_integral_type>(my_pn));
-      }
-      else
-      {
-        result =
-            static_cast<complex<mp_cpp>>
-            (
-              static_cast<mp_cpp>(static_cast<unsigned>(UINT8_C(1))),
-              static_cast<mp_cpp>(static_cast<unsigned>(UINT8_C(0)))
-            )
-          / detail::pown_template(my_z, static_cast<local_unsigned_integral_type>(-my_pn));
-      }
+      if     (my_pn <  0) { result = mp::one() / detail::pown_template(my_z, static_cast<std::uint64_t>(-my_pn)); }
+      else if(my_pn == 0) { result = complex<mp_cpp>(mp::one()); }
+      else                { result = detail::pown_template(my_z, static_cast<std::uint64_t>(my_pn)); }
 
       return result;
     }

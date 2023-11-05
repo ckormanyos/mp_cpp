@@ -59,19 +59,26 @@
 
       result = local_floating_point_type(static_cast<unsigned>(UINT8_C(1)));
 
-      auto y(b);
+      local_floating_point_type y(b);
 
-      for(local_unsigned_integral_type p_local(p); p_local != local_unsigned_integral_type(0U); p_local >>= static_cast<unsigned>(UINT8_C(1)))
+      auto p_local = static_cast<std::uint64_t>(p);
+
+      // Use the so-called ladder method for the power calculation.
+      for(;;)
       {
-        const auto lo_bit =
-          static_cast<unsigned>
-          (
-            static_cast<unsigned>(p_local) & static_cast<unsigned>(UINT8_C(1))
-          );
+        const auto do_power_multiply =
+          (static_cast<std::uint_fast8_t>(p_local & static_cast<unsigned>(UINT8_C(1))) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
-        if(lo_bit != static_cast<unsigned>(UINT8_C(0)))
+        if(do_power_multiply)
         {
           result *= y;
+        }
+
+        p_local >>= static_cast<unsigned>(UINT8_C(1));
+
+        if(p_local == static_cast<std::uint64_t>(UINT8_C(0)))
+        {
+          break;
         }
 
         y *= y;
