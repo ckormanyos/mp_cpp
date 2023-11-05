@@ -38,6 +38,11 @@ namespace local
 
   struct complex_strings_pair
   {
+    explicit complex_strings_pair(const std::string& str_r = std::string(),
+                                  const std::string& str_i = std::string())
+      : str_real(str_r),
+        str_imag(str_i) { }
+
     std::string str_real { };
     std::string str_imag { };
   };
