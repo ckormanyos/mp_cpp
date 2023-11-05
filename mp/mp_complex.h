@@ -171,130 +171,130 @@
     public:
       typedef T value_type;
 
-      complex(const value_type& __my_x = value_type(),
-              const value_type& __my_y = value_type()) : __my_re(__my_x),
-                                                         __my_im(__my_y) { }
+      complex(const value_type& my_x = value_type(),
+              const value_type& my_y = value_type()) : my_re(my_x),
+                                                         my_im(my_y) { }
 
-      complex(const complex& __my_z) : __my_re(__my_z.real()),
-                                       __my_im(__my_z.imag()) { }
+      complex(const complex& my_z) : my_re(my_z.real()),
+                                       my_im(my_z.imag()) { }
 
       template<typename X>
-      complex(const complex<X>& __my_z) : __my_re(static_cast<value_type>(__my_z.real())),
-                                          __my_im(static_cast<value_type>(__my_z.imag())) { }
+      complex(const complex<X>& my_z) : my_re(static_cast<value_type>(my_z.real())),
+                                          my_im(static_cast<value_type>(my_z.imag())) { }
 
-      value_type real() const { return __my_re; }
-      value_type imag() const { return __my_im; }
+      value_type real() const { return my_re; }
+      value_type imag() const { return my_im; }
 
-      void real(value_type __my_x) { __my_re = __my_x; }
-      void imag(value_type __my_y) { __my_im = __my_y; }
+      void real(value_type my_x) { my_re = my_x; }
+      void imag(value_type my_y) { my_im = my_y; }
 
-      complex& operator=(const value_type& __my_other_x)
+      complex& operator=(const value_type& my_other_x)
       {
-        __my_re = __my_other_x;
-        __my_im = value_type(0U);
+        my_re = my_other_x;
+        my_im = value_type(0U);
 
         return *this;
       }
 
-      complex& operator+=(const value_type& __my_x)
+      complex& operator+=(const value_type& my_x)
       {
-        __my_re += __my_x;
+        my_re += my_x;
 
         return *this;
       }
 
-      complex& operator-=(const value_type& __my_x)
+      complex& operator-=(const value_type& my_x)
       {
-        __my_re -= __my_x;
+        my_re -= my_x;
 
         return *this;
       }
 
-      complex& operator*=(const value_type& __my_x)
+      complex& operator*=(const value_type& my_x)
       {
-        __my_re *= __my_x;
-        __my_im *= __my_x;
+        my_re *= my_x;
+        my_im *= my_x;
 
         return *this;
       }
 
-      complex& operator/=(const value_type& __my_x)
+      complex& operator/=(const value_type& my_x)
       {
-        __my_re /= __my_x;
-        __my_im /= __my_x;
+        my_re /= my_x;
+        my_im /= my_x;
 
         return *this;
       }
 
-      complex& operator=(const complex& __my_other_z)
+      complex& operator=(const complex& my_other_z)
       {
-        if(this != &__my_other_z)
+        if(this != &my_other_z)
         {
-          __my_re = __my_other_z.__my_re;
-          __my_im = __my_other_z.__my_im;
+          my_re = my_other_z.my_re;
+          my_im = my_other_z.my_im;
         }
 
         return *this;
       }
 
       template<typename X>
-      complex& operator=(const complex<X>& __my_other_z)
+      complex& operator=(const complex<X>& my_other_z)
       {
-        __my_re = static_cast<value_type>(__my_other_z.__my_re);
-        __my_im = static_cast<value_type>(__my_other_z.__my_im);
+        my_re = static_cast<value_type>(my_other_z.my_re);
+        my_im = static_cast<value_type>(my_other_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator+=(const complex<X>& __my_z)
+      complex& operator+=(const complex<X>& my_z)
       {
-        __my_re += static_cast<value_type>(__my_z.__my_re);
-        __my_im += static_cast<value_type>(__my_z.__my_im);
+        my_re += static_cast<value_type>(my_z.my_re);
+        my_im += static_cast<value_type>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator-=(const complex<X>& __my_z)
+      complex& operator-=(const complex<X>& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
           real(mp_cpp(0U));
           imag(mp_cpp(0U));
         }
         else
         {
-          __my_re -= static_cast<value_type>(__my_z.__my_re);
-          __my_im -= static_cast<value_type>(__my_z.__my_im);
+          my_re -= static_cast<value_type>(my_z.my_re);
+          my_im -= static_cast<value_type>(my_z.my_im);
         }
 
         return *this;
       }
 
       template<typename X>
-      complex& operator*=(const complex<X>& __my_z)
+      complex& operator*=(const complex<X>& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
-          real((__my_z.real() * __my_z.real()) - (__my_z.imag() * __my_z.imag()));
-          imag((__my_z.real() * __my_z.imag()) * 2U);
+          real((my_z.real() * my_z.real()) - (my_z.imag() * my_z.imag()));
+          imag((my_z.real() * my_z.imag()) * 2U);
         }
         else
         {
-          const value_type __my_tmp_re(__my_re);
+          const value_type my_tmp_re(my_re);
 
-          __my_re = (__my_tmp_re * __my_z.real()) - (imag() * __my_z.imag());
-          __my_im = (__my_tmp_re * __my_z.imag()) + (imag() * __my_z.real());
+          my_re = (my_tmp_re * my_z.real()) - (imag() * my_z.imag());
+          my_im = (my_tmp_re * my_z.imag()) + (imag() * my_z.real());
         }
 
         return *this;
       }
 
       template<typename X>
-      complex& operator/=(const complex<X>& __my_z)
+      complex& operator/=(const complex<X>& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
           real(1U);
           imag(0U);
@@ -303,25 +303,25 @@
         {
           using std::fabs;
 
-          if(fabs(__my_z.real()) < fabs(__my_z.imag()))
+          if(fabs(my_z.real()) < fabs(my_z.imag()))
           {
-            const value_type __my_c_over_d = __my_z.real() / __my_z.imag();
+            const value_type my_c_over_d = my_z.real() / my_z.imag();
 
-            const value_type __my_denominator = (__my_z.real() * __my_c_over_d) + __my_z.imag();
+            const value_type my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
 
-            const value_type __my_tmp_re(__my_re);
-            __my_re = ((__my_tmp_re * __my_c_over_d) + __my_im)     / __my_denominator;
-            __my_im = ((__my_im     * __my_c_over_d) - __my_tmp_re) / __my_denominator;
+            const value_type my_tmp_re(my_re);
+            my_re = ((my_tmp_re * my_c_over_d) + my_im)     / my_denominator;
+            my_im = ((my_im     * my_c_over_d) - my_tmp_re) / my_denominator;
           }
           else
           {
-            const value_type __my_d_over_c = __my_z.imag() / __my_z.real();
+            const value_type my_d_over_c = my_z.imag() / my_z.real();
 
-            const value_type __my_denominator = (__my_z.imag() * __my_d_over_c) + __my_z.real();
+            const value_type my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
 
-            const value_type __my_tmp_re(__my_re);
-            __my_re = (( __my_im     * __my_d_over_c) + __my_tmp_re) / __my_denominator;
-            __my_im = ((-__my_tmp_re * __my_d_over_c) + __my_im)     / __my_denominator;
+            const value_type my_tmp_re(my_re);
+            my_re = (( my_im     * my_d_over_c) + my_tmp_re) / my_denominator;
+            my_im = ((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator;
           }
         }
 
@@ -329,8 +329,8 @@
       }
 
     private:
-      value_type __my_re;
-      value_type __my_im;
+      value_type my_re;
+      value_type my_im;
     };
 
     // mp::complex<> specializations.
@@ -341,122 +341,122 @@
     public:
       typedef float value_type;
 
-      complex(float __my_x = 0.0F,
-              float __my_y = 0.0F) : __my_re(__my_x),
-                                     __my_im(__my_y) { }
+      complex(float my_x = 0.0F,
+              float my_y = 0.0F) : my_re(my_x),
+                                     my_im(my_y) { }
 
       explicit complex(const complex<double>&);
       explicit complex(const complex<long double>&);
 
-      float real() const { return __my_re; }
-      float imag() const { return __my_im; }
+      float real() const { return my_re; }
+      float imag() const { return my_im; }
 
-      void real(float __my_x) { __my_re = __my_x; }
-      void imag(float __my_y) { __my_im = __my_y; }
+      void real(float my_x) { my_re = my_x; }
+      void imag(float my_y) { my_im = my_y; }
 
-      complex& operator=(float __my_x)
+      complex& operator=(float my_x)
       {
-        __my_re = __my_x;
-        __my_im = 0.0F;
+        my_re = my_x;
+        my_im = 0.0F;
 
         return *this;
       }
 
-      complex& operator+=(float __my_x)
+      complex& operator+=(float my_x)
       {
-        __my_re += __my_x;
+        my_re += my_x;
 
         return *this;
       }
 
-      complex& operator-=(float __my_x)
+      complex& operator-=(float my_x)
       {
-        __my_re -= __my_x;
+        my_re -= my_x;
 
         return *this;
       }
 
-      complex& operator*=(float __my_x)
+      complex& operator*=(float my_x)
       {
-        __my_re *= __my_x;
-        __my_im *= __my_x;
+        my_re *= my_x;
+        my_im *= my_x;
 
         return *this;
       }
 
-      complex& operator/=(float __my_x)
+      complex& operator/=(float my_x)
       {
-        __my_re /= __my_x;
-        __my_im /= __my_x;
+        my_re /= my_x;
+        my_im /= my_x;
 
         return *this;
       }
 
-      complex& operator=(const complex& __my_z)
+      complex& operator=(const complex& my_z)
       {
-        if(this != &__my_z)
+        if(this != &my_z)
         {
-          __my_re = __my_z.__my_re;
-          __my_im = __my_z.__my_im;
+          my_re = my_z.my_re;
+          my_im = my_z.my_im;
         }
 
         return *this;
       }
 
       template<typename X>
-      complex<float>& operator=(const complex<X>& __my_z)
+      complex<float>& operator=(const complex<X>& my_z)
       {
-        __my_re = static_cast<float>(__my_z.__my_re);
-        __my_im = static_cast<float>(__my_z.__my_im);
+        my_re = static_cast<float>(my_z.my_re);
+        my_im = static_cast<float>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator+=(const complex<X>& __my_z)
+      complex& operator+=(const complex<X>& my_z)
       {
-        __my_re += static_cast<float>(__my_z.__my_re);
-        __my_im += static_cast<float>(__my_z.__my_im);
+        my_re += static_cast<float>(my_z.my_re);
+        my_im += static_cast<float>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator-=(const complex<X>& __my_z)
+      complex& operator-=(const complex<X>& my_z)
       {
-        __my_re -= static_cast<float>(__my_z.__my_re);
-        __my_im -= static_cast<float>(__my_z.__my_im);
+        my_re -= static_cast<float>(my_z.my_re);
+        my_im -= static_cast<float>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator*=(const complex<X>& __my_z)
+      complex& operator*=(const complex<X>& my_z)
       {
-        const float tmp_im = static_cast<float>((__my_re * __my_z.__my_im) + (__my_im * __my_z.__my_re));
+        const float tmp_im = static_cast<float>((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        __my_re = (__my_re * __my_z.__my_re) - (__my_im * __my_z.__my_im);
-        __my_im = tmp_im;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
+        my_im = tmp_im;
 
         return *this;
       }
 
       template<typename X>
-      complex& operator/=(const complex<X>& __my_z)
+      complex& operator/=(const complex<X>& my_z)
       {
-        const float __denominator = static_cast<float>(norm(__my_z));
+        const float __denominator = static_cast<float>(norm(my_z));
 
-        const float __tmp_im = static_cast<float>((__my_im * __my_z.__my_re) - (__my_re * __my_z.__my_im));
+        const float __tmp_im = static_cast<float>((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        __my_re = ((__my_re * __my_z.__my_re) + (__my_im * __my_z.__my_im)) / __denominator;
-        __my_im = __tmp_im / __denominator;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / __denominator;
+        my_im = __tmp_im / __denominator;
 
         return *this;
       }
 
     private:
-      float __my_re;
-      float __my_im;
+      float my_re;
+      float my_im;
     };
 
     template<>
@@ -465,124 +465,124 @@
     public:
       typedef double value_type;
 
-      complex(double __my_x = 0.0,
-              double __my_y = 0.0) : __my_re(__my_x),
-                                     __my_im(__my_y) { }
+      complex(double my_x = 0.0,
+              double my_y = 0.0) : my_re(my_x),
+                                     my_im(my_y) { }
 
-      complex(const complex<float>& __my_f) : __my_re(double(__my_f.real())),
-                                              __my_im(double(__my_f.imag())) { }
+      complex(const complex<float>& my_f) : my_re(double(my_f.real())),
+                                              my_im(double(my_f.imag())) { }
 
       explicit complex(const complex<long double>&);
 
-      double real() const { return __my_re; }
-      double imag() const { return __my_im; }
+      double real() const { return my_re; }
+      double imag() const { return my_im; }
 
-      void real(double __my_x) { __my_re = __my_x; }
-      void imag(double __my_y) { __my_im = __my_y; }
+      void real(double my_x) { my_re = my_x; }
+      void imag(double my_y) { my_im = my_y; }
 
-      complex& operator=(double __my_x)
+      complex& operator=(double my_x)
       {
-        __my_re = __my_x;
-        __my_im = 0.0;
+        my_re = my_x;
+        my_im = 0.0;
 
         return *this;
       }
 
-      complex& operator+=(double __my_x)
+      complex& operator+=(double my_x)
       {
-        __my_re += __my_x;
+        my_re += my_x;
 
         return *this;
       }
 
-      complex& operator-=(double __my_x)
+      complex& operator-=(double my_x)
       {
-        __my_re -= __my_x;
+        my_re -= my_x;
 
         return *this;
       }
 
-      complex& operator*=(double __my_x)
+      complex& operator*=(double my_x)
       {
-        __my_re *= __my_x;
-        __my_im *= __my_x;
+        my_re *= my_x;
+        my_im *= my_x;
 
         return *this;
       }
 
-      complex& operator/=(double __my_x)
+      complex& operator/=(double my_x)
       {
-        __my_re /= __my_x;
-        __my_im /= __my_x;
+        my_re /= my_x;
+        my_im /= my_x;
 
         return *this;
       }
 
-      complex& operator=(const complex& __my_z)
+      complex& operator=(const complex& my_z)
       {
-        if(this != &__my_z)
+        if(this != &my_z)
         {
-          __my_re = __my_z.__my_re;
-          __my_im = __my_z.__my_im;
+          my_re = my_z.my_re;
+          my_im = my_z.my_im;
         }
 
         return *this;
       }
 
       template<typename X>
-      complex& operator=(const complex<X>& __my_z)
+      complex& operator=(const complex<X>& my_z)
       {
-        __my_re = static_cast<double>(__my_z.__my_re);
-        __my_im = static_cast<double>(__my_z.__my_im);
+        my_re = static_cast<double>(my_z.my_re);
+        my_im = static_cast<double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator+=(const complex<X>& __my_z)
+      complex& operator+=(const complex<X>& my_z)
       {
-        __my_re += static_cast<double>(__my_z.__my_re);
-        __my_im += static_cast<double>(__my_z.__my_im);
+        my_re += static_cast<double>(my_z.my_re);
+        my_im += static_cast<double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator-=(const complex<X>& __my_z)
+      complex& operator-=(const complex<X>& my_z)
       {
-        __my_re -= static_cast<double>(__my_z.__my_re);
-        __my_im -= static_cast<double>(__my_z.__my_im);
+        my_re -= static_cast<double>(my_z.my_re);
+        my_im -= static_cast<double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator*=(const complex<X>& __my_z)
+      complex& operator*=(const complex<X>& my_z)
       {
-        const double __tmp_im = static_cast<double>((__my_re * __my_z.__my_im) + (__my_im * __my_z.__my_re));
+        const double __tmp_im = static_cast<double>((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        __my_re = (__my_re * __my_z.__my_re) - (__my_im * __my_z.__my_im);
-        __my_im = __tmp_im;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
+        my_im = __tmp_im;
 
         return *this;
       }
 
       template<typename X>
-      complex& operator/=(const complex<X>& __my_z)
+      complex& operator/=(const complex<X>& my_z)
       {
-        const double __denominator = static_cast<double>(norm(__my_z));
+        const double __denominator = static_cast<double>(norm(my_z));
 
-        const double __tmp_im = static_cast<double>((__my_im * __my_z.__my_re) - (__my_re * __my_z.__my_im));
+        const double __tmp_im = static_cast<double>((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        __my_re = ((__my_re * __my_z.__my_re) + (__my_im * __my_z.__my_im)) / __denominator;
-        __my_im = __tmp_im / __denominator;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / __denominator;
+        my_im = __tmp_im / __denominator;
 
         return *this;
       }
 
     private:
-      double __my_re;
-      double __my_im;
+      double my_re;
+      double my_im;
     };
 
     template<>
@@ -591,183 +591,183 @@
     public:
       typedef long double value_type;
 
-      complex(long double __my_x = 0.0L,
-              long double __my_y = 0.0L) : __my_re(__my_x),
-                                          __my_im(__my_y) { }
+      complex(long double my_x = 0.0L,
+              long double my_y = 0.0L) : my_re(my_x),
+                                          my_im(my_y) { }
 
-      complex(const complex<float>& __my_f) : __my_re(static_cast<long double>(__my_f.real())),
-                                              __my_im(static_cast<long double>(__my_f.imag())) { }
+      complex(const complex<float>& my_f) : my_re(static_cast<long double>(my_f.real())),
+                                              my_im(static_cast<long double>(my_f.imag())) { }
 
-      complex(const complex<double>& __my_d) : __my_re(static_cast<long double>(__my_d.real())),
-                                               __my_im(static_cast<long double>(__my_d.imag())) { }
+      complex(const complex<double>& my_d) : my_re(static_cast<long double>(my_d.real())),
+                                               my_im(static_cast<long double>(my_d.imag())) { }
 
-      long double real() const { return __my_re; }
-      long double imag() const { return __my_im; }
+      long double real() const { return my_re; }
+      long double imag() const { return my_im; }
 
-      void real(long double __my_x) { __my_re = __my_x; }
-      void imag(long double __my_y) { __my_im = __my_y; }
+      void real(long double my_x) { my_re = my_x; }
+      void imag(long double my_y) { my_im = my_y; }
 
-      complex& operator=(long double __my_x)
+      complex& operator=(long double my_x)
       {
-        __my_re = __my_x;
-        __my_im = 0.0L;
+        my_re = my_x;
+        my_im = 0.0L;
 
         return *this;
       }
 
-      complex& operator+=(long double __my_x)
+      complex& operator+=(long double my_x)
       {
-        __my_re += __my_x;
+        my_re += my_x;
 
         return *this;
       }
 
-      complex& operator-=(long double __my_x)
+      complex& operator-=(long double my_x)
       {
-        __my_re -= __my_x;
+        my_re -= my_x;
 
         return *this;
       }
 
-      complex& operator*=(long double __my_x)
+      complex& operator*=(long double my_x)
       {
-        __my_re *= __my_x;
-        __my_im *= __my_x;
+        my_re *= my_x;
+        my_im *= my_x;
 
         return *this;
       }
 
-      complex& operator/=(long double __my_x)
+      complex& operator/=(long double my_x)
       {
-        __my_re /= __my_x;
-        __my_im /= __my_x;
+        my_re /= my_x;
+        my_im /= my_x;
 
         return *this;
       }
 
-      complex& operator=(const complex& __my_z)
+      complex& operator=(const complex& my_z)
       {
-        if(this != &__my_z)
+        if(this != &my_z)
         {
-          __my_re = __my_z.__my_re;
-          __my_im = __my_z.__my_im;
+          my_re = my_z.my_re;
+          my_im = my_z.my_im;
         }
 
         return *this;
       }
 
       template<typename X>
-      complex& operator=(const complex<X>& __my_z)
+      complex& operator=(const complex<X>& my_z)
       {
-        __my_re = static_cast<long double>(__my_z.__my_re);
-        __my_im = static_cast<long double>(__my_z.__my_im);
+        my_re = static_cast<long double>(my_z.my_re);
+        my_im = static_cast<long double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator+=(const complex<X>& __my_z)
+      complex& operator+=(const complex<X>& my_z)
       {
-        __my_re += static_cast<long double>(__my_z.__my_re);
-        __my_im += static_cast<long double>(__my_z.__my_im);
+        my_re += static_cast<long double>(my_z.my_re);
+        my_im += static_cast<long double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator-=(const complex<X>& __my_z)
+      complex& operator-=(const complex<X>& my_z)
       {
-        __my_re -= static_cast<long double>(__my_z.__my_re);
-        __my_im -= static_cast<long double>(__my_z.__my_im);
+        my_re -= static_cast<long double>(my_z.my_re);
+        my_im -= static_cast<long double>(my_z.my_im);
 
         return *this;
       }
 
       template<typename X>
-      complex& operator*=(const complex<X>& __my_z)
+      complex& operator*=(const complex<X>& my_z)
       {
-        const long double __tmp_im = static_cast<long double>((__my_re * __my_z.__my_im) + (__my_im * __my_z.__my_re));
+        const long double __tmp_im = static_cast<long double>((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        __my_re = (__my_re * __my_z.__my_re) - (__my_im * __my_z.__my_im);
-        __my_im = __tmp_im;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
+        my_im = __tmp_im;
 
         return *this;
       }
 
       template<typename X>
-      complex& operator/=(const complex<X>& __my_z)
+      complex& operator/=(const complex<X>& my_z)
       {
-        const long double __denominator = static_cast<long double>(norm(__my_z));
+        const long double __denominator = static_cast<long double>(norm(my_z));
 
-        const long double __tmp_im = static_cast<long double>((__my_im * __my_z.__my_re) - (__my_re * __my_z.__my_im));
+        const long double __tmp_im = static_cast<long double>((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        __my_re = ((__my_re * __my_z.__my_re) + (__my_im * __my_z.__my_im)) / __denominator;
-        __my_im = __tmp_im / __denominator;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / __denominator;
+        my_im = __tmp_im / __denominator;
 
         return *this;
       }
 
     private:
-      long double __my_re;
-      long double __my_im;
+      long double my_re;
+      long double my_im;
     };
 
     // These constructors are located here because they need to be
     // implemented after the template specializations have been declared.
 
-    inline complex<float >::complex(const complex<double>&      __my_d)  : __my_re(float ( __my_d.real())), __my_im(float ( __my_d.imag())) { }
-    inline complex<float >::complex(const complex<long double>& __my_ld) : __my_re(float (__my_ld.real())), __my_im(float (__my_ld.imag())) { }
-    inline complex<double>::complex(const complex<long double>& __my_ld) : __my_re(double(__my_ld.real())), __my_im(double(__my_ld.imag())) { }
+    inline complex<float >::complex(const complex<double>&      my_d)  : my_re(float ( my_d.real())), my_im(float ( my_d.imag())) { }
+    inline complex<float >::complex(const complex<long double>& my_ld) : my_re(float (my_ld.real())), my_im(float (my_ld.imag())) { }
+    inline complex<double>::complex(const complex<long double>& my_ld) : my_re(double(my_ld.real())), my_im(double(my_ld.imag())) { }
 
     // mp::complex<T> non-member operations
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<typename T> complex<T> operator+(const complex<T>& __my_u) { return __my_u; }
-    template<typename T> complex<T> operator-(const complex<T>& __my_u) { return complex<T>(-__my_u.real(), -__my_u.imag()); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u) { return my_u; }
+    template<typename T> complex<T> operator-(const complex<T>& my_u) { return complex<T>(-my_u.real(), -my_u.imag()); }
 
     // Global add, sub, mul, div operators.
-    template<typename T> complex<T> operator+(const complex<T>& __my_u, const complex<T>& __my_v) { return complex<T>(__my_u.real() + __my_v.real(), __my_u.imag() + __my_v.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& __my_u, const complex<T>& __my_v) { return complex<T>(__my_u.real() - __my_v.real(), __my_u.imag() - __my_v.imag()); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
+    template<typename T> complex<T> operator-(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
 
-    template<typename T> complex<T> operator*(const complex<T>& __my_u, const complex<T>& __my_v)
+    template<typename T> complex<T> operator*(const complex<T>& my_u, const complex<T>& my_v)
     {
-      return complex<T>((__my_u.real() * __my_v.real()) - (__my_u.imag() * __my_v.imag()),
-                        (__my_u.real() * __my_v.imag()) + (__my_u.imag() * __my_v.real()));
+      return complex<T>((my_u.real() * my_v.real()) - (my_u.imag() * my_v.imag()),
+                        (my_u.real() * my_v.imag()) + (my_u.imag() * my_v.real()));
     }
 
-    template<typename T> complex<T> operator/(const complex<T>& __my_u, const complex<T>& __my_v)
+    template<typename T> complex<T> operator/(const complex<T>& my_u, const complex<T>& my_v)
     {
-      const T __denominator(norm(__my_v));
+      const T __denominator(norm(my_v));
 
-      return complex<T>(((__my_u.real() * __my_v.real()) + (__my_u.imag() * __my_v.imag())) / __denominator,
-                        ((__my_u.imag() * __my_v.real()) - (__my_u.real() * __my_v.imag())) / __denominator);
+      return complex<T>(((my_u.real() * my_v.real()) + (my_u.imag() * my_v.imag())) / __denominator,
+                        ((my_u.imag() * my_v.real()) - (my_u.real() * my_v.imag())) / __denominator);
     }
 
-    template<typename T> complex<T> operator+(const complex<T>& __my_u, const T& __my_v)  { return complex<T>(__my_u.real() + __my_v, __my_u.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& __my_u, const T& __my_v)  { return complex<T>(__my_u.real() - __my_v, __my_u.imag()); }
-    template<typename T> complex<T> operator*(const complex<T>& __my_u, const T& __my_v)  { return complex<T>(__my_u.real() * __my_v, __my_u.imag() * __my_v); }
-    template<typename T> complex<T> operator/(const complex<T>& __my_u, const T& __my_v)  { return complex<T>(__my_u.real() / __my_v, __my_u.imag() / __my_v); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() + my_v, my_u.imag()); }
+    template<typename T> complex<T> operator-(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() - my_v, my_u.imag()); }
+    template<typename T> complex<T> operator*(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<typename T> complex<T> operator/(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() / my_v, my_u.imag() / my_v); }
 
-    template<typename T> complex<T> operator+(const T& __my_u, const complex<T>& __my_v) { return complex<T>(__my_u + __my_v.real(), __my_v.imag()); }
-    template<typename T> complex<T> operator-(const T& __my_u, const complex<T>& __my_v) { return complex<T>(__my_u - __my_v.real(), -__my_v.imag()); }
-    template<typename T> complex<T> operator*(const T& __my_u, const complex<T>& __my_v) { return complex<T>(__my_u * __my_v.real(), __my_u * __my_v.imag()); }
-    template<typename T> complex<T> operator/(const T& __my_u, const complex<T>& __my_v) { const T __denominator(norm(__my_v));
-                                                                                           return complex<T>(( __my_u * __my_v.real()) / __denominator,
-                                                                                                             (-__my_u * __my_v.imag()) / __denominator); }
+    template<typename T> complex<T> operator+(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u + my_v.real(), my_v.imag()); }
+    template<typename T> complex<T> operator-(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u - my_v.real(), -my_v.imag()); }
+    template<typename T> complex<T> operator*(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u * my_v.real(), my_u * my_v.imag()); }
+    template<typename T> complex<T> operator/(const T& my_u, const complex<T>& my_v) { const T __denominator(norm(my_v));
+                                                                                           return complex<T>(( my_u * my_v.real()) / __denominator,
+                                                                                                             (-my_u * my_v.imag()) / __denominator); }
 
     // Equality and inequality operators.
-    template<typename T> bool operator==(const complex<T>& __my_u, const complex<T>& __my_v) { return ((__my_u.real() == __my_v.real()) && (__my_u.imag() == __my_v.imag())); }
-    template<typename T> bool operator==(const complex<T>& __my_u, const T&          __my_v) { return ((__my_u.real() == __my_v)        && (__my_u.imag() == T(0))); }
-    template<typename T> bool operator==(const T&          __my_u, const complex<T>& __my_v) { return ((__my_u == __my_v.real())        && (__my_v.imag() == T(0))); }
+    template<typename T> bool operator==(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<typename T> bool operator==(const complex<T>& my_u, const T&          my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == T(0))); }
+    template<typename T> bool operator==(const T&          my_u, const complex<T>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == T(0))); }
 
-    template<typename T> bool operator!=(const complex<T>& __my_u, const complex<T>& __my_v) { return ((__my_u.real() != __my_v.real()) || (__my_u.imag() != __my_v.imag())); }
-    template<typename T> bool operator!=(const complex<T>& __my_u, const T&          __my_v) { return ((__my_u.real() != __my_v)        || (__my_u.imag() != T(0))); }
-    template<typename T> bool operator!=(const T&          __my_u, const complex<T>& __my_v) { return ((__my_u != __my_v.real())        || (__my_v.imag() != T(0))); }
+    template<typename T> bool operator!=(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
+    template<typename T> bool operator!=(const complex<T>& my_u, const T&          my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != T(0))); }
+    template<typename T> bool operator!=(const T&          my_u, const complex<T>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != T(0))); }
 
     // I/O stream operators.
     template<typename T, typename char_type, typename traits_type>
-    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& __my_istream, complex<T>& __my_z)
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<T>& my_z)
     {
       // Parse an (extended) complex number of any of the forms u, (u) or (u,v).
 
@@ -793,13 +793,13 @@
                     + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)"))    // Possible exponent field.
       }};
 
-      T __my_re_z(0U);
-      T __my_im_z(0U);
+      T my_re_z(0U);
+      T my_im_z(0U);
 
       bool __input_has_error = false;
 
       std::string __input_str;
-      __my_istream >> __input_str;
+      my_istream >> __input_str;
 
       std::match_results<std::string::const_iterator> __mr;
 
@@ -844,18 +844,18 @@
         {
           // Extract the real part of the complex number.
           {
-            std::stringstream __my_stringstream;
+            std::stringstream my_stringstream;
 
-            __my_stringstream << __mr[1U] << __mr[2U];
-            __my_stringstream >> __my_re_z;
+            my_stringstream << __mr[1U] << __mr[2U];
+            my_stringstream >> my_re_z;
           }
 
           // Extract the imaginary part of the complex number.
           {
-            std::stringstream __my_stringstream;
+            std::stringstream my_stringstream;
 
-            __my_stringstream << __mr[3U] << __mr[4U];
-            __my_stringstream >> __my_im_z;
+            my_stringstream << __mr[3U] << __mr[4U];
+            my_stringstream >> my_im_z;
           }
         }
       }
@@ -880,12 +880,12 @@
         else
         {
           // Extract the real part of the complex number.
-          std::stringstream __my_stringstream;
+          std::stringstream my_stringstream;
 
-          __my_stringstream << __mr[1U] << __mr[2U];
-          __my_stringstream >> __my_re_z;
+          my_stringstream << __mr[1U] << __mr[2U];
+          my_stringstream >> my_re_z;
 
-          __my_im_z = T(0U);
+          my_im_z = T(0U);
         }
       }
 
@@ -895,83 +895,83 @@
         // and set the fail bit in the input stream.
         std::for_each(__input_str.cbegin(),
                       __input_str.cend(),
-                      [&__my_istream](const char& __my_c)
+                      [&my_istream](const char& my_c)
                       {
-                        __my_istream.putback(__my_c);
+                        my_istream.putback(my_c);
                       });
 
-        __my_istream.setstate(std::ios_base::failbit);
+        my_istream.setstate(std::ios_base::failbit);
       }
       else
       {
-        __my_z = complex<T>(__my_re_z, __my_im_z);
+        my_z = complex<T>(my_re_z, my_im_z);
       }
 
-      return __my_istream;
+      return my_istream;
     }
 
     template<class T, class char_type, class traits_type>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& __my_ostream, const complex<T>& __my_z)
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<T>& my_z)
     {
       std::basic_ostringstream<char_type, traits_type> __tmp_ostream;
 
-      __tmp_ostream.flags    (__my_ostream.flags());
-      __tmp_ostream.imbue    (__my_ostream.getloc());
-      __tmp_ostream.precision(__my_ostream.precision());
+      __tmp_ostream.flags    (my_ostream.flags());
+      __tmp_ostream.imbue    (my_ostream.getloc());
+      __tmp_ostream.precision(my_ostream.precision());
 
       __tmp_ostream << '('
-                    << __my_z.real()
+                    << my_z.real()
                     << ','
-                    << __my_z.imag()
+                    << my_z.imag()
                     << ')';
 
-      return (__my_ostream << __tmp_ostream.str());
+      return (my_ostream << __tmp_ostream.str());
     }
 
     // mp::complex<mp_cpp> value operations.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.7.
-    template<typename T> T real(const complex<T>& __my_z) { return __my_z.real(); }
-    template<typename T> T imag(const complex<T>& __my_z) { return __my_z.imag(); }
+    template<typename T> T real(const complex<T>& my_z) { return my_z.real(); }
+    template<typename T> T imag(const complex<T>& my_z) { return my_z.imag(); }
 
-    template<typename T> T abs (const complex<T>& __my_z) { using std::sqrt;  return sqrt(norm(__my_z)); }
-    template<typename T> T arg (const complex<T>& __my_z) { using std::atan2; return atan2(__my_z.imag(), __my_z.real()); }
-    template<typename T> T norm(const complex<T>& __my_z) { return (__my_z.real() * __my_z.real()) + (__my_z.imag() * __my_z.imag()); }
+    template<typename T> T abs (const complex<T>& my_z) { using std::sqrt;  return sqrt(norm(my_z)); }
+    template<typename T> T arg (const complex<T>& my_z) { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
+    template<typename T> T norm(const complex<T>& my_z) { return (my_z.real() * my_z.real()) + (my_z.imag() * my_z.imag()); }
 
-    template<typename T> complex<T> conj(const complex<T>& __my_z) { return complex<T>(-__my_z.imag(), __my_z.real()); }
+    template<typename T> complex<T> conj(const complex<T>& my_z) { return complex<T>(-my_z.imag(), my_z.real()); }
 
-    template<typename T> complex<T> proj(const complex<T>& __my_z)
+    template<typename T> complex<T> proj(const complex<T>& my_z)
     {
-      const T __denominator_half((norm(__my_z) + T(1U)) / 2U);
+      const T __denominator_half((norm(my_z) + T(1U)) / 2U);
 
-      return std::complex<T>(__my_z.real() / __denominator_half,
-                             __my_z.imag() / __denominator_half);
+      return std::complex<T>(my_z.real() / __denominator_half,
+                             my_z.imag() / __denominator_half);
     }
 
-    template<typename T> complex<T> polar(const T& __my_rho, const T& __my_theta)
+    template<typename T> complex<T> polar(const T& my_rho, const T& my_theta)
     {
       using std::cos;
       using std::sin;
 
-      return complex<T>(__my_rho * cos(__my_theta), __my_rho * sin(__my_theta));
+      return complex<T>(my_rho * cos(my_theta), my_rho * sin(my_theta));
     }
 
     // mp::complex<mp_cpp> transcendentals.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.8.
-    template<typename T> complex<T> acos(const complex<T>& __my_z)
+    template<typename T> complex<T> acos(const complex<T>& my_z)
     {
       using std::asin;
 
-      return T(asin(T(1U))) - asin(__my_z);
+      return T(asin(T(1U))) - asin(my_z);
     }
 
-    template<typename T> complex<T> asin(const complex<T>& __my_z)
+    template<typename T> complex<T> asin(const complex<T>& my_z)
     {
-      return -conj(log(conj(__my_z) + sqrt(T(1U) - (__my_z * __my_z))));
+      return -conj(log(conj(my_z) + sqrt(T(1U) - (my_z * my_z))));
     }
 
-    template<typename T> complex<T> atan(const complex<T>& __my_z)
+    template<typename T> complex<T> atan(const complex<T>& my_z)
     {
-      const complex<T> __z_conj = conj(__my_z);
+      const complex<T> __z_conj = conj(my_z);
 
       complex<T> __result = conj(log(T(1) - __z_conj) - log(T(1) + __z_conj));
 
@@ -981,22 +981,22 @@
       return __result;
     }
 
-    template<typename T> complex<T> asinh(const complex<T>& __my_z)
+    template<typename T> complex<T> asinh(const complex<T>& my_z)
     {
-      return log(__my_z + sqrt((__my_z * __my_z) + T(1U)));
+      return log(my_z + sqrt((my_z * my_z) + T(1U)));
     }
 
-    template<typename T> complex<T> acosh(const complex<T>& __my_z)
+    template<typename T> complex<T> acosh(const complex<T>& my_z)
     {
-      const complex<T> __zp(__my_z.real() + T(1U), __my_z.imag());
-      const complex<T> __zm(__my_z.real() - T(1U), __my_z.imag());
+      const complex<T> __zp(my_z.real() + T(1U), my_z.imag());
+      const complex<T> __zm(my_z.real() - T(1U), my_z.imag());
 
-      return log(__my_z + (__zp * sqrt(__zm / __zp)));
+      return log(my_z + (__zp * sqrt(__zm / __zp)));
     }
 
-    template<typename T> complex<T> atanh(const complex<T>& __my_z)
+    template<typename T> complex<T> atanh(const complex<T>& my_z)
     {
-      complex<T> __result = (log(T(1U) + __my_z) - log(T(1U) - __my_z));
+      complex<T> __result = (log(T(1U) + my_z) - log(T(1U) - my_z));
 
       __result.real(__result.real() / 2U);
       __result.imag(__result.imag() / 2U);
@@ -1004,68 +1004,68 @@
       return __result;
     }
 
-    template<typename T> complex<T> cos(const complex<T>& __my_z)
+    template<typename T> complex<T> cos(const complex<T>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(  cos(__my_z.real()) * cosh(__my_z.imag()),
-                        -(sin(__my_z.real()) * sinh(__my_z.imag())));
+      return complex<T>(  cos(my_z.real()) * cosh(my_z.imag()),
+                        -(sin(my_z.real()) * sinh(my_z.imag())));
     }
 
-    template<typename T> complex<T> cosh(const complex<T>& __my_z)
+    template<typename T> complex<T> cosh(const complex<T>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(cos(__my_z.imag()) * cosh(__my_z.real()),
-                        sin(__my_z.imag()) * sinh(__my_z.real()));
+      return complex<T>(cos(my_z.imag()) * cosh(my_z.real()),
+                        sin(my_z.imag()) * sinh(my_z.real()));
     }
 
-    template<typename T> complex<T> exp(const complex<T>& __my_z)
+    template<typename T> complex<T> exp(const complex<T>& my_z)
     {
       using std::cos;
       using std::exp;
       using std::sin;
 
-      return complex<T>(cos(__my_z.imag()), sin(__my_z.imag())) * T(exp(__my_z.real()));
+      return complex<T>(cos(my_z.imag()), sin(my_z.imag())) * T(exp(my_z.real()));
     }
 
-    template<typename T> complex<T> log(const complex<T>& __my_z)
+    template<typename T> complex<T> log(const complex<T>& my_z)
     {
       using std::atan2;
       using std::log;
 
-      return complex<T>(log(norm(__my_z)) / T(2U),
-                        atan2(__my_z.imag(), __my_z.real()));
+      return complex<T>(log(norm(my_z)) / T(2U),
+                        atan2(my_z.imag(), my_z.real()));
     }
 
-    template<typename T> complex<T> log10(const complex<T>& __my_z)
+    template<typename T> complex<T> log10(const complex<T>& my_z)
     {
       using std::log;
 
-      return log(__my_z) / T(log(T(10)));
+      return log(my_z) / T(log(T(10)));
     }
 
-    template<typename T> complex<T> pow(const complex<T>& __my_z, int __my_pn)
+    template<typename T> complex<T> pow(const complex<T>& my_z, int my_pn)
     {
-      if     (__my_pn <  0) { return  T(1U) / pow(__my_z, -__my_pn); }
-      else if(__my_pn == 0) { return  complex<T>(T(1U)); }
-      else if(__my_pn == 1) { return  __my_z; }
-      else if(__my_pn == 2) { return  __my_z * __my_z; }
-      else if(__my_pn == 3) { return (__my_z * __my_z) * __my_z; }
-      else if(__my_pn == 4) { const complex<T> __x2(__my_z * __my_z); return (__x2 * __x2); }
+      if     (my_pn <  0) { return  T(1U) / pow(my_z, -my_pn); }
+      else if(my_pn == 0) { return  complex<T>(T(1U)); }
+      else if(my_pn == 1) { return  my_z; }
+      else if(my_pn == 2) { return  my_z * my_z; }
+      else if(my_pn == 3) { return (my_z * my_z) * my_z; }
+      else if(my_pn == 4) { const complex<T> __x2(my_z * my_z); return (__x2 * __x2); }
       else
       {
-        // The variable xn stores the binary powers of __my_z.
-        complex<T> __result(((__my_pn % 2) != 0) ? __my_z : complex<T>(T(1U)));
-        complex<T> __xn      (__my_z);
+        // The variable xn stores the binary powers of my_z.
+        complex<T> __result(((my_pn % 2) != 0) ? my_z : complex<T>(T(1U)));
+        complex<T> __xn      (my_z);
 
-        int __p2 = __my_pn;
+        int __p2 = my_pn;
 
         while((__p2 /= 2) != 0)
         {
@@ -1085,46 +1085,46 @@
       }
     }
 
-    template<typename T> complex<T> pow(const complex<T>& __my_z, const T& __my_a)
+    template<typename T> complex<T> pow(const complex<T>& my_z, const T& my_a)
     {
-      return exp(__my_a * log(__my_z));
+      return exp(my_a * log(my_z));
     }
 
-    template<typename T> complex<T> pow(const complex<T>& __my_z, const complex<T>& __my_a)
+    template<typename T> complex<T> pow(const complex<T>& my_z, const complex<T>& my_a)
     {
-      return exp(__my_a * log(__my_z));
+      return exp(my_a * log(my_z));
     }
 
-    template<typename T> complex<T> pow(const T& __my_z, const complex<T>& __my_a)
+    template<typename T> complex<T> pow(const T& my_z, const complex<T>& my_a)
     {
       using std::log;
 
-      return exp(__my_a * T(log(__my_z)));
+      return exp(my_a * T(log(my_z)));
     }
 
-    template<typename T> complex<T> sin(const complex<T>& __my_z)
+    template<typename T> complex<T> sin(const complex<T>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(sin(__my_z.real()) * cosh(__my_z.imag()),
-                        cos(__my_z.real()) * sinh(__my_z.imag()));
+      return complex<T>(sin(my_z.real()) * cosh(my_z.imag()),
+                        cos(my_z.real()) * sinh(my_z.imag()));
     }
 
-    template<typename T> complex<T> sinh(const complex<T>& __my_z)
+    template<typename T> complex<T> sinh(const complex<T>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(cos (__my_z.imag()) * sinh(__my_z.real()),
-                        cosh(__my_z.real()) * sin (__my_z.imag()));
+      return complex<T>(cos (my_z.imag()) * sinh(my_z.real()),
+                        cosh(my_z.real()) * sin (my_z.imag()));
     }
 
-    template<typename T> complex<T> sqrt(const complex<T>& __my_z)
+    template<typename T> complex<T> sqrt(const complex<T>& my_z)
     {
       using std::fabs;
       using std::sqrt;
@@ -1135,33 +1135,33 @@
       // where s = sqrt{ [ |zr| + sqrt(zr^2 + zi^2) ] / 2 },
       // and the +- sign is the same as the sign of zi.
 
-      const bool __real_part_is_neg(__my_z.real() < T(0U));
-      const T    __real_part_fabs  ((__real_part_is_neg == false) ? __my_z.real() : -__my_z.real());
-      const T    __s_part          (sqrt((__real_part_fabs + abs(__my_z)) / 2U));
+      const bool __real_part_is_neg(my_z.real() < T(0U));
+      const T    __real_part_fabs  ((__real_part_is_neg == false) ? my_z.real() : -my_z.real());
+      const T    __s_part          (sqrt((__real_part_fabs + abs(my_z)) / 2U));
 
       if(__real_part_is_neg == false)
       {
         return complex<T>(__s_part,
-                          __my_z.imag() / (__s_part * 2U));
+                          my_z.imag() / (__s_part * 2U));
       }
       else
       {
-        const bool __imag_part_is_neg(__my_z.imag() < T(0U));
-        const T    __imag_part_fabs  ((__imag_part_is_neg == false) ? __my_z.imag() : -__my_z.imag());
+        const bool __imag_part_is_neg(my_z.imag() < T(0U));
+        const T    __imag_part_fabs  ((__imag_part_is_neg == false) ? my_z.imag() : -my_z.imag());
 
         return complex<T>( __imag_part_fabs / (__s_part * 2U),
                          ((__imag_part_is_neg == false) ? __s_part : -__s_part));
       }
     }
 
-    template<typename T> complex<T> tan(const complex<T>& __my_z)
+    template<typename T> complex<T> tan(const complex<T>& my_z)
     {
-      return sin(__my_z) / cos(__my_z);
+      return sin(my_z) / cos(my_z);
     }
 
-    template<typename T> complex<T> tanh(const complex<T>& __my_z)
+    template<typename T> complex<T> tanh(const complex<T>& my_z)
     {
-      return sinh(__my_z) / cosh(__my_z);
+      return sinh(my_z) / cosh(my_z);
     }
 
     // Now we begin the specialization of mp::complex<mp:cpp>
@@ -1252,108 +1252,108 @@
 
       template<typename IntegralType,
                typename std::enable_if<std::is_integral<IntegralType>::value>::type const* = nullptr>
-      explicit complex(const IntegralType n) : __my_re(n),
-                                               __my_im(0U) { }
+      explicit complex(const IntegralType n) : my_re(n),
+                                               my_im(0U) { }
 
       template<typename FloatingPointType,
                typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type const* = nullptr>
-      explicit complex(const FloatingPointType f) : __my_re(f),
-                                                    __my_im(0U) { }
+      explicit complex(const FloatingPointType f) : my_re(f),
+                                                    my_im(0U) { }
 
-      complex(const value_type& __my_x = value_type(),
-              const value_type& __my_y = value_type()) : __my_re(__my_x),
-                                                         __my_im(__my_y) { }
+      complex(const value_type& my_x = value_type(),
+              const value_type& my_y = value_type()) : my_re(my_x),
+                                                         my_im(my_y) { }
 
-      complex(const complex& __my_z) : __my_re(__my_z.real()),
-                                       __my_im(__my_z.imag()) { }
+      complex(const complex& my_z) : my_re(my_z.real()),
+                                       my_im(my_z.imag()) { }
 
-      value_type real() const { return __my_re; }
-      value_type imag() const { return __my_im; }
+      value_type real() const { return my_re; }
+      value_type imag() const { return my_im; }
 
-      void real(value_type __my_x) { __my_re = __my_x; }
-      void imag(value_type __my_y) { __my_im = __my_y; }
+      void real(value_type my_x) { my_re = my_x; }
+      void imag(value_type my_y) { my_im = my_y; }
 
-      complex& operator=(const value_type& __my_other_x)
+      complex& operator=(const value_type& my_other_x)
       {
-        __my_re  = __my_other_x;
-        __my_im  = value_type(0U);
+        my_re  = my_other_x;
+        my_im  = value_type(0U);
 
         return *this;
       }
 
-      complex& operator+=(const value_type& v) { __my_re += v;               return *this; }
-      complex& operator-=(const value_type& v) { __my_re -= v;               return *this; }
-      complex& operator*=(const value_type& v) { __my_re *= v; __my_im *= v; return *this; }
-      complex& operator/=(const value_type& v) { __my_re /= v; __my_im /= v; return *this; }
+      complex& operator+=(const value_type& v) { my_re += v;               return *this; }
+      complex& operator-=(const value_type& v) { my_re -= v;               return *this; }
+      complex& operator*=(const value_type& v) { my_re *= v; my_im *= v; return *this; }
+      complex& operator/=(const value_type& v) { my_re /= v; my_im /= v; return *this; }
 
-      complex& operator=(const complex& __my_other_z)
+      complex& operator=(const complex& my_other_z)
       {
-        if(this != &__my_other_z)
+        if(this != &my_other_z)
         {
-          __my_re = __my_other_z.__my_re;
-          __my_im = __my_other_z.__my_im;
+          my_re = my_other_z.my_re;
+          my_im = my_other_z.my_im;
         }
 
         return *this;
       }
 
-      complex& operator+=(const complex& __my_z)
+      complex& operator+=(const complex& my_z)
       {
-        __my_re += __my_z.__my_re;
-        __my_im += __my_z.__my_im;
+        my_re += my_z.my_re;
+        my_im += my_z.my_im;
 
         return *this;
       }
 
-      complex& operator-=(const complex& __my_z)
+      complex& operator-=(const complex& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
           real(mp_cpp(0U));
           imag(mp_cpp(0U));
         }
         else
         {
-          __my_re -= static_cast<value_type>(__my_z.__my_re);
-          __my_im -= static_cast<value_type>(__my_z.__my_im);
+          my_re -= static_cast<value_type>(my_z.my_re);
+          my_im -= static_cast<value_type>(my_z.my_im);
         }
 
         return *this;
       }
 
-      complex& operator*=(const complex& __my_z)
+      complex& operator*=(const complex& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
-          real((__my_z.real() * __my_z.real()) - (__my_z.imag() * __my_z.imag()));
-          imag((__my_z.real() * __my_z.imag()) * 2U);
+          real((my_z.real() * my_z.real()) - (my_z.imag() * my_z.imag()));
+          imag((my_z.real() * my_z.imag()) * 2U);
         }
         else
         {
-          const value_type tmp_re(__my_re);
+          const value_type tmp_re(my_re);
 
-          __my_re = (tmp_re * __my_z.__my_re) - (__my_im * __my_z.__my_im);
-          __my_im = (tmp_re * __my_z.__my_im) + (__my_im * __my_z.__my_re);
+          my_re = (tmp_re * my_z.my_re) - (my_im * my_z.my_im);
+          my_im = (tmp_re * my_z.my_im) + (my_im * my_z.my_re);
         }
 
         return *this;
       }
 
-      complex& operator/=(const complex& __my_z)
+      complex& operator/=(const complex& my_z)
       {
-        if(this == &__my_z)
+        if(this == &my_z)
         {
           real(mp_cpp(1U));
           imag(mp_cpp(0U));
         }
         else
         {
-          const value_type one_over_denom(norm(__my_z).calculate_inv());
+          const value_type one_over_denom(norm(my_z).calculate_inv());
 
-          const value_type tmp_re(__my_re);
+          const value_type tmp_re(my_re);
 
-          __my_re = ((tmp_re  * __my_z.__my_re) + (__my_im * __my_z.__my_im)) * one_over_denom;
-          __my_im = ((__my_im * __my_z.__my_re) - (tmp_re  * __my_z.__my_im)) * one_over_denom;
+          my_re = ((tmp_re  * my_z.my_re) + (my_im * my_z.my_im)) * one_over_denom;
+          my_im = ((my_im * my_z.my_re) - (tmp_re  * my_z.my_im)) * one_over_denom;
         }
 
         return *this;
@@ -1366,8 +1366,8 @@
 
       void negate()
       {
-        __my_re.negate();
-        __my_im.negate();
+        my_re.negate();
+        my_im.negate();
       }
 
       // Operators with integer.
@@ -1375,7 +1375,7 @@
                typename std::enable_if<std::is_integral<IntegralType>::value>::type const* = nullptr>
       complex& operator+=(const IntegralType n)
       {
-        __my_re += n;
+        my_re += n;
 
         return *this;
       }
@@ -1384,7 +1384,7 @@
                typename std::enable_if<std::is_integral<IntegralType>::value>::type const* = nullptr>
       complex& operator-=(const IntegralType n)
       {
-        __my_re -= n;
+        my_re -= n;
 
         return *this;
       }
@@ -1393,8 +1393,8 @@
                typename std::enable_if<std::is_integral<IntegralType>::value>::type const* = nullptr>
       complex& operator*=(const IntegralType n)
       {
-        __my_re *= n;
-        __my_im *= n;
+        my_re *= n;
+        my_im *= n;
 
         return *this;
       }
@@ -1403,37 +1403,37 @@
                typename std::enable_if<std::is_integral<IntegralType>::value>::type const* = nullptr>
       complex& operator/=(const IntegralType n)
       {
-        __my_re /= n;
-        __my_im /= n;
+        my_re /= n;
+        my_im /= n;
 
         return *this;
       }
 
       std::int32_t precision() const
       {
-        const std::int32_t __my_prec_real = __my_re.precision();
-        const std::int32_t __my_prec_imag = __my_im.precision();
+        const std::int32_t my_prec_real = my_re.precision();
+        const std::int32_t my_prec_imag = my_im.precision();
 
-        return (std::min)(__my_prec_real, __my_prec_imag);
+        return (std::min)(my_prec_real, my_prec_imag);
       }
 
-      void precision(const std::int32_t __my_prec)
+      void precision(const std::int32_t my_prec)
       {
-        __my_re.precision(__my_prec);
-        __my_im.precision(__my_prec);
+        my_re.precision(my_prec);
+        my_im.precision(my_prec);
       }
 
       std::int64_t order() const
       {
-        const std::int64_t __my_order_real = __my_re.order();
-        const std::int64_t __my_order_imag = __my_im.order();
+        const std::int64_t my_order_real = my_re.order();
+        const std::int64_t my_order_imag = my_im.order();
 
-        return (std::max)(__my_order_real, __my_order_imag);
+        return (std::max)(my_order_real, my_order_imag);
       }
 
     private:
-      value_type __my_re;
-      value_type __my_im;
+      value_type my_re;
+      value_type my_im;
     };
 
     inline complex<mp_cpp>& complex<mp_cpp>::calculate_inv()
@@ -1441,10 +1441,10 @@
       // Compute inverse 1 / (x + iy) = (x - iy) / (x^2 + y^2)
       const mp_cpp one_over_denom(norm(*this).calculate_inv());
 
-      __my_re *= one_over_denom;
-      __my_im *= one_over_denom;
+      my_re *= one_over_denom;
+      my_im *= one_over_denom;
 
-      __my_im.negate();
+      my_im.negate();
 
       return *this;
     }
@@ -1452,11 +1452,11 @@
     inline complex<mp_cpp>& complex<mp_cpp>::calculate_sqrt()
     {
       // Handle pure real and also pure zero arguments.
-      if((__my_im.iszero)())
+      if((my_im.iszero)())
       {
-        if((__my_re.iszero)() == false)
+        if((my_re.iszero)() == false)
         {
-          __my_re.calculate_sqrt();
+          my_re.calculate_sqrt();
         }
         else
         {
@@ -1474,27 +1474,27 @@
         // Equation from MPFUN documentation page 12.
         // See: http://www.nersc.gov/~dhb/mpdist/mpdist.html
 
-        const mp_cpp sqrt_term = sqrt((fabs(__my_re) + abs(*this)).div_by_int(2));
+        const mp_cpp sqrt_term = sqrt((fabs(my_re) + abs(*this)).div_by_int(2));
 
-        if((__my_re.iszero)() || ((__my_re.isneg)() == false))
+        if((my_re.iszero)() || ((my_re.isneg)() == false))
         {
-          __my_re  = sqrt_term;
+          my_re  = sqrt_term;
 
-          __my_im /= sqrt_term;
+          my_im /= sqrt_term;
 
-          __my_im.div_by_int(2);
+          my_im.div_by_int(2);
         }
         else
         {
-          const bool imag_is_pos = ((__my_im.isneg)() == false);
+          const bool imag_is_pos = ((my_im.isneg)() == false);
 
-          __my_re  = fabs(__my_im);
+          my_re  = fabs(my_im);
 
-          __my_re /= sqrt_term;
+          my_re /= sqrt_term;
 
-          __my_re.div_by_int(2);
+          my_re.div_by_int(2);
 
-          __my_im  = (imag_is_pos ? sqrt_term : -sqrt_term);
+          my_im  = (imag_is_pos ? sqrt_term : -sqrt_term);
         }
       }
 
@@ -1509,13 +1509,13 @@
       // Handle zero argument.
       if(real_argument_is_zero && imag_argument_is_zero)
       {
-        __my_im = std::numeric_limits<mp_cpp>::infinity();
+        my_im = std::numeric_limits<mp_cpp>::infinity();
       }
 
       // Handle pure real argument.
       if(imag_argument_is_zero)
       {
-        __my_re = ((real().isone()) ? zero() : log(__my_re));
+        my_re = ((real().isone()) ? zero() : log(my_re));
 
         return *this;
       }
@@ -1523,9 +1523,9 @@
       // Handle pure imaginary argument.
       if(real_argument_is_zero)
       {
-        __my_re = ((imag().isone() ? zero() : log(imag())));
+        my_re = ((imag().isone() ? zero() : log(imag())));
 
-        __my_im = pi_half();
+        my_im = pi_half();
 
         return *this;
       }
@@ -1624,16 +1624,16 @@
 
     inline complex<mp_cpp>& complex<mp_cpp>::calculate_exp()
     {
-      if((__my_im.iszero)())
+      if((my_im.iszero)())
       {
         // Handle various cases for zero imaginary part.
-        if((__my_re.iszero)())
+        if((my_re.iszero)())
         {
-          __my_re = one();
+          my_re = one();
         }
         else
         {
-          __my_re.calculate_exp();
+          my_re.calculate_exp();
         }
 
         return *this;
@@ -1645,22 +1645,22 @@
         bool b_negate_sin = false;
         bool b_negate_cos = false;
 
-        if((__my_im.isneg)())
+        if((my_im.isneg)())
         {
-          __my_im = -__my_im;
+          my_im = -my_im;
           b_negate_sin = (!b_negate_sin);
         }
 
         // Remove even multiples of pi and possibly adjust signs.
         bool b_even_mult_pi = true;
 
-        if(__my_im > pi())
+        if(my_im > pi())
         {
-          const mp_cpp n_pi = mp_cpp::integer_part(__my_im / pi());
+          const mp_cpp n_pi = mp_cpp::integer_part(my_im / pi());
 
           b_even_mult_pi = n_pi.iseven();
 
-          __my_im -= (n_pi * pi());
+          my_im -= (n_pi * pi());
         }
 
         if(!b_even_mult_pi)
@@ -1681,32 +1681,32 @@
           // Extract the pure-real exponent part.
           // Note that R = 0 is a valid input to exp()
           // and exp should return 1 quickly.
-          mp_cpp exp_part = exp(__my_re);
-          __my_re = zero();
+          mp_cpp exp_part = exp(my_re);
+          my_re = zero();
 
           // Small argument: Use a standard divide by five identity
           // a certain number of times (9765625 = 5^10).
           std::int32_t n_angle_identity = 10;
 
-          __my_im.div_by_int(9765625);
+          my_im.div_by_int(9765625);
 
-          if(__my_im.precision() > 5000)
+          if(my_im.precision() > 5000)
           {
             n_angle_identity += 3;
 
-            __my_im.div_by_int(125);
+            my_im.div_by_int(125);
           }
 
           // Establish the tolerance for the Taylor series expansion.
           double       dd;
           std::int64_t ne;
-          mp_cpp::to_parts(__my_im, dd, ne);
+          mp_cpp::to_parts(my_im, dd, ne);
 
-          const std::int64_t tol_exp = static_cast<std::int64_t>(ne - static_cast<std::int64_t>(__my_im.precision() + 10));
+          const std::int64_t tol_exp = static_cast<std::int64_t>(ne - static_cast<std::int64_t>(my_im.precision() + 10));
 
           // Now with small arguments, we are ready for a series expansion.
           // Compute the first two terms of the cosine series: 1 - (y^2) / 2
-          mp_cpp y_squared(__my_im);
+          mp_cpp y_squared(my_im);
           y_squared *= y_squared;
 
           mp_cpp term(y_squared);
@@ -1762,17 +1762,17 @@
           }
 
           // Set sine and cosine parts
-          __my_re = val_cos;
-          __my_im = sqrt(one() - (val_cos * val_cos));
+          my_re = val_cos;
+          my_im = sqrt(one() - (val_cos * val_cos));
 
-          if(b_negate_sin) __my_im = -__my_im;
-          if(b_negate_cos) __my_re = -__my_re;
+          if(b_negate_sin) my_im = -my_im;
+          if(b_negate_cos) my_re = -my_re;
 
           // Multiply by the pure-real exponent part.
           if((!exp_part.isone()))
           {
-            __my_re *= exp_part;
-            __my_im *= exp_part;
+            my_re *= exp_part;
+            my_im *= exp_part;
           }
         }
         else
@@ -1814,7 +1814,7 @@
             iterate_term          += original_this;
 
             const std::int64_t iterate_exp = iterate_term.order();
-            const bool  b_is_zero          = ((__my_re.iszero)() && (__my_im.iszero)());
+            const bool  b_is_zero          = ((my_re.iszero)() && (my_im.iszero)());
 
             iterate_term          += one();
             operator              *= (iterate_term);
@@ -1844,8 +1844,8 @@
           }
         }
 
-        if(b_negate_sin) { __my_im = -__my_im; }
-        if(b_negate_cos) { __my_re = -__my_re; }
+        if(b_negate_sin) { my_im = -my_im; }
+        if(b_negate_cos) { my_re = -my_re; }
 
         return *this;
       }
@@ -1855,33 +1855,33 @@
     // See also ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& __my_u) { return complex<mp_cpp>(__my_u); }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& __my_u) { return complex<mp_cpp>(-__my_u.real(), -__my_u.imag()); }
+    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u) { return complex<mp_cpp>(my_u); }
+    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u) { return complex<mp_cpp>(-my_u.real(), -my_u.imag()); }
 
     // Global binary add, sub, mul, div of complex op complex.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) += __my_v; }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) -= __my_v; }
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) *= __my_v; }
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) /= __my_v; }
+    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) += my_v; }
+    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) -= my_v; }
+    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) *= my_v; }
+    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) /= my_v; }
 
     // Global binary add, sub, mul, div of complex op T.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& __my_u, const mp_cpp& __my_v) { return complex<mp_cpp>(__my_u.real() + __my_v, __my_u.imag()); }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& __my_u, const mp_cpp& __my_v) { return complex<mp_cpp>(__my_u.real() - __my_v, __my_u.imag()); }
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& __my_u, const mp_cpp& __my_v) { return complex<mp_cpp>(__my_u.real() * __my_v, __my_u.imag() * __my_v); }
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& __my_u, const mp_cpp& __my_v) { return complex<mp_cpp>(__my_u.real() / __my_v, __my_u.imag() / __my_v); }
+    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() + my_v, my_u.imag()); }
+    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() - my_v, my_u.imag()); }
+    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() / my_v, my_u.imag() / my_v); }
 
     // Global binary add, sub, mul, div of T op complex.
-    template<> inline complex<mp_cpp> operator+(const mp_cpp& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) += __my_v; }
-    template<> inline complex<mp_cpp> operator-(const mp_cpp& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_u) -= __my_v; }
-    template<> inline complex<mp_cpp> operator*(const mp_cpp& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_v.real() * __my_u, __my_v.imag() * __my_u); }
-    template<> inline complex<mp_cpp> operator/(const mp_cpp& __my_u, const complex<mp_cpp>& __my_v) { return complex<mp_cpp>(__my_v).calculate_inv() * __my_u; }
+    template<> inline complex<mp_cpp> operator+(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) += my_v; }
+    template<> inline complex<mp_cpp> operator-(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) -= my_v; }
+    template<> inline complex<mp_cpp> operator*(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_v.real() * my_u, my_v.imag() * my_u); }
+    template<> inline complex<mp_cpp> operator/(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_v).calculate_inv() * my_u; }
 
-    template<> inline bool operator==(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return ((__my_u.real() == __my_v.real()) && (__my_u.imag() == __my_v.imag())); }
-    template<> inline bool operator==(const complex<mp_cpp>& __my_u, const mp_cpp         & __my_v) { return ((__my_u.real() == __my_v)        && (__my_u.imag() == mp_cpp(0U))); }
-    template<> inline bool operator==(const mp_cpp&          __my_u, const complex<mp_cpp>& __my_v) { return ((__my_u == __my_v.real())        && (__my_v.imag() == mp_cpp(0U))); }
-    template<> inline bool operator!=(const complex<mp_cpp>& __my_u, const complex<mp_cpp>& __my_v) { return ((__my_u.real() != __my_v.real()) || (__my_u.imag() != __my_v.imag())); }
-    template<> inline bool operator!=(const complex<mp_cpp>& __my_u, const mp_cpp         & __my_v) { return ((__my_u.real() != __my_v)        || (__my_u.imag() != mp_cpp(0U))); }
-    template<> inline bool operator!=(const mp_cpp&          __my_u, const complex<mp_cpp>& __my_v) { return ((__my_u != __my_v.real())        || (__my_v.imag() != mp_cpp(0U))); }
+    template<> inline bool operator==(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<> inline bool operator==(const complex<mp_cpp>& my_u, const mp_cpp         & my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == mp_cpp(0U))); }
+    template<> inline bool operator==(const mp_cpp&          my_u, const complex<mp_cpp>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == mp_cpp(0U))); }
+    template<> inline bool operator!=(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
+    template<> inline bool operator!=(const complex<mp_cpp>& my_u, const mp_cpp         & my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != mp_cpp(0U))); }
+    template<> inline bool operator!=(const mp_cpp&          my_u, const complex<mp_cpp>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != mp_cpp(0U))); }
 
     template<> inline mp_cpp real(const complex<mp_cpp>& z) { return z.real(); }
     template<> inline mp_cpp imag(const complex<mp_cpp>& z) { return z.imag(); }
@@ -1903,202 +1903,221 @@
                              (z.imag() * 2) * one_over_denom);
     }
 
-    template<> inline complex<mp_cpp> polar(const mp_cpp& __my_rho, const mp_cpp& __my_theta)
+    template<> inline complex<mp_cpp> polar(const mp_cpp& my_rho, const mp_cpp& my_theta)
     {
-      mp_cpp __my_s;
-      mp_cpp __my_c;
+      mp_cpp my_s;
+      mp_cpp my_c;
 
-      sincos(__my_theta, __my_s, __my_c);
+      sincos(my_theta, my_s, my_c);
 
-      return complex<mp_cpp>(__my_rho * __my_c, __my_rho * __my_s);
+      return complex<mp_cpp>(my_rho * my_c, my_rho * my_s);
     }
 
-    template<> inline complex<mp_cpp> acos(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> acos(const complex<mp_cpp>& my_z)
     {
-      return complex<mp_cpp>(pi_half()) - asin(__my_z);
+      return complex<mp_cpp>(pi_half()) - asin(my_z);
     }
 
-    template<> inline complex<mp_cpp> asin(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> asin(const complex<mp_cpp>& my_z)
     {
-      const complex<mp_cpp> __my_z_times_i(-__my_z.imag(), __my_z.real());
+      const complex<mp_cpp> my_z_times_i(-my_z.imag(), my_z.real());
 
-      const complex<mp_cpp> __my_pre_result(log(__my_z_times_i + sqrt(one() - (__my_z * __my_z))));
+      const complex<mp_cpp> my_pre_result(log(my_z_times_i + sqrt(one() - (my_z * my_z))));
 
-      return complex<mp_cpp>(__my_pre_result.imag(), -__my_pre_result.real());
+      return complex<mp_cpp>(my_pre_result.imag(), -my_pre_result.real());
     }
 
-    template<> inline complex<mp_cpp> atan(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> atan(const complex<mp_cpp>& my_z)
     {
-      const complex<mp_cpp> __my_z_times_i(-__my_z.imag(), __my_z.real());
+      const complex<mp_cpp> my_z_times_i(-my_z.imag(), my_z.real());
 
-      const complex<mp_cpp> __my_pre_result(log(one() - __my_z_times_i) - log(one() + __my_z_times_i));
+      const complex<mp_cpp> my_pre_result(log(one() - my_z_times_i) - log(one() + my_z_times_i));
 
-      return complex<mp_cpp>(-__my_pre_result.imag() / 2,
-                              __my_pre_result.real() / 2);
+      return complex<mp_cpp>(-my_pre_result.imag() / 2,
+                              my_pre_result.real() / 2);
     }
 
-    template<> inline complex<mp_cpp> acosh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> acosh(const complex<mp_cpp>& my_z)
     {
-      const complex<mp_cpp> __my_zp = __my_z + one();
-      const complex<mp_cpp> __my_zm = __my_z - one();
+      const complex<mp_cpp> my_zp = my_z + one();
+      const complex<mp_cpp> my_zm = my_z - one();
 
-      return log(__my_z + (__my_zp * sqrt(__my_zm / __my_zp)));
+      return log(my_z + (my_zp * sqrt(my_zm / my_zp)));
     }
 
-    template<> inline complex<mp_cpp> asinh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> asinh(const complex<mp_cpp>& my_z)
     {
-      return log(__my_z + sqrt((__my_z * __my_z) + one()));
+      return log(my_z + sqrt((my_z * my_z) + one()));
     }
 
-    template<> inline complex<mp_cpp> atanh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> atanh(const complex<mp_cpp>& my_z)
     {
-      const complex<mp_cpp> __my_pre_result(  log(one() + __my_z)
-                                            - log(one() - __my_z));
+      const complex<mp_cpp> my_pre_result(  log(one() + my_z)
+                                            - log(one() - my_z));
 
-      return complex<mp_cpp>(__my_pre_result.real() / 2,
-                             __my_pre_result.imag() / 2);
+      return complex<mp_cpp>(my_pre_result.real() / 2,
+                             my_pre_result.imag() / 2);
     }
 
-    template<> inline complex<mp_cpp> cos(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> cos(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_x;
-      mp_cpp __my_cos_x;
-      mp_cpp __my_sinh_y;
-      mp_cpp __my_cosh_y;
+      mp_cpp my_sin_x;
+      mp_cpp my_cos_x;
+      mp_cpp my_sinh_y;
+      mp_cpp my_cosh_y;
 
-      sincos  (__my_z.real(), __my_sin_x,  __my_cos_x);
-      sinhcosh(__my_z.imag(), __my_sinh_y, __my_cosh_y);
+      sincos  (my_z.real(), my_sin_x,  my_cos_x);
+      sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      return complex<mp_cpp>(__my_cos_x * __my_cosh_y, -(__my_sin_x * __my_sinh_y));
+      return complex<mp_cpp>(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
     }
 
-    template<> inline complex<mp_cpp> cosh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> cosh(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_y;
-      mp_cpp __my_cos_y;
-      mp_cpp __my_sinh_x;
-      mp_cpp __my_cosh_x;
+      mp_cpp my_sin_y;
+      mp_cpp my_cos_y;
+      mp_cpp my_sinh_x;
+      mp_cpp my_cosh_x;
 
-      sincos  (__my_z.imag(), __my_sin_y,  __my_cos_y);
-      sinhcosh(__my_z.real(), __my_sinh_x, __my_cosh_x);
+      sincos  (my_z.imag(), my_sin_y,  my_cos_y);
+      sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      return complex<mp_cpp>(__my_cos_y * __my_cosh_x, __my_sin_y * __my_sinh_x);
+      return complex<mp_cpp>(my_cos_y * my_cosh_x, my_sin_y * my_sinh_x);
     }
 
-    template<> inline complex<mp_cpp> exp(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> exp(const complex<mp_cpp>& my_z)
     {
-      return complex<mp_cpp>(__my_z).calculate_exp();
+      return complex<mp_cpp>(my_z).calculate_exp();
     }
 
-    template<> inline complex<mp_cpp> log(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> log(const complex<mp_cpp>& my_z)
     {
-      return complex<mp_cpp>(__my_z).calculate_log();
+      return complex<mp_cpp>(my_z).calculate_log();
     }
 
-    template<> inline complex<mp_cpp> log10(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> log10(const complex<mp_cpp>& my_z)
     {
-      return log(__my_z) / ln10();
+      return log(my_z) / ln10();
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& __my_z, std::int64_t __my_pn)
+    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, std::int64_t my_pn)
     {
-      return detail::pown_template<complex<mp_cpp>>(__my_z, __my_pn);
+      using local_unsigned_integral_type = std::uint64_t;
+
+      complex<mp_cpp> result { };
+
+      if(my_pn >= static_cast<std::int64_t>(INT8_C(0)))
+      {
+        result = detail::pown_template(my_z, static_cast<local_unsigned_integral_type>(my_pn));
+      }
+      else
+      {
+        result =
+            static_cast<complex<mp_cpp>>
+            (
+              static_cast<mp_cpp>(static_cast<unsigned>(UINT8_C(1))),
+              static_cast<mp_cpp>(static_cast<unsigned>(UINT8_C(0)))
+            )
+          / detail::pown_template(my_z, static_cast<local_unsigned_integral_type>(-my_pn));
+      }
+
+      return result;
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& __my_z, const mp_cpp& __my_a)
+    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, const mp_cpp& my_a)
     {
-      return exp(__my_a * log(__my_z));
+      return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& __my_z, const complex<mp_cpp>& __my_a)
+    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, const complex<mp_cpp>& my_a)
     {
-      return exp(__my_a * log(__my_z));
+      return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> pow(const mp_cpp& __my_z, const complex<mp_cpp>& __my_a)
+    template<> inline complex<mp_cpp> pow(const mp_cpp& my_z, const complex<mp_cpp>& my_a)
     {
-      return exp(__my_a * log(__my_z));
+      return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> sin(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> sin(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_x;
-      mp_cpp __my_cos_x;
-      mp_cpp __my_sinh_y;
-      mp_cpp __my_cosh_y;
+      mp_cpp my_sin_x;
+      mp_cpp my_cos_x;
+      mp_cpp my_sinh_y;
+      mp_cpp my_cosh_y;
 
-      sincos  (__my_z.real(), __my_sin_x,  __my_cos_x);
-      sinhcosh(__my_z.imag(), __my_sinh_y, __my_cosh_y);
+      sincos  (my_z.real(), my_sin_x,  my_cos_x);
+      sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      return complex<mp_cpp>(__my_sin_x * __my_cosh_y, __my_cos_x * __my_sinh_y);
+      return complex<mp_cpp>(my_sin_x * my_cosh_y, my_cos_x * my_sinh_y);
     }
 
-    template<> inline complex<mp_cpp> sinh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> sinh(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_y;
-      mp_cpp __my_cos_y;
-      mp_cpp __my_sinh_x;
-      mp_cpp __my_cosh_x;
+      mp_cpp my_sin_y;
+      mp_cpp my_cos_y;
+      mp_cpp my_sinh_x;
+      mp_cpp my_cosh_x;
 
-      sincos  (__my_z.imag(), __my_sin_y,  __my_cos_y);
-      sinhcosh(__my_z.real(), __my_sinh_x, __my_cosh_x);
+      sincos  (my_z.imag(), my_sin_y,  my_cos_y);
+      sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      return complex<mp_cpp>(__my_cos_y * __my_sinh_x, __my_cosh_x * __my_sin_y);
+      return complex<mp_cpp>(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
     }
 
-    template<> inline complex<mp_cpp> sqrt(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> sqrt(const complex<mp_cpp>& my_z)
     {
-      return complex<mp_cpp>(__my_z).calculate_sqrt();
+      return complex<mp_cpp>(my_z).calculate_sqrt();
     }
 
-    template<> inline complex<mp_cpp> tan(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> tan(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_x;
-      mp_cpp __my_cos_x;
-      mp_cpp __my_sinh_y;
-      mp_cpp __my_cosh_y;
+      mp_cpp my_sin_x;
+      mp_cpp my_cos_x;
+      mp_cpp my_sinh_y;
+      mp_cpp my_cosh_y;
 
-      sincos  (__my_z.real(), __my_sin_x,  __my_cos_x);
-      sinhcosh(__my_z.imag(), __my_sinh_y, __my_cosh_y);
+      sincos  (my_z.real(), my_sin_x,  my_cos_x);
+      sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      const complex<mp_cpp> __my_s(__my_sin_x * __my_cosh_y,   __my_cos_x * __my_sinh_y);
-      const complex<mp_cpp> __my_c(__my_cos_x * __my_cosh_y, -(__my_sin_x * __my_sinh_y));
+      const complex<mp_cpp> my_s(my_sin_x * my_cosh_y,   my_cos_x * my_sinh_y);
+      const complex<mp_cpp> my_c(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
 
-      return __my_s / __my_c;
+      return my_s / my_c;
     }
 
-    template<> inline complex<mp_cpp> tanh(const complex<mp_cpp>& __my_z)
+    template<> inline complex<mp_cpp> tanh(const complex<mp_cpp>& my_z)
     {
-      mp_cpp __my_sin_y;
-      mp_cpp __my_cos_y;
-      mp_cpp __my_sinh_x;
-      mp_cpp __my_cosh_x;
+      mp_cpp my_sin_y;
+      mp_cpp my_cos_y;
+      mp_cpp my_sinh_x;
+      mp_cpp my_cosh_x;
 
-      sincos  (__my_z.imag(), __my_sin_y,  __my_cos_y);
-      sinhcosh(__my_z.real(), __my_sinh_x, __my_cosh_x);
+      sincos  (my_z.imag(), my_sin_y,  my_cos_y);
+      sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      const complex<mp_cpp> __my_sh(__my_cos_y * __my_sinh_x, __my_cosh_x * __my_sin_y);
-      const complex<mp_cpp> __my_ch(__my_cos_y * __my_cosh_x, __my_sin_y  * __my_sinh_x);
+      const complex<mp_cpp> my_sh(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
+      const complex<mp_cpp> my_ch(my_cos_y * my_cosh_x, my_sin_y  * my_sinh_x);
 
-      return __my_sh / __my_ch;
+      return my_sh / my_ch;
     }
 
     // I/O stream operators.
     template<typename char_type, typename traits_type>
-    inline std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& __my_istream, complex<mp_cpp>& __my_z)
+    inline std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<mp_cpp>& my_z)
     {
       // Parse an (extended) complex number of any of the forms u, (u) or (u,v).
 
-      const std::array<std::regex, 3U> __my_regexes =
+      const std::array<std::regex, 3U> my_regexes =
       {{
         // A regular expression for an (extended) complex number of the form (u,v).
         std::regex(  std::string("\\({1}")                             // One open parentheses.
-                    + std::string("([\\+\\-]{0,1}[0-9]*\\.*[0-9]*)")    // Possible +-, decimal point and digits 0-9.
-                    + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)")     // Possible exponent field.
-                    + std::string("\\,{1}")                             // One comma character.
-                    + std::string("([\\+\\-]{0,1}[0-9]*\\.*[0-9]*)")    // Possible +-, decimal point and digits 0-9.
-                    + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)")     // Possible exponent field.
-                    + std::string("\\){1}")),                           // One close parentheses.
+                   + std::string("([\\+\\-]{0,1}[0-9]*\\.*[0-9]*)")    // Possible +-, decimal point and digits 0-9.
+                   + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)")     // Possible exponent field.
+                   + std::string("\\,{1}")                             // One comma character.
+                   + std::string("([\\+\\-]{0,1}[0-9]*\\.*[0-9]*)")    // Possible +-, decimal point and digits 0-9.
+                   + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)")     // Possible exponent field.
+                   + std::string("\\){1}")),                           // One close parentheses.
 
         // A regular expression for an (extended) complex number of the form (u).
         std::regex(  std::string("\\({1}")                             // One open parentheses.
@@ -2111,73 +2130,73 @@
                     + std::string("([eE]{0,1}[\\+\\-]{0,1}[0-9]*)"))    // Possible exponent field.
       }};
 
-      mp_cpp __my_real_input(0U);
-      mp_cpp __my_imag_input(0U);
+      mp_cpp my_real_input(0U);
+      mp_cpp my_imag_input(0U);
 
-      bool __my_input_has_error = false;
+      bool my_input_has_error = false;
 
-      std::string __my_input_str;
+      std::string my_input_str;
 
-      __my_istream >> __my_input_str;
+      my_istream >> my_input_str;
 
-      std::match_results<std::string::const_iterator> __my_mr;
+      std::match_results<std::string::const_iterator> my_mr;
 
-      auto __my_it_regex_match =
-        std::find_if(__my_regexes.cbegin(),
-                     __my_regexes.cend(),
-                     [&__my_input_str, &__my_mr](const std::regex& __my_rx) -> bool
+      auto my_it_regex_match =
+        std::find_if(my_regexes.cbegin(),
+                     my_regexes.cend(),
+                     [&my_input_str, &my_mr](const std::regex& my_rx) -> bool
                      {
-                       return std::regex_match(__my_input_str, __my_mr, __my_rx);
+                       return std::regex_match(my_input_str, my_mr, my_rx);
                      });
 
-      if(__my_it_regex_match == __my_regexes.cend())
+      if(my_it_regex_match == my_regexes.cend())
       {
         // The input does not match any of the regular expressions.
         // Set the error flag and take no other action.
 
-        __my_input_has_error = true;
+        my_input_has_error = true;
       }
-      else if(__my_it_regex_match == __my_regexes.cbegin())
+      else if(my_it_regex_match == my_regexes.cbegin())
       {
         // The input matches __the_regexes[0U], corresponding to the form (u,v).
         // This represents a complex number real and imaginary parts.
 
         // Rule out erroneous match of invalid mantissa or exponent parts.
-        const std::string __my_str1(__my_mr[1U]);
-        const std::string __my_str2(__my_mr[2U]);
-        const std::string __my_str3(__my_mr[3U]);
-        const std::string __my_str4(__my_mr[4U]);
+        const std::string my_str1(my_mr[1U]);
+        const std::string my_str2(my_mr[2U]);
+        const std::string my_str3(my_mr[3U]);
+        const std::string my_str4(my_mr[4U]);
 
-        const std::string __my_decimal_digits("0123456789");
+        const std::string my_decimal_digits("0123456789");
 
-        const bool __my_str1_has_error = ((__my_str1.length() != std::size_t(0U)) && (__my_str1.find_first_of(__my_decimal_digits) == std::string::npos));
-        const bool __my_str2_has_error = ((__my_str2.length() != std::size_t(0U)) && (__my_str2.find_first_of(__my_decimal_digits) == std::string::npos));
-        const bool __my_str3_has_error = ((__my_str3.length() != std::size_t(0U)) && (__my_str3.find_first_of(__my_decimal_digits) == std::string::npos));
-        const bool __my_str4_has_error = ((__my_str4.length() != std::size_t(0U)) && (__my_str4.find_first_of(__my_decimal_digits) == std::string::npos));
+        const bool my_str1_has_error = ((my_str1.length() != std::size_t(0U)) && (my_str1.find_first_of(my_decimal_digits) == std::string::npos));
+        const bool my_str2_has_error = ((my_str2.length() != std::size_t(0U)) && (my_str2.find_first_of(my_decimal_digits) == std::string::npos));
+        const bool my_str3_has_error = ((my_str3.length() != std::size_t(0U)) && (my_str3.find_first_of(my_decimal_digits) == std::string::npos));
+        const bool my_str4_has_error = ((my_str4.length() != std::size_t(0U)) && (my_str4.find_first_of(my_decimal_digits) == std::string::npos));
 
-        if(__my_str1_has_error || __my_str2_has_error || __my_str3_has_error || __my_str4_has_error)
+        if(my_str1_has_error || my_str2_has_error || my_str3_has_error || my_str4_has_error)
         {
-          __my_input_has_error = true;
+          my_input_has_error = true;
         }
         else
         {
           // Extract the real part of the complex number.
-          std::stringstream __my_stringstream;
+          std::stringstream my_stringstream;
 
-          __my_stringstream << __my_mr[1U] << __my_mr[2U];
-          __my_stringstream >> __my_real_input;
+          my_stringstream << my_mr[1U] << my_mr[2U];
+          my_stringstream >> my_real_input;
 
-          __my_stringstream.str(std::string());
-          __my_stringstream.clear();
+          my_stringstream.str(std::string());
+          my_stringstream.clear();
 
           // Extract the imaginary part of the complex number.
 
-          __my_stringstream << __my_mr[3U] << __my_mr[4U];
-          __my_stringstream >> __my_imag_input;
+          my_stringstream << my_mr[3U] << my_mr[4U];
+          my_stringstream >> my_imag_input;
         }
       }
-      else if(   (__my_it_regex_match == (__my_regexes.cbegin() + 1U))
-              || (__my_it_regex_match == (__my_regexes.cbegin() + 2U)))
+      else if(   (my_it_regex_match == (my_regexes.cbegin() + 1U))
+              || (my_it_regex_match == (my_regexes.cbegin() + 2U)))
       {
         // The input matches the_regexes[1U] or the_regexes[2U],
         // corresponding to either of the forms (u) or u.
@@ -2185,65 +2204,65 @@
         // a pure real part.
 
         // Rule out erroneous match of invalid mantissa or exponent parts.
-        const std::string __my_str1(__my_mr[1U]);
-        const std::string __my_str2(__my_mr[2U]);
+        const std::string my_str1(my_mr[1U]);
+        const std::string my_str2(my_mr[2U]);
 
-        const std::string __my_decimal_digits("0123456789");
+        const std::string my_decimal_digits("0123456789");
 
-        if(   ((__my_str1.length() != std::size_t(0U)) && (__my_str1.find_first_of(__my_decimal_digits) == std::string::npos))
-           || ((__my_str2.length() != std::size_t(0U)) && (__my_str2.find_first_of(__my_decimal_digits) == std::string::npos)))
+        if(   ((my_str1.length() != std::size_t(0U)) && (my_str1.find_first_of(my_decimal_digits) == std::string::npos))
+           || ((my_str2.length() != std::size_t(0U)) && (my_str2.find_first_of(my_decimal_digits) == std::string::npos)))
         {
-          __my_input_has_error = true;
+          my_input_has_error = true;
         }
         else
         {
           // Extract the real part of the complex number.
-          std::stringstream __my_stringstream;
+          std::stringstream my_stringstream;
 
-          __my_stringstream << __my_mr[1U] << __my_mr[2U];
-          __my_stringstream >> __my_real_input;
+          my_stringstream << my_mr[1U] << my_mr[2U];
+          my_stringstream >> my_real_input;
 
-          __my_imag_input = mp_cpp(0U);
+          my_imag_input = mp_cpp(0U);
         }
       }
 
-      if(__my_input_has_error)
+      if(my_input_has_error)
       {
         // Error case: Restore the characters in the input stream
         // and set the fail bit in the input stream.
-        std::for_each(__my_input_str.cbegin(),
-                      __my_input_str.cend(),
-                      [&__my_istream](const char& __my_c)
+        std::for_each(my_input_str.cbegin(),
+                      my_input_str.cend(),
+                      [&my_istream](const char& my_c)
                       {
-                        __my_istream.putback(__my_c);
+                        my_istream.putback(my_c);
                       });
 
-        __my_istream.setstate(std::ios_base::failbit);
+        my_istream.setstate(std::ios_base::failbit);
       }
       else
       {
-        __my_z = complex<mp_cpp>(__my_real_input, __my_imag_input);
+        my_z = complex<mp_cpp>(my_real_input, my_imag_input);
       }
 
-      return __my_istream;
+      return my_istream;
     }
 
     template<typename char_type, typename traits_type>
-    inline std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& __my_ostream, const complex<mp_cpp>& __my_z)
+    inline std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<mp_cpp>& my_z)
     {
-      std::basic_ostringstream<char_type, traits_type> __my_tmp_ostream;
+      std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
-      __my_tmp_ostream.flags    (__my_ostream.flags());
-      __my_tmp_ostream.imbue    (__my_ostream.getloc());
-      __my_tmp_ostream.precision(__my_ostream.precision());
+      my_tmp_ostream.flags    (my_ostream.flags());
+      my_tmp_ostream.imbue    (my_ostream.getloc());
+      my_tmp_ostream.precision(my_ostream.precision());
 
-      __my_tmp_ostream << '('
-                       << __my_z.real()
+      my_tmp_ostream << '('
+                       << my_z.real()
                        << ','
-                       << __my_z.imag()
+                       << my_z.imag()
                        << ')';
 
-      return (__my_ostream << __my_tmp_ostream.str());
+      return (my_ostream << my_tmp_ostream.str());
     }
   }
 

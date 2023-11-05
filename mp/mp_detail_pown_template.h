@@ -22,6 +22,8 @@
 #ifndef MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
   #define MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
 
+  #include <type_traits>
+
   namespace mp { namespace detail {
 
   // *****************************************************************************
@@ -36,29 +38,38 @@
   // *****************************************************************************
   template<typename FloatingPointType,
            typename OtherUnsignedIntegralType>
-  FloatingPointType pown_template(const FloatingPointType&         b,
-                                  const OtherUnsignedIntegralType& p)
+  auto pown_template(const FloatingPointType&         b,
+                     const OtherUnsignedIntegralType& p) -> typename std::enable_if<std::is_unsigned<OtherUnsignedIntegralType>::value, FloatingPointType>::type
   {
     // Calculate (b ^ p).
 
     using local_floating_point_type    = FloatingPointType;
     using local_unsigned_integral_type = OtherUnsignedIntegralType;
 
-    local_floating_point_type result;
+    local_floating_point_type result { };
 
-    if     (p == local_unsigned_integral_type(0U)) { result = local_floating_point_type(1U); }
-    else if(p == local_unsigned_integral_type(1U)) { result = b; }
-    else if(p == local_unsigned_integral_type(2U)) { result = b; result *= b; }
+    if     (p == static_cast<local_unsigned_integral_type>(UINT8_C(0))) { result = local_floating_point_type(static_cast<unsigned>(UINT8_C(1))); }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(1))) { result = b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(2))) { result = b; result *= b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(3))) { result = b; result *= b; result *= b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(4))) { result = b; result *= b; result *= result; }
     else
     {
-      result = local_floating_point_type(1U);
+      // Use the ladder method for calculating the integral power.
 
-      local_floating_point_type y(b);
+      result = local_floating_point_type(static_cast<unsigned>(UINT8_C(1)));
 
-      // TBD: Use the ladder method.
-      for(local_unsigned_integral_type p_local(p); p_local != local_unsigned_integral_type(0U); p_local >>= 1U)
+      auto y(b);
+
+      for(local_unsigned_integral_type p_local(p); p_local != local_unsigned_integral_type(0U); p_local >>= static_cast<unsigned>(UINT8_C(1)))
       {
-        if((static_cast<unsigned>(p_local) & 1U) != 0U)
+        const auto lo_bit =
+          static_cast<unsigned>
+          (
+            static_cast<unsigned>(p_local) & static_cast<unsigned>(UINT8_C(1))
+          );
+
+        if(lo_bit != static_cast<unsigned>(UINT8_C(0)))
         {
           result *= y;
         }

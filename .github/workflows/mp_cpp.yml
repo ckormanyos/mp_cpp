@@ -33,6 +33,8 @@ jobs:
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
           grep '5779458151' ./unix/pi.out
+          ./unix/ln2.exe
+          grep '6808836542' ./unix/ln2.out
   gcc-native-sanitize:
     runs-on: ubuntu-latest
     defaults:
@@ -52,6 +54,7 @@ jobs:
           make STD=${{ matrix.standard }} SANITIZE=1 --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
+          grep '5779458151' ./unix/pi.out
   macos-native:
     runs-on: macos-latest
     strategy:
@@ -69,6 +72,8 @@ jobs:
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
           grep '5779458151' ./unix/pi.out
+          ./unix/ln2.exe
+          grep '6808836542' ./unix/ln2.out
   msvc-release-x64:
     runs-on: windows-latest
     strategy:
