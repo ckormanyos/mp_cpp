@@ -662,7 +662,7 @@
                                       && (std::is_signed     <SignedIntegralType>::value == true))>::type const* = nullptr>
     mp_cpp pow(const mp_cpp& d, const SignedIntegralType& p)
     {
-      using local_unsigned_type = std::make_unsigned<SignedIntegralType>::type;
+      using local_unsigned_type = typename std::make_unsigned<SignedIntegralType>::type;
 
       mp_cpp result { };
 
