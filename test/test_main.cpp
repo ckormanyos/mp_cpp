@@ -33,7 +33,7 @@
 int main(int argc, const char* argv[])
 {
   // Calculate various test values.
-  const bool result_samples_is_ok = samples::test(argc, argv);
+  const auto result_samples_is_ok = samples::test(argc, argv);
 
   const auto flg = std::cout.flags();
 

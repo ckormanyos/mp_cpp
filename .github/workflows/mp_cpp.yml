@@ -35,6 +35,7 @@ jobs:
           grep '5779458151' ./unix/pi.out
           ./unix/ln2.exe
           grep '6808836542' ./unix/ln2.out
+          ./unix/test.exe
   gcc-native-sanitize:
     runs-on: ubuntu-latest
     defaults:
@@ -55,6 +56,7 @@ jobs:
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
           grep '5779458151' ./unix/pi.out
+          ./unix/test.exe
   macos-native:
     runs-on: macos-latest
     strategy:
@@ -74,6 +76,7 @@ jobs:
           grep '5779458151' ./unix/pi.out
           ./unix/ln2.exe
           grep '6808836542' ./unix/ln2.out
+          ./unix/test.exe
   msvc-release-x64:
     runs-on: windows-latest
     strategy:
