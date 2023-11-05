@@ -93,7 +93,7 @@ float local::test_real(bool& result_is_ok)
 
     strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << val;
 
-    const std::string str_val = std::move(strm.str());
+    const std::string str_val = strm.str();
 
     const auto str_check = std::string(str_val.cend() - str_len_to_check, str_val.cend());
 
@@ -165,7 +165,7 @@ float local::test_imag(bool& result_is_ok)
 
       strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.real();
 
-      const std::string str_real_val = std::move(strm.str());
+      const std::string str_real_val = strm.str();
 
       str_real_check = std::string(str_real_val.cend() - str_len_to_check, str_real_val.cend());
     }
@@ -175,7 +175,7 @@ float local::test_imag(bool& result_is_ok)
 
       strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.imag();
 
-      const std::string str_imag_val = std::move(strm.str());
+      const std::string str_imag_val = strm.str();
 
       str_imag_check = std::string(str_imag_val.cend() - str_len_to_check, str_imag_val.cend());
     }
