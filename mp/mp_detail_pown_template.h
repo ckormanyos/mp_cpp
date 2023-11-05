@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,14 +13,16 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2020
+// Date        : 1999 - 2023
 // 
 // Description : Integer power template function pown_template().
 // 
 // *****************************************************************************
 
-#ifndef MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
-  #define MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
+#ifndef MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
+  #define MP_DETAIL_POWN_TEMPLATE_2019_03_02_H
+
+  #include <type_traits>
 
   namespace mp { namespace detail {
 
@@ -36,30 +38,47 @@
   // *****************************************************************************
   template<typename FloatingPointType,
            typename OtherUnsignedIntegralType>
-  FloatingPointType pown_template(const FloatingPointType&         b,
-                                  const OtherUnsignedIntegralType& p)
+  auto pown_template(const FloatingPointType&         b,
+                     const OtherUnsignedIntegralType& p) -> typename std::enable_if<std::is_unsigned<OtherUnsignedIntegralType>::value, FloatingPointType>::type
   {
     // Calculate (b ^ p).
 
     using local_floating_point_type    = FloatingPointType;
     using local_unsigned_integral_type = OtherUnsignedIntegralType;
 
-    local_floating_point_type result;
+    local_floating_point_type result { };
 
-    if     (p == local_unsigned_integral_type(0U)) { result = local_floating_point_type(1U); }
-    else if(p == local_unsigned_integral_type(1U)) { result = b; }
-    else if(p == local_unsigned_integral_type(2U)) { result = b; result *= b; }
+    if     (p == static_cast<local_unsigned_integral_type>(UINT8_C(0))) { result = local_floating_point_type(static_cast<unsigned>(UINT8_C(1))); }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(1))) { result = b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(2))) { result = b; result *= b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(3))) { result = b; result *= b; result *= b; }
+    else if(p == static_cast<local_unsigned_integral_type>(UINT8_C(4))) { result = b; result *= b; result *= result; }
     else
     {
-      result = local_floating_point_type(1U);
+      // Use the ladder method for calculating the integral power.
+
+      result = local_floating_point_type(static_cast<unsigned>(UINT8_C(1)));
 
       local_floating_point_type y(b);
 
-      for(local_unsigned_integral_type p_local(p); p_local != local_unsigned_integral_type(0U); p_local >>= 1U)
+      auto p_local = static_cast<std::uint64_t>(p);
+
+      // Use the so-called ladder method for the power calculation.
+      for(;;)
       {
-        if((static_cast<unsigned>(p_local) & 1U) != 0U)
+        const auto do_power_multiply =
+          (static_cast<std::uint_fast8_t>(p_local & static_cast<unsigned>(UINT8_C(1))) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
+
+        if(do_power_multiply)
         {
           result *= y;
+        }
+
+        p_local >>= static_cast<unsigned>(UINT8_C(1));
+
+        if(p_local == static_cast<std::uint64_t>(UINT8_C(0)))
+        {
+          break;
         }
 
         y *= y;
@@ -71,4 +90,4 @@
 
   } } // namespace mp::detail
 
-#endif // MP_DETAIL_POWN_TEMPLATE_2019_03_02_H_
+#endif // MP_DETAIL_POWN_TEMPLATE_2019_03_02_H

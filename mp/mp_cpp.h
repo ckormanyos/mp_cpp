@@ -662,8 +662,20 @@
                                       && (std::is_signed     <SignedIntegralType>::value == true))>::type const* = nullptr>
     mp_cpp pow(const mp_cpp& d, const SignedIntegralType& p)
     {
-      return ((p < 0) ? mp::one() / mp::detail::pown_template<mp_cpp, SignedIntegralType>(d, -p)
-                      :             mp::detail::pown_template<mp_cpp, SignedIntegralType>(d,  p));
+      using local_unsigned_type = typename std::make_unsigned<SignedIntegralType>::type;
+
+      mp_cpp result { };
+
+      if(p >= static_cast<SignedIntegralType>(INT8_C(0)))
+      {
+        result = mp::detail::pown_template(d, static_cast<local_unsigned_type>(p));
+      }
+      else
+      {
+        result = mp::one() / mp::detail::pown_template(d, static_cast<local_unsigned_type>(-p));
+      }
+
+      return result;
     }
 
     inline mp_cpp  factorial(const std::int32_t n)                  { return mp_cpp::calculate_factorial(n); }

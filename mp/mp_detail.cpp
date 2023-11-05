@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2020
+// Date        : 1999 - 2023
 // 
 // Description : Various utilities for multiple precision float
 // 
@@ -153,9 +153,9 @@ bool mp::detail::format_float_string(std::string& result_str,
 
     if(has_scientific || has_fixed)
     {
-      result_str.append(1U, char('.'));
+      result_str.append(1U, '.');
 
-      result_str.append(string_size_type(local_digits10), char('0'));
+      result_str.append(string_size_type(local_digits10), '0');
 
       if(has_scientific)
       {
@@ -166,22 +166,22 @@ bool mp::detail::format_float_string(std::string& result_str,
     {
       if(has_showpoint)
       {
-        result_str.append(1U, char('.'));
+        result_str.append(1U, '.');
 
         if(local_digits10 > 1)
         {
-          result_str.append(string_size_type(local_digits10 - 1), char('0'));
+          result_str.append(string_size_type(local_digits10 - 1), '0');
         }
       }
     }
 
     if(is_neg)
     {
-      result_str.insert(0U, 1U, char('-'));
+      result_str.insert(0U, 1U, '-');
     }
     else if(has_showpos)
     {
-      result_str.insert(0U, 1U, char('+'));
+      result_str.insert(0U, 1U, '+');
     }
 
     return true;
@@ -192,7 +192,7 @@ bool mp::detail::format_float_string(std::string& result_str,
     // Suppress trailing zeros:
     std::string::iterator pos = result_str.end();
 
-    while(pos != result_str.begin() && *--pos == char('0'))
+    while(pos != result_str.begin() && *--pos == '0')
     {
       ;
     }
@@ -224,7 +224,7 @@ bool mp::detail::format_float_string(std::string& result_str,
 
     if(number_of_chars > 0)
     {
-      result_str.append(string_size_type(number_of_chars), char('0'));
+      result_str.append(string_size_type(number_of_chars), '0');
     }
   }
 
@@ -233,7 +233,7 @@ bool mp::detail::format_float_string(std::string& result_str,
     if(1 + my_exp_value > static_cast<std::streamsize>(result_str.size()))
     {
       // Just pad out the end with zeros:
-      result_str.append(string_size_type(1 + my_exp_value) - result_str.size(), char('0'));
+      result_str.append(string_size_type(1 + my_exp_value) - result_str.size(), '0');
 
       if(has_showpoint || has_fixed)
       {
@@ -244,13 +244,13 @@ bool mp::detail::format_float_string(std::string& result_str,
     {
       if(my_exp_value < 0)
       {
-        result_str.insert(0U, string_size_type(-1 - my_exp_value), char('0'));
+        result_str.insert(0U, string_size_type(-1 - my_exp_value), '0');
         result_str.insert(0U, "0.");
       }
       else
       {
         // Insert the decimal point:
-        result_str.insert(string_size_type(my_exp_value + 1), 1U, char('.'));
+        result_str.insert(string_size_type(my_exp_value + 1), 1U, '.');
       }
     }
     else if(has_showpoint || has_fixed)
@@ -268,7 +268,7 @@ bool mp::detail::format_float_string(std::string& result_str,
 
       if(len > 0)
       {
-        result_str.append(string_size_type(len), char('0'));
+        result_str.append(string_size_type(len), '0');
       }
     }
   }
@@ -277,10 +277,10 @@ bool mp::detail::format_float_string(std::string& result_str,
     // Scientific format:
     if(has_showpoint || (result_str.size() > 1U))
     {
-      result_str.insert(1U, 1U, static_cast<char>('.'));
+      result_str.insert(1U, 1U, '.');
     }
 
-    result_str.append(1U, char('e'));
+    result_str.append(1U, 'e');
 
     std::string str_exp;
 
@@ -296,18 +296,16 @@ bool mp::detail::format_float_string(std::string& result_str,
 
     if(str_exp.size() < minimum_exponent_digits10)
     {
-      str_exp.insert(0U,
-                     minimum_exponent_digits10 - str_exp.size(),
-                     static_cast<char>('0'));
+      str_exp.insert(0U, minimum_exponent_digits10 - str_exp.size(), '0');
     }
 
     if(my_exp_value < 0)
     {
-      str_exp.insert(0U, 1U, char('-'));
+      str_exp.insert(0U, 1U, '-');
     }
     else
     {
-      str_exp.insert(0U, 1U, char('+'));
+      str_exp.insert(0U, 1U, '+');
     }
 
     result_str.append(str_exp);
@@ -315,11 +313,11 @@ bool mp::detail::format_float_string(std::string& result_str,
 
   if(is_neg)
   {
-    result_str.insert(0U, 1U, char('-'));
+    result_str.insert(0U, 1U, '-');
   }
   else if(has_showpos)
   {
-    result_str.insert(0U, 1U, char('+'));
+    result_str.insert(0U, 1U, '+');
   }
 
   return true;
@@ -330,9 +328,7 @@ bool mp::detail::check_close_representation(const mp::mp_cpp& a,
                                             const std::int32_t tol_elems,
                                                   std::int32_t& sig_elems)
 {
-  typedef std::pair<mp_cpp::array_type::const_iterator,
-                    mp_cpp::array_type::const_iterator>
-  pair_of_array_iterator_type;
+  using pair_of_array_iterator_type = std::pair<mp_cpp::array_type::const_iterator, mp_cpp::array_type::const_iterator>;
 
   const pair_of_array_iterator_type it =
     std::mismatch(a.crepresentation().cbegin(),

@@ -75,7 +75,7 @@ int main()
   std::cout << std::boolalpha << (lg_max > (std::numeric_limits<std::int64_t>::max)()) << std::endl;
   std::cout << std::boolalpha << (lg_max > (std::numeric_limits<std::int64_t>::min)()) << std::endl;
 
-  const mp_type a3(("33." + std::string(std::size_t(std::numeric_limits<mp_type>::digits10 - 2), char('3')) + std::string(16U, char('4'))).c_str());
+  const mp_type a3(("33." + std::string(std::size_t(std::numeric_limits<mp_type>::digits10 - 2), '3') + std::string(16U, '4')).c_str());
   const mp_type b3(mp_type(100U) / 3);
 
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << a3 << std::endl;
@@ -85,7 +85,7 @@ int main()
   std::cout << std::boolalpha << (a3 >  b3) << std::endl;
   std::cout << std::boolalpha << (a3 <  b3) << std::endl;
 
-  const mp_type c3(("33." + std::string(120U, char('3'))).c_str());
+  const mp_type c3(("33." + std::string(120U, '3')).c_str());
   const mp_type d3(mp_type(100U) / 3);
 
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << c3 << std::endl;

@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // *****************************************************************************
-// Filename    : test.cpp
+// Filename    : test_main.cpp
 // 
 // Project     : Multiple precision math
 // 
@@ -33,7 +33,7 @@
 int main(int argc, const char* argv[])
 {
   // Calculate various test values.
-  const bool result_samples_is_ok = samples::test(argc, argv);
+  const auto result_samples_is_ok = samples::test(argc, argv);
 
   const auto flg = std::cout.flags();
 

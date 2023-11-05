@@ -37,8 +37,8 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   std::string str(s);
 
   // Remove spaces and tabs.
-  str.erase(std::remove(str.begin(), str.end(), static_cast<char>(' ')),  str.end());
-  str.erase(std::remove(str.begin(), str.end(), static_cast<char>('\t')), str.end());
+  str.erase(std::remove(str.begin(), str.end(), ' '),  str.end());
+  str.erase(std::remove(str.begin(), str.end(), '\t'), str.end());
 
   my_exp = static_cast<std::int64_t>(0);
 
@@ -63,20 +63,20 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   // Get a possible +/- sign and remove it.
   my_neg = false;
 
-  if((pos = str.find(static_cast<char>('-'))) != std::string::npos)
+  if((pos = str.find('-')) != std::string::npos)
   {
     my_neg = true;
 
     str.erase(pos, static_cast<std::string::size_type>(1U));
   }
 
-  if((pos = str.find(static_cast<char>('+'))) != std::string::npos)
+  if((pos = str.find('+')) != std::string::npos)
   {
     str.erase(pos, static_cast<std::string::size_type>(1U));
   }
 
   // Remove the leading zeros in the input string.
-  while(str.length() && str.at(static_cast<std::string::size_type>(0U)) == static_cast<char>('0'))
+  while(str.length() && str.at(static_cast<std::string::size_type>(0U)) == '0')
   {
     str.erase(static_cast<std::string::size_type>(0U),
               static_cast<std::string::size_type>(1U));
@@ -89,12 +89,12 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   // which is an even multiple of unit.
 
   // Find a possible decimal point.
-  pos = str.find(static_cast<char>('.'));
+  pos = str.find('.');
 
   if(pos != std::string::npos)
   {
     // Remove all trailing insignificant zeros.
-    while(str.at(static_cast<std::string::size_type>(str.length() - 1U)) == static_cast<char>('0'))
+    while(str.at(static_cast<std::string::size_type>(str.length() - 1U)) == '0')
     {
       str.erase(static_cast<std::string::size_type>(str.length() - 1U),
                 static_cast<std::string::size_type>(1U));
@@ -113,11 +113,11 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
     // Note that the while-loop operates only on strings
     // of the form ".000abcd...". Zeros just after the
     // decimal point are removed.
-    if(   ((str.at(static_cast<std::string::size_type>(1U)) == static_cast<char>('0')) && (pos == 0U))
-       ||  (str.at(static_cast<std::string::size_type>(0U)) == static_cast<char>('.'))
+    if(   ((str.at(static_cast<std::string::size_type>(1U)) == '0') && (pos == 0U))
+       ||  (str.at(static_cast<std::string::size_type>(0U)) == '.')
       )
     {
-      while(str.at(static_cast<std::string::size_type>(1U)) == static_cast<char>('0'))
+      while(str.at(static_cast<std::string::size_type>(1U)) == '0')
       {
         str.erase(static_cast<std::string::size_type>(1U),
                   static_cast<std::string::size_type>(1U));
@@ -137,7 +137,7 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   else
   {
     // The input string has no decimal point. Append a decimal point.
-    str.append(1U, static_cast<char>('.'));
+    str.append(1U, '.');
   }
 
   // Shift the decimal point such that the exponent is an even
@@ -153,11 +153,11 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   }
 
   // Make sure that there are enough digits for the shift.
-  pos = str.find(static_cast<char>('.'));
+  pos = str.find('.');
 
   while(static_cast<std::string::size_type>(str.length() - static_cast<std::string::size_type>(pos + 1U)) < n_shift)
   {
-    str.append(1U, static_cast<char>('0'));
+    str.append(1U, '0');
   }
 
   // Perform the decimal point shift.
@@ -171,7 +171,7 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
   }
 
   // Cut the size of the mantissa to <= mp_core::mp_elem_digits10.
-  pos = str.find(static_cast<char>('.'));
+  pos = str.find('.');
 
   if(pos > static_cast<std::string::size_type>(mp_core::mp_elem_digits10))
   {
@@ -193,7 +193,7 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
 
   // Pad the decimal part such that its value
   // is an even multiple of mp_core::mp_elem_digits10.
-  pos = str.find(static_cast<char>('.'));
+  pos = str.find('.');
 
   const std::int32_t n_dec =
     static_cast<std::int32_t>(str.length() - 1U) - static_cast<std::int32_t>(pos);
@@ -203,7 +203,7 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
       ? (mp_core::mp_elem_digits10 - (n_dec % mp_core::mp_elem_digits10))
       : 0);
 
-  str.append(static_cast<std::string::size_type>(n_cnt), static_cast<char>('0'));
+  str.append(static_cast<std::string::size_type>(n_cnt), '0');
 
   // Truncate decimal part if it is too long.
   const std::string::size_type max_dec = static_cast<std::string::size_type>((mp_elem_number() - 1) * mp_core::mp_elem_digits10);
@@ -267,11 +267,11 @@ bool mp::mp_cpp::write_string(std::string& result_str,
 
       if((isneg)())
       {
-        result_str.insert(result_str.cbegin(), char('-'));
+        result_str.insert(result_str.cbegin(), '-');
       }
       else if(static_cast<std::ios::fmtflags>(format_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0))
       {
-        result_str.insert(result_str.cbegin(), char('+'));
+        result_str.insert(result_str.cbegin(), '+');
       }
     }
     else if((isnan)())
@@ -320,7 +320,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
     for(std::size_t i = static_cast<std::size_t>(1U); i < number_of_elements; ++i)
     {
       ss << std::setw(static_cast<std::streamsize>(mp::mp_core::mp_elem_digits10))
-         << std::setfill(static_cast<char>('0'))
+         << std::setfill('0')
          << my_data[i];
     }
 
@@ -338,7 +338,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
 
       result_str.insert(std::string::size_type(0U),
                         std::string::size_type(number_of_digits),
-                        static_cast<char>('0'));
+                        '0');
 
       have_leading_zeros = true;
     }
@@ -377,7 +377,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
             // We have an even digit followed by a 5, so we might not actually
             // need to round up if all the remaining digits are zero.
 
-            if(result_str.find_first_not_of(static_cast<char>('0'), static_cast<std::string::size_type>(number_of_digits + 1)) == std::string::npos)
+            if(result_str.find_first_not_of('0', static_cast<std::string::size_type>(number_of_digits + 1)) == std::string::npos)
             {
               bool all_zeros = true;
 
@@ -412,7 +412,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
           // Every trailing 9 must be rounded up.
           while(ix && (static_cast<std::int32_t>(result_str[ix]) - static_cast<std::int32_t>('0') == static_cast<std::int32_t>(9)))
           {
-            result_str[ix] = static_cast<char>('0');
+            result_str[ix] = '0';
 
             --ix;
           }
@@ -423,7 +423,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
             if(static_cast<std::int32_t>(static_cast<std::int32_t>(result_str[ix]) - static_cast<std::int32_t>(0x30)) == static_cast<std::int32_t>(9))
             {
               // Increment up to the next order and adjust the exponent.
-              result_str[ix] = static_cast<char>('1');
+              result_str[ix] = '1';
 
               ++exp_value;
             }
@@ -446,7 +446,7 @@ bool mp::mp_cpp::write_string(std::string& result_str,
         // We need to take the zeros back out again,
         // and correct the exponent if we rounded up.
 
-        if(result_str[std::string::size_type(number_of_digits - 1)] != static_cast<char>('0'))
+        if(result_str[std::string::size_type(number_of_digits - 1)] != '0')
         {
           ++exp_value;
 

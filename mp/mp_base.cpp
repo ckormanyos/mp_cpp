@@ -120,8 +120,15 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
         + std::int32_t(order_of_an_element(my_data[0U]) + 1U);
 
       // Create the denominator for disregarding the extra digits.
-      const value_type denominator_for_disregarding_extra_digits =
-        value_type(mp::detail::pown_template(value_type(10U), std::int64_t(number_of_extra_digits_to_disregard)));
+      const auto denominator_for_disregarding_extra_digits =
+        static_cast<value_type>
+        (
+          mp::detail::pown_template
+          (
+            static_cast<value_type>(UINT8_C(10)),
+            static_cast<std::uint32_t>(number_of_extra_digits_to_disregard)
+          )
+        );
 
       // Disregard the extra digits via truncating the values.
       // There is not any sophisticated rounding here.

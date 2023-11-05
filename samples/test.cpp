@@ -20,19 +20,32 @@
 // *****************************************************************************
 
 #include <algorithm>
+#include <array>
 #include <ctime>
 #include <iomanip>
-#include <iostream>
-#include <iterator>
-#include <vector>
+#include <sstream>
+#include <string>
 
 #include <mp/mp_math.h>
 #include <samples/samples.h>
 
 namespace local
 {
-  double test_real();
-  double test_imag();
+  constexpr auto str_len_to_check = static_cast<std::string::size_type>(UINT8_C(32));
+
+  float test_real(bool& result_is_ok);
+  float test_imag(bool& result_is_ok);
+
+  struct complex_strings_pair
+  {
+    explicit complex_strings_pair(const std::string& str_r = std::string(),
+                                  const std::string& str_i = std::string())
+      : str_real(str_r),
+        str_imag(str_i) { }
+
+    std::string str_real { };
+    std::string str_imag { };
+  };
 }
 
 // *****************************************************************************
@@ -41,51 +54,57 @@ namespace local
 // Description : Test various real-valued functions.
 // 
 // *****************************************************************************
-double local::test_real()
+float local::test_real(bool& result_is_ok)
 {
-  std::vector<mp::mp_cpp> values;
+  using mp_values_array_type        = std::array<mp::mp_cpp, static_cast<std::size_t>(UINT8_C(6))>;
+  using mp_values_ctrl_strings_type = std::array<std::string, std::tuple_size<mp_values_array_type>::value>;
 
-  values.reserve(10U);
+  const auto mp_values_ctrl_strings =
+    mp_values_ctrl_strings_type
+    {
+      std::string("087890625000000000000000000e+223"),
+      std::string("6423093500696066591266110387e-01"),
+      std::string("1476916049200907195743034256e-01"),
+      std::string("5728219208235453391899827400e-01"),
+      std::string("87918311751840086748643e+1505150"),
+      std::string("8593839501629585750517154736e+17")
+    };
 
   const mp::mp_cpp x = mp::mp_cpp(12345U) / static_cast<std::int32_t>(10000U);
 
   // Execute the real-valued test functions and measure the timing.
   const std::clock_t start = std::clock();
 
-  values.push_back(rootn(x, static_cast<std::int32_t>(5)));      // N[(12345 / 10000)^5, 10000]
-  values.push_back(sin(x));                                      // N[Sin[12345 / 10000], 10000]
-  values.push_back(log(x));                                      // N[Log[12345 / 10000], 10000]
-  values.push_back(acosh(x));                                    // N[ArcCosh[12345 / 10000], 10000]
-  values.push_back(mp::pow2(5000001));                           // N[2^5000001, 10000]
-  values.push_back(exp(mp::pi() * mp::sqrt(mp::mp_cpp(163U))));  // N[Exp[Pi Sqrt[163]], 10000]
+  const mp_values_array_type
+    mp_values
+    {
+      pow(x, static_cast<std::int32_t>(INT16_C(2440))),                      // N[(12345 / 10000)^2440,   10002]
+      sin(x),                                                                // N[Sin[12345 / 10000],     10002]
+      log(x),                                                                // N[Log[12345 / 10000],     10002]
+      acosh(x),                                                              // N[ArcCosh[12345 / 10000], 10002]
+      mp::pow2(5000001),                                                     // N[2^5000001,              10002]
+      exp(mp::pi() * sqrt(mp::mp_cpp(static_cast<unsigned>(UINT8_C(163)))))  // N[Exp[Pi Sqrt[163]],      10002]
+    };
 
-  const double elapsed_time = double(std::clock() - start) / double(CLOCKS_PER_SEC);
+  const auto elapsed_time = static_cast<float>(static_cast<float>(std::clock() - start) / CLOCKS_PER_SEC);
 
-  // Store the original output streamsize.
-  const std::streamsize original_stream_size = std::cout.precision();
+  result_is_ok = true;
 
-  // Store an indication if the original output stream has scientific.
-  const bool original_stream_has_scientific =
-    (static_cast<std::ios::fmtflags>(std::cout.flags() & std::ios::scientific) == std::ios::scientific);
+  auto it_str_ctrl = mp_values_ctrl_strings.cbegin();
 
-  // Set the output stream precision to that of mp_cpp.
-  std::cout.precision(std::numeric_limits<mp::mp_cpp>::digits10);
-
-  // Set the output stream flags to include scientific.
-  std::cout.setf(std::ios::scientific);
-
-  // Print the test values.
-  std::copy(values.cbegin(),
-            values.cend(),
-            std::ostream_iterator<mp::mp_cpp>(std::cout, "\n"));
-
-  // Reset the output stream precision to its original streamsize.
-  std::cout.precision(original_stream_size);
-
-  // Remove the scientific flag if necessary.
-  if((!original_stream_has_scientific))
+  for(const auto& val : mp_values)
   {
-    std::cout.unsetf(std::ios::scientific);
+    std::stringstream strm;
+
+    strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << val;
+
+    const std::string str_val = strm.str();
+
+    const auto str_check = std::string(str_val.cend() - str_len_to_check, str_val.cend());
+
+    const auto result_val_is_ok = (str_check == *it_str_ctrl++);
+
+    result_is_ok = (result_val_is_ok && result_is_ok);
   }
 
   // Return the elapsed time.
@@ -98,57 +117,85 @@ double local::test_real()
 // Description : Test various complex-valued functions.
 // 
 // *****************************************************************************
-double local::test_imag()
+float local::test_imag(bool& result_is_ok)
 {
-  std::vector<mp::complex<mp::mp_cpp>> values;
+  using mp_complex_values_array_type        = std::array<mp::complex<mp::mp_cpp>, static_cast<std::size_t>(UINT8_C(6))>;
+  using mp_complex_values_ctrl_strings_type = std::array<complex_strings_pair, std::tuple_size<mp_complex_values_array_type>::value>;
 
-  values.reserve(10U);
+  const auto mp_complex_values_ctrl_strings =
+    mp_complex_values_ctrl_strings_type
+    {
+      complex_strings_pair { std::string("7062652563059397884458909683e-01"), std::string("5964198535394629780309194467e-02") },
+      complex_strings_pair { std::string("4048577319642457086365375268e+00"), std::string("5639809266248545375073278611e+00") },
+      complex_strings_pair { std::string("2715964707859525004249772254e+03"), std::string("7657027474486443190971299319e+01") },
+      complex_strings_pair { std::string("7855237294569533539406160330e+00"), std::string("8569705518774451157628892749e-01") },
+      complex_strings_pair { std::string("7740602553207513524736354554e+00"), std::string("0883886635819581538293412637e-01") },
+      complex_strings_pair { std::string("2084717042651553190640739533e+02"), std::string("3112485247365323186414254167e+01") },
+    };
 
-  const mp::mp_cpp seven_point_two = mp::mp_cpp(72U) / static_cast<std::int32_t>(10);
-  const mp::mp_cpp three_point_one = mp::mp_cpp(31U) / static_cast<std::int32_t>(10);
+  const mp::mp_cpp seven_point_two = mp::mp_cpp(static_cast<unsigned>(UINT8_C(72))) / static_cast<unsigned>(UINT8_C(10));
+  const mp::mp_cpp three_point_one = mp::mp_cpp(static_cast<unsigned>(UINT8_C(31))) / static_cast<unsigned>(UINT8_C(10));
 
   const mp::complex<mp::mp_cpp> z(seven_point_two, three_point_one);
+
+  result_is_ok = true;
 
   // Execute the complex-valued test functions and measure the timing.
   const std::clock_t start = std::clock();
 
-  values.push_back(mp::one() / z);  // N[1 / ((72/10) + ((31 I)/10))], 10000]
-  values.push_back(sin(z));         // N[Sin[(72/10) + ((31 I)/10)], 10000]
-  values.push_back(exp(z));         // N[Exp[(72/10) + ((31 I)/10)], 10000]
-  values.push_back(log(z));         // N[Log[(72/10) + ((31 I)/10)], 10000]
-  values.push_back(acosh(z));       // N[ArcCosh[(72/10) + ((31 I)/10)], 10000]
-  values.push_back(sinh(z));        // N[Sinh[(72/10) + ((31 I)/10)], 10000]
+  const mp_complex_values_array_type
+    mp_complex_values
+    {
+      mp::one() / z,                             // N[Re[1/((72/10) + ((31 I)/10))],     10002] (Use Im instead or Re to obtain the imaginary part).
+      sin(z),                                    // N[Re[Sin[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
+      exp(z),                                    // N[Re[Exp[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
+      log(z),                                    // N[Re[Log[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
+      acosh(z),                                  // N[Re[ArcCosh[(72/10) + ((31 I)/10)], 10002] (Use Im instead or Re to obtain the imaginary part).
+      sinh(z)                                    // N[Re[Sinh[(72/10) + ((31 I)/10)],    10002] (Use Im instead or Re to obtain the imaginary part).
+    };
 
-  const double elapsed_time = double(std::clock() - start) / double(CLOCKS_PER_SEC);
+  const auto elapsed_time = static_cast<float>(static_cast<float>(std::clock() - start) / CLOCKS_PER_SEC);
 
-  // Store the original output streamsize.
-  const std::streamsize original_stream_size = std::cout.precision();
+  result_is_ok = true;
 
-  // Store an indication if the original output stream has scientific.
-  const bool original_stream_has_scientific =
-    (static_cast<std::ios::fmtflags>(std::cout.flags() & std::ios::scientific) == std::ios::scientific);
+  auto it_complex_str_ctrl = mp_complex_values_ctrl_strings.cbegin();
 
-  // Set the output stream precision to that of mp_cpp.
-  std::cout.precision(std::numeric_limits<mp::mp_cpp>::digits10);
-
-  // Set the output stream flags to include scientific.
-  std::cout.setf(std::ios::scientific);
-
-  // Print the test values.
-  std::copy(values.cbegin(),
-            values.cend(),
-            std::ostream_iterator<mp::complex<mp::mp_cpp>>(std::cout, "\n"));
-
-  // Reset the output stream precision to its original streamsize.
-  std::cout.precision(original_stream_size);
-
-  // Remove the scientific flag if necessary.
-  if((!original_stream_has_scientific))
+  for(const auto& complex_val : mp_complex_values)
   {
-    std::cout.unsetf(std::ios::scientific);
+    std::string str_real_check { };
+    std::string str_imag_check { };
+
+    {
+      std::stringstream strm;
+
+      strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.real();
+
+      const std::string str_real_val = strm.str();
+
+      str_real_check = std::string(str_real_val.cend() - str_len_to_check, str_real_val.cend());
+    }
+
+    {
+      std::stringstream strm;
+
+      strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.imag();
+
+      const std::string str_imag_val = strm.str();
+
+      str_imag_check = std::string(str_imag_val.cend() - str_len_to_check, str_imag_val.cend());
+    }
+
+    const auto result_complex_val_is_ok =
+    (
+         (str_real_check == it_complex_str_ctrl->str_real)
+      && (str_imag_check == it_complex_str_ctrl->str_imag)
+    );
+
+    ++it_complex_str_ctrl;
+
+    result_is_ok = (result_complex_val_is_ok && result_is_ok);
   }
 
-  // Return the elapsed time.
   return elapsed_time;
 }
 
@@ -162,22 +209,42 @@ bool samples::test(const int, const char*[])
 {
   // Set the desired number of decimal digits
   // and the requested count of FFT threads.
-  const std::int32_t my_digits10    = 10000;
-  const int          my_fft_threads =     4;
+  constexpr auto my_digits10    = static_cast<std::int32_t>(INT16_C(10001));
+  constexpr auto my_fft_threads = static_cast<int>(INT8_C(4));
 
   // Create the multiple precision base.
-  const bool create_mp_base_is_ok = mp::mp_base::create_mp_base(my_digits10, my_fft_threads);
+  const auto create_mp_base_is_ok = mp::mp_base::create_mp_base(my_digits10, my_fft_threads);
+
+  auto result_is_ok = create_mp_base_is_ok;
+
+  float elapsed_time_both { };
+  float elapsed_time_real { };
 
   if(create_mp_base_is_ok)
   {
-    // Test various real-valued functions.
-    const double elapsed_time_real = local::test_real();
+    {
+      auto result_real_is_ok = false;
 
-    // Test various complex-valued functions.
-    const double elapsed_time_imag = local::test_imag();
+      // Test various real-valued functions.
+      elapsed_time_real = local::test_real(result_real_is_ok);
 
-    // Sum up the total test time.
-    const double elapsed_time_both = elapsed_time_real + elapsed_time_imag;
+      result_is_ok = (result_real_is_ok && result_is_ok);
+
+      elapsed_time_both += elapsed_time_real;
+    }
+
+    float elapsed_time_imag { };
+
+    {
+      auto result_imag_is_ok = false;
+
+      // Test various complex-valued functions.
+      elapsed_time_imag = local::test_imag(result_imag_is_ok);
+
+      result_is_ok = (result_imag_is_ok && result_is_ok);
+
+      elapsed_time_both += result_imag_is_ok;
+    }
 
     // Report the test timing.
     std::cout << "Elapsed time for test_real: " << elapsed_time_real << std::endl;
@@ -185,5 +252,5 @@ bool samples::test(const int, const char*[])
     std::cout << "Elapsed time for both:      " << elapsed_time_both << std::endl;
   }
 
-  return create_mp_base_is_ok;
+  return result_is_ok;
 }
