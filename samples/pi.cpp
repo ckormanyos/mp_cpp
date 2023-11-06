@@ -30,7 +30,7 @@
 namespace local
 {
   void print_pi_timing_report(std::ostream& os, const double time_for_pi_calculation);
-  void print_pi_output_result(std::ostream& os, const double time_for_pi_calculation);
+  bool print_pi_output_result(std::ostream& os, const double time_for_pi_calculation);
 
   const mp::mp_cpp& my_pi(const bool b_trace, std::ostream& os = std::cout);
 
@@ -156,18 +156,15 @@ bool samples::pi(const int argc, const char* argv[])
       local::my_pi(true);
 
       // End the time measurement.
-      const double time_for_pi_calculation =
-        double(std::clock() - t0) / double(CLOCKS_PER_SEC);
+      const double time_for_pi_calculation = double(std::clock() - t0) / double(CLOCKS_PER_SEC);
 
       // Print the calculation time to the standard output.
       local::print_pi_timing_report(std::cout, time_for_pi_calculation);
 
       // Print the result of the pi calculation to the output file.
-      local::print_pi_output_result(outfile, time_for_pi_calculation);
+      calculate_pi_is_ok = local::print_pi_output_result(outfile, time_for_pi_calculation);
 
       outfile.close();
-
-      calculate_pi_is_ok = true;
     }
   }
 
@@ -199,7 +196,7 @@ void local::print_pi_timing_report(std::ostream& os, const double time_for_pi_ca
 // Description : Print the output of pi with a readable format.
 // 
 // *****************************************************************************
-void local::print_pi_output_result(std::ostream& os, const double time_for_pi_calculation)
+bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_calculation)
 {
   // Print the calculation time to the output stream.
   local::print_pi_timing_report(os, time_for_pi_calculation);
@@ -213,6 +210,17 @@ void local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
 
   // Extract the string value of pi.
   const std::string str_pi(ss.str());
+
+  const auto result_str_pi_head_is_ok = (str_pi.find("3.1415926535") != std::string::npos);
+
+  const auto result_str_pi_tail_is_ok =
+  (
+    (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
+      ? (str_pi.rfind("5779458151") != std::string::npos)
+      : true
+  );
+
+  const auto result_str_pi_is_ok = (result_str_pi_head_is_ok && result_str_pi_tail_is_ok);
 
   // Print pi using the following paramater-tunable format.
 
@@ -318,4 +326,6 @@ void local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
       }
     }
   }
+
+  return result_str_pi_is_ok;
 }

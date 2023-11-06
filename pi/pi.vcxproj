@@ -191,12 +191,6 @@
   <ItemGroup>
     <ClCompile Include="pi_main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="pi_1000000.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="pi_50000000.7z" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

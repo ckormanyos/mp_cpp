@@ -19,6 +19,9 @@
 // 
 // *****************************************************************************
 
+#include <iomanip>
+#include <iostream>
+
 #include <mp/mp_math.h>
 #include <samples/samples.h>
 
@@ -31,7 +34,17 @@
 int main(int argc, const char* argv[])
 {
   // Calculate pi.
-  const bool b_ok = samples::pi(argc, argv);
+  const auto result_pi_is_ok = samples::pi(argc, argv);
 
-  return (b_ok ? 0 : 1);
+  const auto flg = std::cout.flags();
+
+  std::cout << "result_pi_is_ok: " << std::boolalpha << result_pi_is_ok << std::endl;
+
+  std::cout.flags(flg);
+
+  const auto result_of_main = (result_pi_is_ok ? 0 : -1);
+
+  std::cout << "result_of_main : " << result_of_main << std::endl;
+
+  return result_of_main;
 }
