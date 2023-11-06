@@ -19,8 +19,8 @@
 // 
 // *****************************************************************************
 
-#ifndef MP_CPP_2002_10_09_H_
-  #define MP_CPP_2002_10_09_H_
+#ifndef MP_CPP_2002_10_09_H
+  #define MP_CPP_2002_10_09_H
 
   #include <cstdint>
   #include <istream>
@@ -697,4 +697,4 @@
 
   #include <mp/mp_cpp_limits.h>
 
-#endif // MP_CPP_2002_10_09_H_
+#endif // MP_CPP_2002_10_09_H

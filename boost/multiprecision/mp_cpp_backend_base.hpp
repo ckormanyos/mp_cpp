@@ -21,8 +21,8 @@
 // 
 // *****************************************************************************
 
-#ifndef MP_CPP_BACKEND_BASE_2019_11_17_HPP_
-  #define MP_CPP_BACKEND_BASE_2019_11_17_HPP_
+#ifndef MP_CPP_BACKEND_BASE_2019_11_17_HPP
+  #define MP_CPP_BACKEND_BASE_2019_11_17_HPP
 
   namespace boost { namespace multiprecision { namespace detail {
 
@@ -54,4 +54,4 @@
 
   } } } // namespace boost::multiprecision.:detail
 
-#endif // MP_CPP_BACKEND_BASE_2019_11_17_HPP_
+#endif // MP_CPP_BACKEND_BASE_2019_11_17_HPP

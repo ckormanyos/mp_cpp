@@ -32,8 +32,8 @@
 //  const mp_type y(sqrt(x));
 
 
-#ifndef MP_CPP_BACKEND_2016_05_12_HPP_
-  #define MP_CPP_BACKEND_2016_05_12_HPP_
+#ifndef MP_CPP_BACKEND_2016_05_12_HPP
+  #define MP_CPP_BACKEND_2016_05_12_HPP
 
   #include <cstdint>
   #include <limits>
@@ -694,4 +694,4 @@
 
   } // namespace std
 
-#endif // MP_CPP_BACKEND_2016_05_12_HPP_
+#endif // MP_CPP_BACKEND_2016_05_12_HPP

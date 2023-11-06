@@ -19,8 +19,8 @@
 // 
 // *****************************************************************************
 
-#ifndef MP_CORE_2002_10_09_H_
-  #define MP_CORE_2002_10_09_H_
+#ifndef MP_CORE_2002_10_09_H
+  #define MP_CORE_2002_10_09_H
 
   #include <cstdint>
   #include <limits>
@@ -128,4 +128,4 @@
     friend class mp_cpp;
   };
 
-#endif // MP_CORE_2002_10_09_H_
+#endif // MP_CORE_2002_10_09_H

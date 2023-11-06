@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef XUTILS_2002_10_09_H_
-  #define XUTILS_2002_10_09_H_
+#ifndef XUTILS_2002_10_09_H
+  #define XUTILS_2002_10_09_H
 
   #include <iterator>
 
@@ -120,4 +120,4 @@
     }
   }
 
-#endif // XUTILS_2002_10_09_H_
+#endif // XUTILS_2002_10_09_H

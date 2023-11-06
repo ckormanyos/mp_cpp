@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H_
-  #define FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H_
+#ifndef FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H
+  #define FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H
 
   #include <initializer_list>
   #include <iterator>
@@ -244,4 +244,4 @@
     }
   }
 
-#endif // FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H_
+#endif // FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH_2002_10_09_H
