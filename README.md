@@ -29,7 +29,8 @@ and compatible with modern C++.
 precision ranging from hundreds, to thousands, to millions of decimal digits of precision.
 This original work was subsequently cloned, renamed and adapted to become
 [`e_float`](https://github.com/ckormanyos/e_float-2021),
-which itself ultimately provided some motivation for Boost.Multiprecision.
+which itself ultimately provided some motivation for
+[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
 
 `mp_cpp` still compiles and runs on modern C++ compilers
 from C++11, 14, 17, 20, 23 and beyond.
@@ -42,8 +43,8 @@ _million_ (i.e., $10^{6}$) decimal-digit $\pi$-calculation.
 ## Boost.Multiprecision Backend
 
 `mp_cpp` also features a full [backend-wrapper](./boost/multiprecision/mp_cpp_backend.hpp)
-for use with [`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
-and [`Boost.Math`](https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html)
+for use with [`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html)
+and [`Boost.Math`](https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html).
 This ties an old legacy project together with modern
 template representations of _big_-_floats_ and implementations
 of mathematical functions.
@@ -61,8 +62,6 @@ Math/Multiprecision _develop_ branches.
 ## Licensing
 
 The big-number and mathematical-function implementations in `mp_cpp`
-are licensed under BSL.
-
-This work makes additional use of [FFTW](https://www.fftw.org/)
-version 2.15 for fast FFT multiplication, which has its own
+are licensed under BSL. This work makes additional use of [FFTW](https://www.fftw.org/)
+version 2.15 for fast FFT multiplication, which has its own separate
 [license](https://www.fftw.org/faq/section1.html#isfftwfree).
