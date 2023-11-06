@@ -27,10 +27,10 @@
 #include <mp/mp_math.h>
 #include <samples/samples.h>
 
-namespace local
+namespace local_pi
 {
-  void print_pi_timing_report(std::ostream& os, const double time_for_pi_calculation);
-  bool print_pi_output_result(std::ostream& os, const double time_for_pi_calculation);
+  void print_timing_report(std::ostream& os, const double time_for_calculation);
+  bool print_output_result(std::ostream& os, const double time_for_calculation);
 
   const mp::mp_cpp& my_pi(const bool b_trace, std::ostream& os = std::cout);
 
@@ -42,7 +42,7 @@ namespace local
   }
 }
 
-const mp::mp_cpp& local::my_pi(const bool b_trace, std::ostream& os)
+const mp::mp_cpp& local_pi::my_pi(const bool b_trace, std::ostream& os)
 {
   if     (my_pi_computation_method() == 3) { return mp::mp_cpp::calculate_pi_borwein_quintic(b_trace, os); }
   else if(my_pi_computation_method() == 2) { return mp::mp_cpp::calculate_pi_borwein_quartic(b_trace, os); }
@@ -71,8 +71,7 @@ bool samples::pi(const int argc, const char* argv[])
     const std::string cmd_str = argv[n];
 
     // Extract the number of FFT threads.
-    // This command has the form -t4, for example,
-    // for 4 FFT threads.
+    // This command has the form -t4, for example, for 4 FFT threads.
     if((pos = cmd_str.find("-t")) != std::string::npos)
     {
       ss << cmd_str.c_str() + (pos + 2U);
@@ -97,29 +96,30 @@ bool samples::pi(const int argc, const char* argv[])
       ss.clear();
     }
 
-    // Extract the number of FFT threads.
+    // Extract the index of the calculation method.
     // This command has the form -m1, for example,
     // for calculation method 1.
     if((pos = cmd_str.find("-m")) != std::string::npos)
     {
       ss << cmd_str.c_str() + (pos + 2U);
 
-      ss >> local::my_pi_computation_method();
+      ss >> local_pi::my_pi_computation_method();
 
       ss.str(std::string());
       ss.clear();
     }
   }
 
-  bool calculate_pi_is_ok = false;
+  bool result_calculation_is_ok = false;
 
   // Initialize the multiple precision base.
   // Set the decimal precision and the number of FFT threads.
 
-  const bool create_mp_base_is_ok =
-    mp::mp_base::create_mp_base(my_digits10, my_fft_threads);
+  const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(my_digits10, my_fft_threads);
 
-  if(create_mp_base_is_ok)
+  constexpr char default_fileout_name[] = "pi.out";
+
+  if(result_create_mp_base_is_ok)
   {
     // Get the output file path relative to the path
     // of the executable program.
@@ -132,17 +132,17 @@ bool samples::pi(const int argc, const char* argv[])
 
       if((pos = str_outfile.rfind('\\')) != std::string::npos)
       {
-        str_outfile = str_outfile.substr(0U, pos + 1U) + "pi.out";
+        str_outfile = str_outfile.substr(0U, pos + 1U) + std::string(default_fileout_name);
       }
 
       if((pos = str_outfile.rfind('/')) != std::string::npos)
       {
-        str_outfile = str_outfile.substr(0U, pos + 1U) + "pi.out";
+        str_outfile = str_outfile.substr(0U, pos + 1U) + std::string(default_fileout_name);
       }
     }
     else
     {
-      str_outfile = "pi.out";
+      str_outfile = std::string(default_fileout_name);
     }
 
     std::ofstream outfile(str_outfile.c_str());
@@ -153,74 +153,74 @@ bool samples::pi(const int argc, const char* argv[])
       const std::clock_t t0 = std::clock();
 
       // Calculate pi with the user output trace flag set to true.
-      local::my_pi(true);
+      local_pi::my_pi(true);
 
       // End the time measurement.
-      const double time_for_pi_calculation = double(std::clock() - t0) / double(CLOCKS_PER_SEC);
+      const double time_for_calculation = double(std::clock() - t0) / double(CLOCKS_PER_SEC);
 
       // Print the calculation time to the standard output.
-      local::print_pi_timing_report(std::cout, time_for_pi_calculation);
+      local_pi::print_timing_report(std::cout, time_for_calculation);
 
       // Print the result of the pi calculation to the output file.
-      calculate_pi_is_ok = local::print_pi_output_result(outfile, time_for_pi_calculation);
+      result_calculation_is_ok = local_pi::print_output_result(outfile, time_for_calculation);
 
       outfile.close();
     }
   }
 
-  return (create_mp_base_is_ok && calculate_pi_is_ok);
+  return (result_create_mp_base_is_ok && result_calculation_is_ok);
 }
 
 // *****************************************************************************
-// Function    : static void pi_timing_report(std::ostream& os)
+// Function    : static void timing_report(std::ostream& os)
 // 
-// Description : Report the timing of the pi calculation.
+// Description : Report the timing of the calculation.
 // 
 // *****************************************************************************
-void local::print_pi_timing_report(std::ostream& os, const double time_for_pi_calculation)
+void local_pi::print_timing_report(std::ostream& os, const double time_for_calculation)
 {
   os << std::endl
      << "Time for pi calculation: "
      << std::numeric_limits<mp::mp_cpp>::digits10
      << " digits in "
      << std::setprecision(4)
-     << time_for_pi_calculation
+     << time_for_calculation
      << " seconds."
      << std::endl
      << std::endl;
 }
 
 // *****************************************************************************
-// Function    : static void print_pi_output(std::ostream& os)
+// Function    : static void print_output(std::ostream& os)
 // 
-// Description : Print the output of pi with a readable format.
+// Description : Print the output using a readable format.
 // 
 // *****************************************************************************
-bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_calculation)
+bool local_pi::print_output_result(std::ostream& os, const double time_for_calculation)
 {
   // Print the calculation time to the output stream.
-  local::print_pi_timing_report(os, time_for_pi_calculation);
+  local_pi::print_timing_report(os, time_for_calculation);
 
   std::stringstream ss;
 
   // Pipe the value of pi into a stringstream object with full precision.
   ss << std::fixed
      << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10)
-     << local::my_pi(false);
+     << local_pi::my_pi(false);
 
   // Extract the string value of pi.
-  const std::string str_pi(ss.str());
+  const std::string str_val(ss.str());
 
-  const auto result_str_pi_head_is_ok = (str_pi.find("3.1415926535") != std::string::npos);
+  const auto result_str_val_head_is_ok = (str_val.find("3.1415926535") != std::string::npos);
 
-  const auto result_str_pi_tail_is_ok =
+  const auto result_str_val_tail_is_ok =
   (
     (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
-      ? (str_pi.rfind("5779458151") != std::string::npos)
+      ? (str_val.rfind("5779458151") != std::string::npos)
       : true
   );
 
-  const auto result_str_pi_is_ok = (result_str_pi_head_is_ok && result_str_pi_tail_is_ok);
+  const auto result_str_val_is_ok = (result_str_val_head_is_ok && result_str_val_tail_is_ok);
 
   // Print pi using the following paramater-tunable format.
 
@@ -232,8 +232,6 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
 
   const char* char_set_separator   = " ";
   const char* char_group_separator = "\n";
-  //const char* char_set_separator   = "";
-  //const char* char_group_separator = "";
 
   const std::size_t digits_per_set   = 10U;
   const std::size_t digits_per_line  = digits_per_set * 10U;
@@ -257,9 +255,9 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
 
   std::string::size_type pos;
 
-  if(   ((pos = str_pi.find('3', 0U)) != std::string::npos)
-     && ((pos = str_pi.find('.', 1U)) != std::string::npos)
-     && ((pos = str_pi.find('1', 1U)) != std::string::npos))
+  if(   ((pos = str_val.find('3', 0U)) != std::string::npos)
+     && ((pos = str_val.find('.', 1U)) != std::string::npos)
+     && ((pos = str_val.find('1', 1U)) != std::string::npos))
   {
     ;
   }
@@ -268,7 +266,7 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
     pos = 0U;
   }
 
-  os << "pi = " << str_pi.substr(0U, pos);
+  os << "pi = " << str_val.substr(0U, pos);
 
   const std::size_t digit_offset = pos;
 
@@ -281,7 +279,7 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
   while(all_output_streaming_is_finished == false)
   {
     // Print a set of digits (i.e. having 10 digits per set).
-    const std::string str_pi_substring(str_pi.substr(pos, digits_per_set));
+    const std::string str_pi_substring(str_val.substr(pos, digits_per_set));
 
     os << str_pi_substring << char_set_separator;
 
@@ -291,7 +289,7 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
     const std::size_t number_of_digits(pos - digit_offset);
 
     // Check if all output streaming is finished.
-    all_output_streaming_is_finished = (pos >= str_pi.length());
+    all_output_streaming_is_finished = (pos >= str_val.length());
 
     if(all_output_streaming_is_finished)
     {
@@ -327,5 +325,5 @@ bool local::print_pi_output_result(std::ostream& os, const double time_for_pi_ca
     }
   }
 
-  return result_str_pi_is_ok;
+  return result_str_val_is_ok;
 }
