@@ -11,14 +11,4 @@
       <Filter>pi</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="pi_1000000.txt">
-      <Filter>pi</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="pi_50000000.7z">
-      <Filter>pi</Filter>
-    </None>
-  </ItemGroup>
 </Project>

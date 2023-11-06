@@ -11,14 +11,4 @@
       <Filter>ln2</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="ln2_1000000.txt">
-      <Filter>ln2</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ln2_50000000.7z">
-      <Filter>ln2</Filter>
-    </None>
-  </ItemGroup>
 </Project>
