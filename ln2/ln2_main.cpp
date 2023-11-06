@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-
 // *****************************************************************************
 // Filename    : ln2_main.cpp
 // 
@@ -20,6 +19,9 @@
 // 
 // *****************************************************************************
 
+#include <iomanip>
+#include <iostream>
+
 #include <mp/mp_math.h>
 #include <samples/samples.h>
 
@@ -31,8 +33,18 @@
 // *****************************************************************************
 int main(int argc, const char* argv[])
 {
-  // Calculate pi.
-  const bool b_ok = samples::ln2(argc, argv);
+  // Calculate ln2.
+  const auto result_ln2_is_ok = samples::ln2(argc, argv);
 
-  return (b_ok ? 0 : 1);
+  const auto flg = std::cout.flags();
+
+  std::cout << "result_ln2_is_ok: " << std::boolalpha << result_ln2_is_ok << std::endl;
+
+  std::cout.flags(flg);
+
+  const auto result_of_main = (result_ln2_is_ok ? 0 : -1);
+
+  std::cout << "result_of_main : " << result_of_main << std::endl;
+
+  return result_of_main;
 }
