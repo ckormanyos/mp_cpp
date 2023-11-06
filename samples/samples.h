@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,14 +13,14 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Header multiple precision math sdamples.
 // 
 // *****************************************************************************
 
-#ifndef SAMPLES_2008_12_01_H_
-  #define SAMPLES_2008_12_01_H_
+#ifndef SAMPLES_2008_12_01_H
+  #define SAMPLES_2008_12_01_H
 
   namespace samples
   {
@@ -31,4 +31,4 @@
     bool test  (const int, const char*[]);
   }
 
-#endif // SAMPLES_2008_12_01_H_
+#endif // SAMPLES_2008_12_01_H

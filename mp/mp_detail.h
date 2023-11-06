@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,14 +13,14 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Header for multiple precision details.
 // 
 // *****************************************************************************
 
-#ifndef MP_DETAIL_2016_11_06_H_
-  #define MP_DETAIL_2016_11_06_H_
+#ifndef MP_DETAIL_2016_11_06_H
+  #define MP_DETAIL_2016_11_06_H
 
   #include <cstdint>
   #include <ios>
@@ -47,4 +47,4 @@
 
   } } // namespace mp::detail
 
-#endif // MP_DETAIL_2016_11_06_H_
+#endif // MP_DETAIL_2016_11_06_H

@@ -19,8 +19,8 @@
 // 
 // *****************************************************************************
 
-#ifndef MP_BASE_2002_10_09_H_
-  #define MP_BASE_2002_10_09_H_
+#ifndef MP_BASE_2002_10_09_H
+  #define MP_BASE_2002_10_09_H
 
   #include <cmath>
   #include <cstdint>
@@ -199,4 +199,4 @@
     friend void mp::mp_fft_multiply(std::uint32_t*, const std::uint32_t*, const std::int32_t);
   };
 
-#endif // MP_BASE_2002_10_09_H_
+#endif // MP_BASE_2002_10_09_H

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Basic test routines for multiple precision math.
 // 
@@ -62,7 +62,7 @@ float local::test_real(bool& result_is_ok)
   const auto mp_values_ctrl_strings =
     mp_values_ctrl_strings_type
     {
-      std::string("087890625000000000000000000e+223"),
+      std::string("935035705566406250000000000e+223"),
       std::string("6423093500696066591266110387e-01"),
       std::string("1476916049200907195743034256e-01"),
       std::string("5728219208235453391899827400e-01"),
@@ -78,7 +78,7 @@ float local::test_real(bool& result_is_ok)
   const mp_values_array_type
     mp_values
     {
-      pow(x, static_cast<std::int32_t>(INT16_C(2440))),                      // N[(12345 / 10000)^2440,   10002]
+      pow(x, static_cast<std::int32_t>(INT16_C(2442))),                      // N[(12345 / 10000)^2442,   10002]
       sin(x),                                                                // N[Sin[12345 / 10000],     10002]
       log(x),                                                                // N[Log[12345 / 10000],     10002]
       acosh(x),                                                              // N[ArcCosh[12345 / 10000], 10002]
@@ -119,13 +119,14 @@ float local::test_real(bool& result_is_ok)
 // *****************************************************************************
 float local::test_imag(bool& result_is_ok)
 {
-  using mp_complex_values_array_type        = std::array<mp::complex<mp::mp_cpp>, static_cast<std::size_t>(UINT8_C(6))>;
+  using mp_complex_values_array_type        = std::array<mp::complex<mp::mp_cpp>, static_cast<std::size_t>(UINT8_C(7))>;
   using mp_complex_values_ctrl_strings_type = std::array<complex_strings_pair, std::tuple_size<mp_complex_values_array_type>::value>;
 
   const auto mp_complex_values_ctrl_strings =
     mp_complex_values_ctrl_strings_type
     {
       complex_strings_pair { std::string("7062652563059397884458909683e-01"), std::string("5964198535394629780309194467e-02") },
+      complex_strings_pair { std::string("0420388473598197877084552551e-16"), std::string("6723794143102270000172377296e-16") },
       complex_strings_pair { std::string("4048577319642457086365375268e+00"), std::string("5639809266248545375073278611e+00") },
       complex_strings_pair { std::string("2715964707859525004249772254e+03"), std::string("7657027474486443190971299319e+01") },
       complex_strings_pair { std::string("7855237294569533539406160330e+00"), std::string("8569705518774451157628892749e-01") },
@@ -138,6 +139,8 @@ float local::test_imag(bool& result_is_ok)
 
   const mp::complex<mp::mp_cpp> z(seven_point_two, three_point_one);
 
+  const mp::complex<mp::mp_cpp> one_over_z = mp::one() / z;
+
   result_is_ok = true;
 
   // Execute the complex-valued test functions and measure the timing.
@@ -146,12 +149,13 @@ float local::test_imag(bool& result_is_ok)
   const mp_complex_values_array_type
     mp_complex_values
     {
-      mp::one() / z,                             // N[Re[1/((72/10) + ((31 I)/10))],     10002] (Use Im instead or Re to obtain the imaginary part).
-      sin(z),                                    // N[Re[Sin[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
-      exp(z),                                    // N[Re[Exp[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
-      log(z),                                    // N[Re[Log[(72/10) + ((31 I)/10)],     10002] (Use Im instead or Re to obtain the imaginary part).
-      acosh(z),                                  // N[Re[ArcCosh[(72/10) + ((31 I)/10)], 10002] (Use Im instead or Re to obtain the imaginary part).
-      sinh(z)                                    // N[Re[Sinh[(72/10) + ((31 I)/10)],    10002] (Use Im instead or Re to obtain the imaginary part).
+      one_over_z,   // N[Re[1/((72/10) + ((31 I)/10))],     10002] (Use Im instead of Re to obtain the imaginary part).
+      pow(z, -17),  // N[Re[(((72/10) + ((31 I)/10)))^-17], 10002] (Use Im instead of Re to obtain the imaginary part).
+      sin(z),       // N[Re[Sin[(72/10) + ((31 I)/10)],     10002] (Use Im instead of Re to obtain the imaginary part).
+      exp(z),       // N[Re[Exp[(72/10) + ((31 I)/10)],     10002] (Use Im instead of Re to obtain the imaginary part).
+      log(z),       // N[Re[Log[(72/10) + ((31 I)/10)],     10002] (Use Im instead of Re to obtain the imaginary part).
+      acosh(z),     // N[Re[ArcCosh[(72/10) + ((31 I)/10)], 10002] (Use Im instead of Re to obtain the imaginary part).
+      sinh(z)       // N[Re[Sinh[(72/10) + ((31 I)/10)],    10002] (Use Im instead of Re to obtain the imaginary part).
     };
 
   const auto elapsed_time = static_cast<float>(static_cast<float>(std::clock() - start) / CLOCKS_PER_SEC);

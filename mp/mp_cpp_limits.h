@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,14 +13,14 @@
 // Author      : Christopher Kormanyos
 // Owner       : Christopher Kormanyos
 // 
-// Date        : 1999 - 2019
+// Date        : 1999 - 2023
 // 
 // Description : Specialization of std::numeric_limits<mp_cpp> for multiple precision math
 // 
 // *****************************************************************************
 
-#ifndef MP_CPP_LIMITS_2019_02_16_H_
-  #define MP_CPP_LIMITS_2019_02_16_H_
+#ifndef MP_CPP_LIMITS_2019_02_16_H
+  #define MP_CPP_LIMITS_2019_02_16_H
 
   #include <cstdint>
   #include <limits>
@@ -70,4 +70,4 @@
     };
   } // namespace std
 
-#endif // MP_CPP_LIMITS_2019_02_16_H_
+#endif // MP_CPP_LIMITS_2019_02_16_H

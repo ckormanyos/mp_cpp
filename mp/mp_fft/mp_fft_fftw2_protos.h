@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
+//  Copyright Christopher Kormanyos 1999 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MP_FFT_FFTW2_PROTOS_2011_06_16_H_
-  #define MP_FFT_FFTW2_PROTOS_2011_06_16_H_
+#ifndef MP_FFT_FFTW2_PROTOS_2011_06_16_H
+  #define MP_FFT_FFTW2_PROTOS_2011_06_16_H
 
   extern "C"
   {
@@ -221,4 +221,4 @@
     #define FFTW_USE_WISDOM   (16)
   }
 
-#endif // MP_FFT_FFTW2_PROTOS_2011_06_16_H_
+#endif // MP_FFT_FFTW2_PROTOS_2011_06_16_H
