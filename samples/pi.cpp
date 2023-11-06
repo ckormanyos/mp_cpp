@@ -209,18 +209,18 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
      << local_pi::my_pi(false);
 
   // Extract the string value of pi.
-  const std::string str_pi(ss.str());
+  const std::string str_val(ss.str());
 
-  const auto result_str_pi_head_is_ok = (str_pi.find("3.1415926535") != std::string::npos);
+  const auto result_str_val_head_is_ok = (str_val.find("3.1415926535") != std::string::npos);
 
-  const auto result_str_pi_tail_is_ok =
+  const auto result_str_val_tail_is_ok =
   (
     (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
-      ? (str_pi.rfind("5779458151") != std::string::npos)
+      ? (str_val.rfind("5779458151") != std::string::npos)
       : true
   );
 
-  const auto result_str_pi_is_ok = (result_str_pi_head_is_ok && result_str_pi_tail_is_ok);
+  const auto result_str_val_is_ok = (result_str_val_head_is_ok && result_str_val_tail_is_ok);
 
   // Print pi using the following paramater-tunable format.
 
@@ -232,8 +232,6 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
   const char* char_set_separator   = " ";
   const char* char_group_separator = "\n";
-  //const char* char_set_separator   = "";
-  //const char* char_group_separator = "";
 
   const std::size_t digits_per_set   = 10U;
   const std::size_t digits_per_line  = digits_per_set * 10U;
@@ -257,9 +255,9 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
   std::string::size_type pos;
 
-  if(   ((pos = str_pi.find('3', 0U)) != std::string::npos)
-     && ((pos = str_pi.find('.', 1U)) != std::string::npos)
-     && ((pos = str_pi.find('1', 1U)) != std::string::npos))
+  if(   ((pos = str_val.find('3', 0U)) != std::string::npos)
+     && ((pos = str_val.find('.', 1U)) != std::string::npos)
+     && ((pos = str_val.find('1', 1U)) != std::string::npos))
   {
     ;
   }
@@ -268,7 +266,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
     pos = 0U;
   }
 
-  os << "pi = " << str_pi.substr(0U, pos);
+  os << "pi = " << str_val.substr(0U, pos);
 
   const std::size_t digit_offset = pos;
 
@@ -281,7 +279,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   while(all_output_streaming_is_finished == false)
   {
     // Print a set of digits (i.e. having 10 digits per set).
-    const std::string str_pi_substring(str_pi.substr(pos, digits_per_set));
+    const std::string str_pi_substring(str_val.substr(pos, digits_per_set));
 
     os << str_pi_substring << char_set_separator;
 
@@ -291,7 +289,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
     const std::size_t number_of_digits(pos - digit_offset);
 
     // Check if all output streaming is finished.
-    all_output_streaming_is_finished = (pos >= str_pi.length());
+    all_output_streaming_is_finished = (pos >= str_val.length());
 
     if(all_output_streaming_is_finished)
     {
@@ -327,5 +325,5 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
     }
   }
 
-  return result_str_pi_is_ok;
+  return result_str_val_is_ok;
 }

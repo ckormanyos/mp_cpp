@@ -32,8 +32,10 @@ jobs:
           make STD=${{ matrix.standard }} --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
+          echo grep the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
           ./unix/ln2.exe
+          echo grep the millionth tail digits of ln2
           grep '6808836542' ./unix/ln2.out
           ./unix/test.exe
   gcc-native-sanitize:
@@ -55,6 +57,7 @@ jobs:
           make STD=${{ matrix.standard }} SANITIZE=1 --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
+          echo grep the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
           ./unix/test.exe
   macos-native:
@@ -73,8 +76,10 @@ jobs:
           make STD=${{ matrix.standard }} --jobs=8 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
           ./unix/pi.exe
+          echo grep the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
           ./unix/ln2.exe
+          echo grep the millionth tail digits of ln2
           grep '6808836542' ./unix/ln2.out
           ./unix/test.exe
   msvc-release-x64:

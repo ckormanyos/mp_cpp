@@ -157,7 +157,7 @@ bool samples::ln2(const int argc, const char* argv[])
 void local::print_timing_report(std::ostream& os, const double time_for_calculation)
 {
   os << std::endl
-     << "Time for pi calculation: "
+     << "Time for ln2 calculation: "
      << std::numeric_limits<mp::mp_cpp>::digits10
      << " digits in "
      << std::setprecision(4)
@@ -186,20 +186,20 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
      << local::my_ln2(false);
 
   // Extract the string value of ln2.
-  const std::string str_pi(ss.str());
+  const std::string str_val(ss.str());
 
-  const auto result_str_pi_head_is_ok = (str_pi.find("0.693147180") != std::string::npos);
+  const auto result_str_val_head_is_ok = (str_val.find("0.693147180") != std::string::npos);
 
-  const auto result_str_pi_tail_is_ok =
+  const auto result_str_val_tail_is_ok =
   (
     (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
-      ? (str_pi.rfind("6808836542") != std::string::npos)
+      ? (str_val.rfind("6808836542") != std::string::npos)
       : true
   );
 
-  const auto result_str_pi_is_ok = (result_str_pi_head_is_ok && result_str_pi_tail_is_ok);
+  const auto result_str_val_is_ok = (result_str_val_head_is_ok && result_str_val_tail_is_ok);
 
-  // Print pi using the following paramater-tunable format.
+  // Print ln2 using the following paramater-tunable format.
 
   // ln2 = 0.6931471805 5994530941 7232121458 1765680755 0013436025 : 50
   //         5254120680 0094933936 2196969471 5605863326 9964186875 : 100
@@ -209,8 +209,6 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
 
   const char* char_set_separator   = " ";
   const char* char_group_separator = "\n";
-  //const char* char_set_separator   = "";
-  //const char* char_group_separator = "";
 
   const std::size_t digits_per_set   = 10U;
   const std::size_t digits_per_line  = digits_per_set * 10U;
@@ -229,14 +227,14 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
   // For a simple verification of 1,000,000 digits,
   // for example, go to Wolfram Alpha and ask:
   //   1000000th digit of Pi.
-  // This prints out 50 digits of pi in the neighborhood
+  // This prints out 50 digits of ln2 in the neighborhood
   // of a million digits, with the millionth digit in bold.
 
   std::string::size_type pos;
 
-  if(   ((pos = str_pi.find('3', 0U)) != std::string::npos)
-     && ((pos = str_pi.find('.', 1U)) != std::string::npos)
-     && ((pos = str_pi.find('1', 1U)) != std::string::npos))
+  if(   ((pos = str_val.find('0', 0U)) != std::string::npos)
+     && ((pos = str_val.find('.', 1U)) != std::string::npos)
+     && ((pos = str_val.find('6', 1U)) != std::string::npos))
   {
     ;
   }
@@ -245,7 +243,7 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
     pos = 0U;
   }
 
-  os << "pi = " << str_pi.substr(0U, pos);
+  os << "ln2 = " << str_val.substr(0U, pos);
 
   const std::size_t digit_offset = pos;
 
@@ -258,7 +256,7 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
   while(all_output_streaming_is_finished == false)
   {
     // Print a set of digits (i.e. having 10 digits per set).
-    const std::string str_pi_substring(str_pi.substr(pos, digits_per_set));
+    const std::string str_pi_substring(str_val.substr(pos, digits_per_set));
 
     os << str_pi_substring << char_set_separator;
 
@@ -268,7 +266,7 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
     const std::size_t number_of_digits(pos - digit_offset);
 
     // Check if all output streaming is finished.
-    all_output_streaming_is_finished = (pos >= str_pi.length());
+    all_output_streaming_is_finished = (pos >= str_val.length());
 
     if(all_output_streaming_is_finished)
     {
@@ -304,5 +302,5 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
     }
   }
 
-  return result_str_pi_is_ok;
+  return result_str_val_is_ok;
 }
