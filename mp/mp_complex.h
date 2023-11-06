@@ -687,9 +687,9 @@
     public:
       typedef long double value_type;
 
-      EXTENDED_COMPLEX_CONSTEXPR complex(long double my_x = (long double()),
-                                         long double my_y = (long double())) : my_re(my_x),
-                                                                               my_im(my_y) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(value_type my_x = (value_type()),
+                                         value_type my_y = (value_type())) : my_re(my_x),
+                                                                             my_im(my_y) { }
 
       EXTENDED_COMPLEX_CONSTEXPR complex(const complex<float>& my_f) : my_re(static_cast<long double>(my_f.real())),
                                                                        my_im(static_cast<long double>(my_f.imag())) { }
