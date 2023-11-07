@@ -40,85 +40,85 @@
       using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
       // Constructors.
-      explicit fixed_length_dynamic_array_from_scratch(const size_type __other_count)
-        : __my_count(__other_count),
-          __my_elems(allocator_type().allocate(__my_count))
+      explicit fixed_length_dynamic_array_from_scratch(const size_type other_count)
+        : my_count(other_count),
+          my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xfill(__my_elems,
-                      __my_elems + __my_count,
+        xutils::xfill(my_elems,
+                      my_elems + my_count,
                       value_type());
       }
 
-      fixed_length_dynamic_array_from_scratch(const size_type __other_count,
-                                              const value_type& __init_value)
-        : __my_count(__other_count),
-          __my_elems(allocator_type().allocate(__my_count))
+      fixed_length_dynamic_array_from_scratch(const size_type other_count,
+                                              const value_type& init_value)
+        : my_count(other_count),
+          my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xfill(__my_elems,
-                      __my_elems + __my_count,
-                      __init_value);
+        xutils::xfill(my_elems,
+                      my_elems + my_count,
+                      init_value);
       }
 
-      fixed_length_dynamic_array_from_scratch(const size_type __other_count,
-                                              const value_type& __init_value,
-                                              const allocator_type& __other_alloc)
-        : __my_count(__other_count),
-          __my_elems(allocator_type(__other_alloc).allocate(__my_count))
+      fixed_length_dynamic_array_from_scratch(const size_type other_count,
+                                              const value_type& init_value,
+                                              const allocator_type& other_alloc)
+        : my_count(other_count),
+          my_elems(allocator_type(other_alloc).allocate(my_count))
       {
-        xutils::xfill(__my_elems,
-                      __my_elems + __my_count,
-                      __init_value);
+        xutils::xfill(my_elems,
+                      my_elems + my_count,
+                      init_value);
       }
 
-      fixed_length_dynamic_array_from_scratch(const fixed_length_dynamic_array_from_scratch& __other_array)
-        : __my_count(__other_array.__my_count),
-          __my_elems(allocator_type().allocate(__other_array.__my_count))
+      fixed_length_dynamic_array_from_scratch(const fixed_length_dynamic_array_from_scratch& other_array)
+        : my_count(other_array.my_count),
+          my_elems(allocator_type().allocate(other_array.my_count))
       {
-        const iterator __my_copy_result =
-          xutils::xcopy(__other_array.cbegin(),
-                        __other_array.cend(),
+        const iterator my_copy_result =
+          xutils::xcopy(other_array.cbegin(),
+                        other_array.cend(),
                         begin());
 
-        static_cast<void>(__my_copy_result);
+        static_cast<void>(my_copy_result);
       }
 
       // Move constructor.
-      fixed_length_dynamic_array_from_scratch(fixed_length_dynamic_array_from_scratch&& __other_array)
-        : __my_count( __other_array.__my_count),
-          __my_elems(&__other_array.__my_elems[0U]) { }
+      fixed_length_dynamic_array_from_scratch(fixed_length_dynamic_array_from_scratch&& other_array)
+        : my_count( other_array.my_count),
+          my_elems(&other_array.my_elems[0U]) { }
 
       // Constructor from initializer_list.
-      fixed_length_dynamic_array_from_scratch(std::initializer_list<value_type> __init_list,
-                                              const allocator_type& __other_alloc = allocator_type())
-        : __my_count(__init_list.size()),
-          __my_elems(allocator_type(__other_alloc).allocate(__init_list.size()))
+      fixed_length_dynamic_array_from_scratch(std::initializer_list<value_type> init_list,
+                                              const allocator_type& other_alloc = allocator_type())
+        : my_count(init_list.size()),
+          my_elems(allocator_type(other_alloc).allocate(init_list.size()))
       {
-        xutils::xcopy(__init_list.cbegin(),
-                      __init_list.cend(),
+        xutils::xcopy(init_list.cbegin(),
+                      init_list.cend(),
                       begin());
       }
 
       template<typename OtherIteratorType>
-      fixed_length_dynamic_array_from_scratch(OtherIteratorType __other_first,
-                                              OtherIteratorType __other_last)
-        : __my_count(__other_last - __other_first),
-          __my_elems(allocator_type().allocate(__my_count))
+      fixed_length_dynamic_array_from_scratch(OtherIteratorType other_first,
+                                              OtherIteratorType other_last)
+        : my_count(other_last - other_first),
+          my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xcopy(__other_first,
-                      __other_last,
-                      __my_elems);
+        xutils::xcopy(other_first,
+                      other_last,
+                      my_elems);
       }
 
       template<typename OtherIteratorType>
-      fixed_length_dynamic_array_from_scratch(OtherIteratorType __other_first,
-                                              OtherIteratorType __other_last,
-                                              const allocator_type& __other_alloc)
-        : __my_count(__other_last - __other_first),
-          __my_elems(allocator_type(__other_alloc).allocate(__my_count))
+      fixed_length_dynamic_array_from_scratch(OtherIteratorType other_first,
+                                              OtherIteratorType other_last,
+                                              const allocator_type& other_alloc)
+        : my_count(other_last - other_first),
+          my_elems(allocator_type(other_alloc).allocate(my_count))
       {
-        xutils::xcopy(__other_first,
-                      __other_last,
-                      __my_elems);
+        xutils::xcopy(other_first,
+                      other_last,
+                      my_elems);
       }
 
       // Destructor.
@@ -128,63 +128,63 @@
       }
 
       // Iterator access.
-      iterator        begin()       { return  __my_elems; }
-      const_iterator  begin() const { return  __my_elems; }
-      const_iterator cbegin() const { return  __my_elems; }
-      iterator        end  ()       { return (__my_elems + __my_count); }
-      const_iterator  end  () const { return (__my_elems + __my_count); }
-      const_iterator cend  () const { return (__my_elems + __my_count); }
+      iterator        begin()       { return  my_elems; }
+      const_iterator  begin() const { return  my_elems; }
+      const_iterator cbegin() const { return  my_elems; }
+      iterator        end  ()       { return (my_elems + my_count); }
+      const_iterator  end  () const { return (my_elems + my_count); }
+      const_iterator cend  () const { return (my_elems + my_count); }
 
-      reverse_iterator        rbegin()       { return reverse_iterator      (__my_elems + __my_count); }
-      const_reverse_iterator  rbegin() const { return const_reverse_iterator(__my_elems + __my_count); }
-      const_reverse_iterator crbegin() const { return const_reverse_iterator(__my_elems + __my_count); }
-      reverse_iterator         rend ()       { return reverse_iterator      (__my_elems); }
-      const_reverse_iterator   rend () const { return const_reverse_iterator(__my_elems); }
-      const_reverse_iterator  crend () const { return const_reverse_iterator(__my_elems); }
+      reverse_iterator        rbegin()       { return reverse_iterator      (my_elems + my_count); }
+      const_reverse_iterator  rbegin() const { return const_reverse_iterator(my_elems + my_count); }
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_elems + my_count); }
+      reverse_iterator         rend ()       { return reverse_iterator      (my_elems); }
+      const_reverse_iterator   rend () const { return const_reverse_iterator(my_elems); }
+      const_reverse_iterator  crend () const { return const_reverse_iterator(my_elems); }
 
       // Element random access methods, all without range check.
-      reference       operator[](const size_type __random_access_index)       { return __my_elems[__random_access_index]; }
-      const_reference operator[](const size_type __random_access_index) const { return __my_elems[__random_access_index]; }
+      reference       operator[](const size_type random_access_index)       { return my_elems[random_access_index]; }
+      const_reference operator[](const size_type random_access_index) const { return my_elems[random_access_index]; }
 
-      reference       at(const size_type __random_access_index)       { return __my_elems[__random_access_index]; }
-      const_reference at(const size_type __random_access_index) const { return __my_elems[__random_access_index]; }
+      reference       at(const size_type random_access_index)       { return my_elems[random_access_index]; }
+      const_reference at(const size_type random_access_index) const { return my_elems[random_access_index]; }
 
       // Front and back functions.
-      reference       front()       { return __my_elems[0U]; }
-      const_reference front() const { return __my_elems[0U]; }
-      reference       back ()       { return __my_elems[__my_count - 1U]; }
-      const_reference back () const { return __my_elems[__my_count - 1U]; }
+      reference       front()       { return my_elems[0U]; }
+      const_reference front() const { return my_elems[0U]; }
+      reference       back ()       { return my_elems[my_count - 1U]; }
+      const_reference back () const { return my_elems[my_count - 1U]; }
 
       // Size functions. (The size is constant.)
-      size_type   size    () const { return __my_count; }
+      size_type   size    () const { return my_count; }
       static bool empty   ()       { return false; }
-      size_type   max_size() const { return __my_count; }
+      size_type   max_size() const { return my_count; }
 
       // Swap with linear complexity.
-      void swap(fixed_length_dynamic_array_from_scratch& __other_array)
+      void swap(fixed_length_dynamic_array_from_scratch& other_array)
       {
-        if(this != &__other_array)
+        if(this != &other_array)
         {
-          const iterator __my_swap_result =
+          const iterator my_swap_result =
             xutils::xswap_ranges(begin(),
                                  end(),
-                                 __other_array.begin());
+                                 other_array.begin());
 
-          static_cast<void>(__my_swap_result);
+          static_cast<void>(my_swap_result);
         }
       }
 
       // Assignment.
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch& __other_array)
+      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch& other_array)
       {
-        if(this != &__other_array)
+        if(this != &other_array)
         {
-          const iterator __my_copy_result =
-            xutils::xcopy(__other_array.cbegin(),
-                          __other_array.cend(),
+          const iterator my_copy_result =
+            xutils::xcopy(other_array.cbegin(),
+                          other_array.cend(),
                           begin());
 
-          static_cast<void>(__my_copy_result);
+          static_cast<void>(my_copy_result);
         }
 
         return *this;
@@ -192,29 +192,29 @@
 
       // Assignment with type conversion.
       template<typename OtherValueType>
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& __other_array)
+      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& other_array)
       {
-        const iterator __my_copy_result =
-          xutils::xcopy(__other_array.cbegin(),
-                        __other_array.cend(),
+        const iterator my_copy_result =
+          xutils::xcopy(other_array.cbegin(),
+                        other_array.cend(),
                         begin());
 
-        static_cast<void>(__my_copy_result);
+        static_cast<void>(my_copy_result);
 
         return *this;
       }
 
       // Assign a single value to all elements.
-      void assign(const value_type& __value_fill)
+      void assign(const value_type& value_fill)
       {
-        xutils::xfill(__my_elems,
-                      __my_elems + __my_count,
-                      __value_fill);
+        xutils::xfill(my_elems,
+                      my_elems + my_count,
+                      value_fill);
       }
 
     private:
-      const size_type __my_count;
-      pointer         __my_elems;
+      const size_type my_count;
+      pointer         my_elems;
 
       // Since the size of fixed_length_dynamic_array_from_scratch must be
       // known at construction time, the following constructors
