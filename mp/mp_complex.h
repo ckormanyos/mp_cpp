@@ -2391,7 +2391,7 @@
       }
       else if(my_it_regex_match == my_regexes.cbegin())
       {
-        // The input matches __the_regexes[0U], corresponding to the form (u,v).
+        // The input matches my_regexes[0U], corresponding to the form (u,v).
         // This represents a complex number real and imaginary parts.
 
         // Rule out erroneous match of invalid mantissa or exponent parts.

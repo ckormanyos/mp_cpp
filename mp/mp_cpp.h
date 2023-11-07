@@ -587,38 +587,38 @@
 
     // I/O stream operators.
     template<typename char_type, typename traits_type>
-    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& __my_istream, mp_cpp& __my_x)
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, mp_cpp& my_x)
     {
-      std::string __my_str;
+      std::string my_str;
 
-      __my_istream >> __my_str;
+      my_istream >> my_str;
 
-      __my_x.read_string(__my_str.c_str());
+      my_x.read_string(my_str.c_str());
 
-      return __my_istream;
+      return my_istream;
     }
 
     template<class char_type, class traits_type>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& __my_ostream, const mp_cpp& __my_x)
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const mp_cpp& my_x)
     {
-      std::basic_ostringstream<char_type, traits_type> __my_tmp_ostream;
+      std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
-      __my_tmp_ostream.flags    (__my_ostream.flags());
-      __my_tmp_ostream.imbue    (__my_ostream.getloc());
-      __my_tmp_ostream.precision(__my_ostream.precision());
+      my_tmp_ostream.flags    (my_ostream.flags());
+      my_tmp_ostream.imbue    (my_ostream.getloc());
+      my_tmp_ostream.precision(my_ostream.precision());
 
-      std::string __my_str;
+      std::string my_str;
 
       const bool write_result =
-        __my_x.write_string(__my_str,
-                            __my_tmp_ostream.precision(),
-                            __my_tmp_ostream.flags());
+        my_x.write_string(my_str,
+                            my_tmp_ostream.precision(),
+                            my_tmp_ostream.flags());
 
       static_cast<void>(write_result);
 
-      __my_tmp_ostream << __my_str;
+      my_tmp_ostream << my_str;
 
-      return (__my_ostream << __my_tmp_ostream.str());
+      return (my_ostream << my_tmp_ostream.str());
     }
 
     // Multiple precision elementary and transcendental functions.
