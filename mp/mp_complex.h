@@ -43,6 +43,8 @@
   #include <string>
   #endif
 
+  #include <type_traits>
+
   #if defined(_MSC_VER) && (_MSC_VER <= 1800)
     #define EXTENDED_COMPLEX_CONSTEXPR
   #else
@@ -53,138 +55,110 @@
   #include <mp/mp_detail.h>
   #include <mp/mp_detail_pown_template.h>
 
-  // Make a separate complex class for mp::complex<mp::mp_cpp>.
-
-  // Even though there exists a generic std::complex<T>,
-  // the C++ specification paragraph 26.2/2 indicates:
-  // "The effect of instantiating the template complex
-  // for any type other than float, double or long double
-  // is unspecified".
-
-  // A separate template class and corresponding template
-  // specializations are, therefore, needed for mp::mp_cpp.
-
-  // Also include template specializations for both built-in
-  // float, double and long double as well as mp::mp_cpp.
-
-  // The result of this file is:
-  //   mp::complex<float>
-  //   mp::complex<double>
-  //   mp::complex<long double>
-  //   mp::complex<mp::mp_cpp>,
-
-  // ... and these are intended to behave like std::complex<T>.
-
   namespace mp
   {
     // Forward declarations.
 
-    // Class template extended_complex::complex<T>.
+    // Class template extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.2.
 
-    template<typename T>
+    template<typename T, typename EnableType = void>
     class complex;
 
-    // Class template specializations of extended_complex::complex<T>.
+    // Class template specializations of extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.3.
 
-    template<>
-    class complex<float>;
+    template<typename T>
+    class complex<T, typename std::enable_if<std::is_floating_point<T>::value>::type>;
 
-    template<>
-    class complex<double>;
-
-    template<>
-    class complex<long double>;
-
-    // Non-member operations for extended_complex::complex<T>.
+    // Non-member operations for extended_complex::complex<T, EnableType>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<typename T> complex<T> operator+(const complex<T>&);
-    template<typename T> complex<T> operator-(const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator+(const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator-(const complex<T, EnableType>&);
 
     // Global add, sub, mul, div operators.
-    template<typename T> complex<T> operator+(const complex<T>&, const complex<T>&);
-    template<typename T> complex<T> operator-(const complex<T>&, const complex<T>&);
-    template<typename T> complex<T> operator*(const complex<T>&, const complex<T>&);
-    template<typename T> complex<T> operator/(const complex<T>&, const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator+(const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator-(const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator*(const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator/(const complex<T, EnableType>&, const complex<T, EnableType>&);
 
-    template<typename T> complex<T> operator+(const complex<T>&, const T&);
-    template<typename T> complex<T> operator-(const complex<T>&, const T&);
-    template<typename T> complex<T> operator*(const complex<T>&, const T&);
-    template<typename T> complex<T> operator/(const complex<T>&, const T&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator+(const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator-(const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator*(const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator/(const complex<T, EnableType>&, const T&);
 
-    template<typename T> complex<T> operator+(const T&, const complex<T>&);
-    template<typename T> complex<T> operator-(const T&, const complex<T>&);
-    template<typename T> complex<T> operator*(const T&, const complex<T>&);
-    template<typename T> complex<T> operator/(const T&, const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator+(const T&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator-(const T&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator*(const T&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> operator/(const T&, const complex<T, EnableType>&);
 
     // Equality and inequality operators.
-    template<typename T> bool operator==(const complex<T>&, const complex<T>&);
-    template<typename T> bool operator==(const complex<T>&, const T&);
-    template<typename T> bool operator==(const T&,          const complex<T>&);
+    template<typename T, typename EnableType = void> bool operator==(const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> bool operator==(const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> bool operator==(const T&,          const complex<T, EnableType>&);
 
-    template<typename T> bool operator!=(const complex<T>&, const complex<T>&);
-    template<typename T> bool operator!=(const complex<T>&, const T&);
-    template<typename T> bool operator!=(const T&,          const complex<T>&);
+    template<typename T, typename EnableType = void> bool operator!=(const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> bool operator!=(const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> bool operator!=(const T&,          const complex<T, EnableType>&);
 
     #if !defined(EXTENDED_COMPLEX_DISABLE_IOSTREAM)
 
     // I/O stream operators.
-    template<typename T, typename char_type, typename traits_type>
-    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, complex<T>&);
+    template<typename T, typename char_type, typename traits_type, typename EnableType = void>
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, complex<T, EnableType>&);
 
-    template<typename T, typename char_type, typename traits_type>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<T>&);
+    template<typename T, typename char_type, typename traits_type, typename EnableType = void>
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<T, EnableType>&);
 
     #endif // !EXTENDED_COMPLEX_DISABLE_IOSTREAM
 
-    // Value operations for extended_complex::complex<T>.
+    // Value operations for extended_complex::complex<T, EnableType>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.7.
 
-    template<typename T> T          real (const complex<T>&);
-    template<typename T> T          imag (const complex<T>&);
+    template<typename T, typename EnableType = void> T          real (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> T          imag (const complex<T, EnableType>&);
 
-    template<typename T> T          abs  (const complex<T>&);
-    template<typename T> T          arg  (const complex<T>&);
-    template<typename T> T          norm (const complex<T>&);
+    template<typename T, typename EnableType = void> T          abs  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> T          arg  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> T          norm (const complex<T, EnableType>&);
 
-    template<typename T> complex<T> conj (const complex<T>&);
-    template<typename T> complex<T> proj (const complex<T>&);
-    template<typename T> complex<T> polar(const T&, const T& = T(0U));
+    template<typename T, typename EnableType = void> complex<T, EnableType> conj (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> proj (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> polar(const T&, const T& = T(0U));
 
-    // Elementary transcendental functions for extended_complex::complex<T>.
+    // Elementary transcendental functions for extended_complex::complex<T, EnableType>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.8.
 
-    template<typename T> complex<T> acos (const complex<T>&);
-    template<typename T> complex<T> asin (const complex<T>&);
-    template<typename T> complex<T> atan (const complex<T>&);
-    template<typename T> complex<T> asinh(const complex<T>&);
-    template<typename T> complex<T> acosh(const complex<T>&);
-    template<typename T> complex<T> atanh(const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> acos (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> asin (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> atan (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> asinh(const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> acosh(const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> atanh(const complex<T, EnableType>&);
 
-    template<typename T> complex<T> cos  (const complex<T>&);
-    template<typename T> complex<T> cosh (const complex<T>&);
-    template<typename T> complex<T> exp  (const complex<T>&);
-    template<typename T> complex<T> log  (const complex<T>&);
-    template<typename T> complex<T> log10(const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> cos  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> cosh (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> exp  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> log  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> log10(const complex<T, EnableType>&);
 
-    template<typename T> complex<T> pow  (const complex<T>&, int);
-    template<typename T> complex<T> pow  (const complex<T>&, const T&);
-    template<typename T> complex<T> pow  (const complex<T>&, const complex<T>&);
-    template<typename T> complex<T> pow  (const T&, const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> pow  (const complex<T, EnableType>&, int);
+    template<typename T, typename EnableType = void> complex<T, EnableType> pow  (const complex<T, EnableType>&, const T&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> pow  (const complex<T, EnableType>&, const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> pow  (const T&, const complex<T, EnableType>&);
 
-    template<typename T> complex<T> sin  (const complex<T>&);
-    template<typename T> complex<T> sinh (const complex<T>&);
-    template<typename T> complex<T> sqrt (const complex<T>&);
-    template<typename T> complex<T> tan  (const complex<T>&);
-    template<typename T> complex<T> tanh (const complex<T>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> sin  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> sinh (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> sqrt (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> tan  (const complex<T, EnableType>&);
+    template<typename T, typename EnableType = void> complex<T, EnableType> tanh (const complex<T, EnableType>&);
 
-    // Class template extended_complex::complex<T>.
+    // Class template extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.2.
 
-    template<typename T>
+    template<typename T, typename EnableType>
     class complex
     {
     public:
@@ -353,29 +327,33 @@
     };
 
 
-    // Specialization of class template extended_complex::complex<float>.
+    // Specialization of class template extended_complex::complex<>
+    // for built-in floating-point types.
     // See also ISO/IEC 14882:2011 Sect. 26.4.3.
 
-    template<>
-    class complex<float>
+    template<typename T>
+    class complex<T, typename std::enable_if<std::is_floating_point<T>::value>::type>
     {
     public:
-      typedef float value_type;
+      using value_type = T;
 
-      EXTENDED_COMPLEX_CONSTEXPR complex(float my_x = float(),
-                                         float my_y = float()) : my_re(my_x),
-                                                                 my_im(my_y) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(value_type my_x = value_type(),
+                                         value_type my_y = value_type()) : my_re(my_x),
+                                                                           my_im(my_y) { }
 
-      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<double>&);
-      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<long double>&);
+      template<typename OtherFloatingPointType>
+      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<OtherFloatingPointType>& other,
+                                                  const typename std::enable_if<std::is_floating_point<OtherFloatingPointType>::value && (sizeof(OtherFloatingPointType) >= sizeof(value_type))>::type* = nullptr)
+        : my_re(static_cast<value_type>(other.my_re)),
+          my_im(static_cast<value_type>(other.my_im)) { }
 
-      EXTENDED_COMPLEX_CONSTEXPR float real() const { return my_re; }
-      EXTENDED_COMPLEX_CONSTEXPR float imag() const { return my_im; }
+      EXTENDED_COMPLEX_CONSTEXPR value_type real() const { return my_re; }
+      EXTENDED_COMPLEX_CONSTEXPR value_type imag() const { return my_im; }
 
-      void real(float my_x) { my_re = my_x; }
-      void imag(float my_y) { my_im = my_y; }
+      void real(value_type my_x) { my_re = my_x; }
+      void imag(value_type my_y) { my_im = my_y; }
 
-      complex& operator=(float my_other_x)
+      complex& operator=(value_type my_other_x)
       {
         my_re = my_other_x;
         my_im = 0.0F;
@@ -383,21 +361,21 @@
         return *this;
       }
 
-      complex& operator+=(float my_x)
+      complex& operator+=(value_type my_x)
       {
         my_re += my_x;
 
         return *this;
       }
 
-      complex& operator-=(float my_x)
+      complex& operator-=(value_type my_x)
       {
         my_re -= my_x;
 
         return *this;
       }
 
-      complex& operator*=(float my_x)
+      complex& operator*=(value_type my_x)
       {
         my_re *= my_x;
         my_im *= my_x;
@@ -405,7 +383,7 @@
         return *this;
       }
 
-      complex& operator/=(float my_x)
+      complex& operator/=(value_type my_x)
       {
         my_re /= my_x;
         my_im /= my_x;
@@ -427,8 +405,8 @@
       template<typename X>
       complex& operator=(const complex<X>& my_other_z)
       {
-        my_re = static_cast<float>(my_other_z.my_re);
-        my_im = static_cast<float>(my_other_z.my_im);
+        my_re = static_cast<value_type>(my_other_z.my_re);
+        my_im = static_cast<value_type>(my_other_z.my_im);
 
         return *this;
       }
@@ -436,8 +414,8 @@
       template<typename X>
       complex& operator+=(const complex<X>& my_z)
       {
-        my_re += static_cast<float>(my_z.my_re);
-        my_im += static_cast<float>(my_z.my_im);
+        my_re += static_cast<value_type>(my_z.my_re);
+        my_im += static_cast<value_type>(my_z.my_im);
 
         return *this;
       }
@@ -445,8 +423,8 @@
       template<typename X>
       complex& operator-=(const complex<X>& my_z)
       {
-        my_re -= static_cast<float>(my_z.my_re);
-        my_im -= static_cast<float>(my_z.my_im);
+        my_re -= static_cast<value_type>(my_z.my_re);
+        my_im -= static_cast<value_type>(my_z.my_im);
 
         return *this;
       }
@@ -454,7 +432,7 @@
       template<typename X>
       complex& operator*=(const complex<X>& my_z)
       {
-        const float tmp_re(my_re);
+        const value_type tmp_re(my_re);
 
         if(this == &my_z)
         {
@@ -484,22 +462,22 @@
 
           if(fabs(my_z.real()) < fabs(my_z.imag()))
           {
-            const float my_c_over_d = my_z.real() / my_z.imag();
+            const value_type my_c_over_d = my_z.real() / my_z.imag();
 
-            const float my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
+            const value_type my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
 
-            const float my_tmp_re(my_re);
+            const value_type my_tmp_re(my_re);
 
             real(((my_tmp_re * my_c_over_d) + my_im)     / my_denominator);
             imag(((my_im     * my_c_over_d) - my_tmp_re) / my_denominator);
           }
           else
           {
-            const float my_d_over_c = my_z.imag() / my_z.real();
+            const value_type my_d_over_c = my_z.imag() / my_z.real();
 
-            const float my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
+            const value_type my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
 
-            const float my_tmp_re(my_re);
+            const value_type my_tmp_re(my_re);
 
             real((( my_im     * my_d_over_c) + my_tmp_re) / my_denominator);
             imag(((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator);
@@ -510,367 +488,32 @@
       }
 
     private:
-      float my_re;
-      float my_im;
+      value_type my_re;
+      value_type my_im;
     };
 
-
-    // Specialization of class template extended_complex::complex<double>.
-    // See also ISO/IEC 14882:2011 Sect. 26.4.3.
-
-    template<>
-    class complex<double>
-    {
-    public:
-      typedef double value_type;
-
-      EXTENDED_COMPLEX_CONSTEXPR complex(double my_x = double(),
-                                         double my_y = double()) : my_re(my_x),
-                                                                   my_im(my_y) { }
-
-      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<float>& my_f) : my_re(double(my_f.real())),
-                                                                       my_im(double(my_f.imag())) { }
-
-      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<long double>&);
-
-      EXTENDED_COMPLEX_CONSTEXPR double real() const { return my_re; }
-      EXTENDED_COMPLEX_CONSTEXPR double imag() const { return my_im; }
-
-      void real(double my_x) { my_re = my_x; }
-      void imag(double my_y) { my_im = my_y; }
-
-      complex& operator=(double my_other_x)
-      {
-        my_re = my_other_x;
-        my_im = 0.0;
-
-        return *this;
-      }
-
-      complex& operator+=(double my_x)
-      {
-        my_re += my_x;
-
-        return *this;
-      }
-
-      complex& operator-=(double my_x)
-      {
-        my_re -= my_x;
-
-        return *this;
-      }
-
-      complex& operator*=(double my_x)
-      {
-        my_re *= my_x;
-        my_im *= my_x;
-
-        return *this;
-      }
-
-      complex& operator/=(double my_x)
-      {
-        my_re /= my_x;
-        my_im /= my_x;
-
-        return *this;
-      }
-
-      complex& operator=(const complex& my_other_z)
-      {
-        if(this != &my_other_z)
-        {
-          my_re = my_other_z.my_re;
-          my_im = my_other_z.my_im;
-        }
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator=(const complex<X>& my_other_z)
-      {
-        my_re = static_cast<double>(my_other_z.my_re);
-        my_im = static_cast<double>(my_other_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator+=(const complex<X>& my_z)
-      {
-        my_re += static_cast<double>(my_z.my_re);
-        my_im += static_cast<double>(my_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator-=(const complex<X>& my_z)
-      {
-        my_re -= static_cast<double>(my_z.my_re);
-        my_im -= static_cast<double>(my_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator*=(const complex<X>& my_z)
-      {
-        const double tmp_re(my_re);
-
-        if(this == &my_z)
-        {
-          my_re = (tmp_re * tmp_re) - (my_im * my_im);
-          my_im = (tmp_re * my_im) * 2.0;
-        }
-        else
-        {
-          my_re = (tmp_re * my_z.my_re) - (my_im * my_z.my_im);
-          my_im = (tmp_re * my_z.my_im) + (my_im * my_z.my_re);
-        }
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator/=(const complex<X>& my_z)
-      {
-        if(this == &my_z)
-        {
-          my_re = 1.0;
-          my_im = 0.0;
-        }
-        else
-        {
-          using std::fabs;
-
-          if(fabs(my_z.real()) < fabs(my_z.imag()))
-          {
-            const double my_c_over_d = my_z.real() / my_z.imag();
-
-            const double my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
-
-            const double my_tmp_re(my_re);
-
-            real(((my_tmp_re * my_c_over_d) + my_im)     / my_denominator);
-            imag(((my_im     * my_c_over_d) - my_tmp_re) / my_denominator);
-          }
-          else
-          {
-            const double my_d_over_c = my_z.imag() / my_z.real();
-
-            const double my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
-
-            const double my_tmp_re(my_re);
-
-            real((( my_im     * my_d_over_c) + my_tmp_re) / my_denominator);
-            imag(((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator);
-          }
-        }
-
-        return *this;
-      }
-
-    private:
-      double my_re;
-      double my_im;
-    };
-
-    // Specialization of class template extended_complex::complex<long double>.
-    // See also ISO/IEC 14882:2011 Sect. 26.4.3.
-
-    template<>
-    class complex<long double>
-    {
-    public:
-      typedef long double value_type;
-
-      EXTENDED_COMPLEX_CONSTEXPR complex(value_type my_x = (value_type()),
-                                         value_type my_y = (value_type())) : my_re(my_x),
-                                                                             my_im(my_y) { }
-
-      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<float>& my_f) : my_re(static_cast<long double>(my_f.real())),
-                                                                       my_im(static_cast<long double>(my_f.imag())) { }
-
-      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<double>& my_d) : my_re(static_cast<long double>(my_d.real())),
-                                                                        my_im(static_cast<long double>(my_d.imag())) { }
-
-      EXTENDED_COMPLEX_CONSTEXPR long double real() const { return my_re; }
-      EXTENDED_COMPLEX_CONSTEXPR long double imag() const { return my_im; }
-
-      void real(long double my_x) { my_re = my_x; }
-      void imag(long double my_y) { my_im = my_y; }
-
-      complex& operator=(long double my_other_x)
-      {
-        my_re = my_other_x;
-        my_im = 0.0L;
-
-        return *this;
-      }
-
-      complex& operator+=(long double my_x)
-      {
-        my_re += my_x;
-
-        return *this;
-      }
-
-      complex& operator-=(long double my_x)
-      {
-        my_re -= my_x;
-
-        return *this;
-      }
-
-      complex& operator*=(long double my_x)
-      {
-        my_re *= my_x;
-        my_im *= my_x;
-
-        return *this;
-      }
-
-      complex& operator/=(long double my_x)
-      {
-        my_re /= my_x;
-        my_im /= my_x;
-
-        return *this;
-      }
-
-      complex& operator=(const complex& my_other_z)
-      {
-        if(this != &my_other_z)
-        {
-          my_re = my_other_z.my_re;
-          my_im = my_other_z.my_im;
-        }
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator=(const complex<X>& my_other_z)
-      {
-        my_re = static_cast<long double>(my_other_z.my_re);
-        my_im = static_cast<long double>(my_other_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator+=(const complex<X>& my_z)
-      {
-        my_re += static_cast<long double>(my_z.my_re);
-        my_im += static_cast<long double>(my_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator-=(const complex<X>& my_z)
-      {
-        my_re -= static_cast<long double>(my_z.my_re);
-        my_im -= static_cast<long double>(my_z.my_im);
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator*=(const complex<X>& my_z)
-      {
-        const long double tmp_re(my_re);
-
-        if(this == &my_z)
-        {
-          my_re = (tmp_re * tmp_re) - (my_im * my_im);
-          my_im = (tmp_re * my_im) * 2.0L;
-        }
-        else
-        {
-          my_re = (tmp_re * my_z.my_re) - (my_im * my_z.my_im);
-          my_im = (tmp_re * my_z.my_im) + (my_im * my_z.my_re);
-        }
-
-        return *this;
-      }
-
-      template<typename X>
-      complex& operator/=(const complex<X>& my_z)
-      {
-        if(this == &my_z)
-        {
-          my_re = 1.0L;
-          my_im = 0.0L;
-        }
-        else
-        {
-          using std::fabs;
-
-          if(fabs(my_z.real()) < fabs(my_z.imag()))
-          {
-            const long double my_c_over_d = my_z.real() / my_z.imag();
-
-            const long double my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
-
-            const long double my_tmp_re(my_re);
-
-            real(((my_tmp_re * my_c_over_d) + my_im)     / my_denominator);
-            imag(((my_im     * my_c_over_d) - my_tmp_re) / my_denominator);
-          }
-          else
-          {
-            const long double my_d_over_c = my_z.imag() / my_z.real();
-
-            const long double my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
-
-            const long double my_tmp_re(my_re);
-
-            real((( my_im     * my_d_over_c) + my_tmp_re) / my_denominator);
-            imag(((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator);
-          }
-        }
-
-        return *this;
-      }
-
-    private:
-      long double my_re;
-      long double my_im;
-    };
-
-    // These constructors are located here because they need to be
-    // implemented after the template specializations have been declared.
-
-    EXTENDED_COMPLEX_CONSTEXPR complex<float >::complex(const complex<double>&      my_d) : my_re(float (my_d.real())), my_im(float (my_d.imag())) { }
-    EXTENDED_COMPLEX_CONSTEXPR complex<float >::complex(const complex<long double>& my_l) : my_re(float (my_l.real())), my_im(float (my_l.imag())) { }
-    EXTENDED_COMPLEX_CONSTEXPR complex<double>::complex(const complex<long double>& my_l) : my_re(double(my_l.real())), my_im(double(my_l.imag())) { }
-
-    // Non-member operations for extended_complex::complex<T>.
+    // Non-member operations for extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<typename T> complex<T> operator+(const complex<T>& my_u) { return my_u; }
-    template<typename T> complex<T> operator-(const complex<T>& my_u) { return complex<T>(-my_u.real(), -my_u.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator+(const complex<T, EnableType>& my_u) { return my_u; }
+    template<typename T, typename EnableType> complex<T, EnableType> operator-(const complex<T, EnableType>& my_u) { return complex<T, EnableType>(-my_u.real(), -my_u.imag()); }
 
     // Global add, sub, mul, div operators.
-    template<typename T> complex<T> operator+(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator+(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) { return complex<T, EnableType>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator-(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) { return complex<T, EnableType>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
 
-    template<typename T> complex<T> operator*(const complex<T>& my_u, const complex<T>& my_v)
+    template<typename T, typename EnableType> complex<T, EnableType> operator*(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v)
     {
-      return complex<T>((my_u.real() * my_v.real()) - (my_u.imag() * my_v.imag()),
+      return complex<T, EnableType>((my_u.real() * my_v.real()) - (my_u.imag() * my_v.imag()),
                         (my_u.real() * my_v.imag()) + (my_u.imag() * my_v.real()));
     }
 
-    template<typename T> complex<T> operator/(const complex<T>& my_u, const complex<T>& my_v)
+    template<typename T, typename EnableType> complex<T, EnableType> operator/(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v)
     {
       using std::fabs;
 
-      complex<T> my_result;
+      complex<T, EnableType> my_result;
 
       if(fabs(my_v.real()) < fabs(my_v.imag()))
       {
@@ -878,7 +521,7 @@
 
         const T my_denominator = (my_v.real() * my_c_over_d) + my_v.imag();
 
-        my_result = complex<T>(((my_u.real() * my_c_over_d) + my_u.imag()) / my_denominator,
+        my_result = complex<T, EnableType>(((my_u.real() * my_c_over_d) + my_u.imag()) / my_denominator,
                                ((my_u.imag() * my_c_over_d) - my_u.real()) / my_denominator);
       }
       else
@@ -887,27 +530,27 @@
 
         const T my_denominator = (my_v.imag() * my_d_over_c) + my_v.real();
 
-        my_result = complex<T>((( my_u.imag() * my_d_over_c) + my_u.real()) / my_denominator,
+        my_result = complex<T, EnableType>((( my_u.imag() * my_d_over_c) + my_u.real()) / my_denominator,
                                ((-my_u.real() * my_d_over_c) + my_u.imag()) / my_denominator);
       }
 
       return my_result;
     }
 
-    template<typename T> complex<T> operator+(const complex<T>& my_u, const T& my_v) { return complex<T>(my_u.real() + my_v, my_u.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& my_u, const T& my_v) { return complex<T>(my_u.real() - my_v, my_u.imag()); }
-    template<typename T> complex<T> operator*(const complex<T>& my_u, const T& my_v) { return complex<T>(my_u.real() * my_v, my_u.imag() * my_v); }
-    template<typename T> complex<T> operator/(const complex<T>& my_u, const T& my_v) { return complex<T>(my_u.real() / my_v, my_u.imag() / my_v); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator+(const complex<T, EnableType>& my_u, const T& my_v) { return complex<T, EnableType>(my_u.real() + my_v, my_u.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator-(const complex<T, EnableType>& my_u, const T& my_v) { return complex<T, EnableType>(my_u.real() - my_v, my_u.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator*(const complex<T, EnableType>& my_u, const T& my_v) { return complex<T, EnableType>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator/(const complex<T, EnableType>& my_u, const T& my_v) { return complex<T, EnableType>(my_u.real() / my_v, my_u.imag() / my_v); }
 
-    template<typename T> complex<T> operator+(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u + my_v.real(), my_v.imag()); }
-    template<typename T> complex<T> operator-(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u - my_v.real(), -my_v.imag()); }
-    template<typename T> complex<T> operator*(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u * my_v.real(), my_u * my_v.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator+(const T& my_u, const complex<T, EnableType>& my_v) { return complex<T, EnableType>(my_u + my_v.real(), my_v.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator-(const T& my_u, const complex<T, EnableType>& my_v) { return complex<T, EnableType>(my_u - my_v.real(), -my_v.imag()); }
+    template<typename T, typename EnableType> complex<T, EnableType> operator*(const T& my_u, const complex<T, EnableType>& my_v) { return complex<T, EnableType>(my_u * my_v.real(), my_u * my_v.imag()); }
 
-    template<typename T> complex<T> operator/(const T& my_u, const complex<T>& my_v)
+    template<typename T, typename EnableType> complex<T, EnableType> operator/(const T& my_u, const complex<T, EnableType>& my_v)
     {
       using std::fabs;
 
-      complex<T> my_result;
+      complex<T, EnableType> my_result;
 
       if(fabs(my_v.real()) < fabs(my_v.imag()))
       {
@@ -915,7 +558,7 @@
 
         const T my_denominator = (my_v.real() * my_c_over_d) + my_v.imag();
 
-        my_result = complex<T>(( my_u * my_c_over_d) / my_denominator,
+        my_result = complex<T, EnableType>(( my_u * my_c_over_d) / my_denominator,
                                 -my_u                  / my_denominator);
       }
       else
@@ -924,7 +567,7 @@
 
         const T my_denominator = (my_v.imag() * my_d_over_c) + my_v.real();
 
-        my_result = complex<T>(  my_u                  / my_denominator,
+        my_result = complex<T, EnableType>(  my_u                  / my_denominator,
                                (-my_u * my_d_over_c) / my_denominator);
       }
 
@@ -932,19 +575,19 @@
     }
 
     // Equality and inequality operators.
-    template<typename T> bool operator==(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
-    template<typename T> bool operator==(const complex<T>& my_u, const T&          my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == T(0))); }
-    template<typename T> bool operator==(const T&          my_u, const complex<T>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == T(0))); }
+    template<typename T, typename EnableType> bool operator==(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<typename T, typename EnableType> bool operator==(const complex<T, EnableType>& my_u, const T&          my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == T(0))); }
+    template<typename T, typename EnableType> bool operator==(const T&          my_u, const complex<T, EnableType>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == T(0))); }
 
-    template<typename T> bool operator!=(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
-    template<typename T> bool operator!=(const complex<T>& my_u, const T&          my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != T(0))); }
-    template<typename T> bool operator!=(const T&          my_u, const complex<T>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != T(0))); }
+    template<typename T, typename EnableType> bool operator!=(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
+    template<typename T, typename EnableType> bool operator!=(const complex<T, EnableType>& my_u, const T&          my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != T(0))); }
+    template<typename T, typename EnableType> bool operator!=(const T&          my_u, const complex<T, EnableType>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != T(0))); }
 
     #if !defined(EXTENDED_COMPLEX_DISABLE_IOSTREAM)
 
     // I/O stream operators.
-    template<typename T, typename char_type, typename traits_type>
-    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<T>& my_z)
+    template<typename T, typename char_type, typename traits_type, typename EnableType>
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<T, EnableType>& my_z)
     {
       // Parse an (extended) complex number of any of the forms u, (u) or (u,v).
 
@@ -1082,14 +725,14 @@
       }
       else
       {
-        my_z = complex<T>(my_real_input, my_imag_input);
+        my_z = complex<T, EnableType>(my_real_input, my_imag_input);
       }
 
       return my_istream;
     }
 
-    template<class T, class char_type, class traits_type>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<T>& my_z)
+    template<class T, typename EnableType, class char_type, class traits_type>
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<T, EnableType>& my_z)
     {
       std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
@@ -1108,16 +751,16 @@
 
     #endif // !EXTENDED_COMPLEX_DISABLE_IOSTREAM
 
-    // Value operations for extended_complex::complex<T>.
+    // Value operations for extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.7.
 
-    template<typename T> T real(const complex<T>& my_z) { return my_z.real(); }
-    template<typename T> T imag(const complex<T>& my_z) { return my_z.imag(); }
+    template<typename T, typename EnableType> T real(const complex<T, EnableType>& my_z) { return my_z.real(); }
+    template<typename T, typename EnableType> T imag(const complex<T, EnableType>& my_z) { return my_z.imag(); }
 
-    template<typename T> T abs (const complex<T>& my_z) { using std::sqrt;  return sqrt(norm(my_z)); }
-    template<typename T> T arg (const complex<T>& my_z) { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
+    template<typename T, typename EnableType> T abs (const complex<T, EnableType>& my_z) { using std::sqrt;  return sqrt(norm(my_z)); }
+    template<typename T, typename EnableType> T arg (const complex<T, EnableType>& my_z) { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
 
-    template<typename T> T norm(const complex<T>& my_z)
+    template<typename T, typename EnableType> T norm(const complex<T, EnableType>& my_z)
     {
       using std::fabs;
 
@@ -1139,48 +782,48 @@
       return my_result;
     }
 
-    template<typename T> complex<T> conj(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> conj(const complex<T, EnableType>& my_z)
     {
-      return complex<T>(-my_z.imag(), my_z.real());
+      return complex<T, EnableType>(-my_z.imag(), my_z.real());
     }
 
-    template<typename T> complex<T> proj(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> proj(const complex<T, EnableType>& my_z)
     {
       const T denominator_half((norm(my_z) + T(1U)) / 2U);
 
-      return complex<T>(my_z.real() / denominator_half,
+      return complex<T, EnableType>(my_z.real() / denominator_half,
                         my_z.imag() / denominator_half);
     }
 
-    template<typename T> complex<T> polar(const T& my_rho, const T& my_theta)
+    template<typename T, typename EnableType> complex<T, EnableType> polar(const T& my_rho, const T& my_theta)
     {
       using std::cos;
       using std::sin;
 
-      return complex<T>(my_rho * cos(my_theta), my_rho * sin(my_theta));
+      return complex<T, EnableType>(my_rho * cos(my_theta), my_rho * sin(my_theta));
     }
 
 
-    // Elementary transcendental functions for extended_complex::complex<T>.
+    // Elementary transcendental functions for extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.8.
 
-    template<typename T> complex<T> acos(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> acos(const complex<T, EnableType>& my_z)
     {
       using std::asin;
 
       return T(asin(T(1U))) - asin(my_z);
     }
 
-    template<typename T> complex<T> asin(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> asin(const complex<T, EnableType>& my_z)
     {
       return -conj(log(conj(my_z) + sqrt(T(1U) - (my_z * my_z))));
     }
 
-    template<typename T> complex<T> atan(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> atan(const complex<T, EnableType>& my_z)
     {
-      const complex<T> z_conj = conj(my_z);
+      const complex<T, EnableType> z_conj = conj(my_z);
 
-      complex<T> result = conj(log(T(1) - z_conj) - log(T(1) + z_conj));
+      complex<T, EnableType> result = conj(log(T(1) - z_conj) - log(T(1) + z_conj));
 
       result.real(result.real() / 2U);
       result.imag(result.imag() / 2U);
@@ -1188,22 +831,22 @@
       return result;
     }
 
-    template<typename T> complex<T> acosh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> acosh(const complex<T, EnableType>& my_z)
     {
-      const complex<T> zp(my_z.real() + T(1U), my_z.imag());
-      const complex<T> zm(my_z.real() - T(1U), my_z.imag());
+      const complex<T, EnableType> zp(my_z.real() + T(1U), my_z.imag());
+      const complex<T, EnableType> zm(my_z.real() - T(1U), my_z.imag());
 
       return log(my_z + (zp * sqrt(zm / zp)));
     }
 
-    template<typename T> complex<T> asinh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> asinh(const complex<T, EnableType>& my_z)
     {
       return log(my_z + sqrt(T(1U) + (my_z * my_z)));
     }
 
-    template<typename T> complex<T> atanh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> atanh(const complex<T, EnableType>& my_z)
     {
-      complex<T> result = (log(T(1U) + my_z) - log(T(1U) - my_z));
+      complex<T, EnableType> result = (log(T(1U) + my_z) - log(T(1U) - my_z));
 
       result.real(result.real() / 2U);
       result.imag(result.imag() / 2U);
@@ -1211,38 +854,38 @@
       return result;
     }
 
-    template<typename T> complex<T> cos(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> cos(const complex<T, EnableType>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(   cos(my_z.real()) * cosh(my_z.imag()),
+      return complex<T, EnableType>(   cos(my_z.real()) * cosh(my_z.imag()),
                         - (sin(my_z.real()) * sinh(my_z.imag())));
     }
 
-    template<typename T> complex<T> cosh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> cosh(const complex<T, EnableType>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(cos(my_z.imag()) * cosh(my_z.real()),
+      return complex<T, EnableType>(cos(my_z.imag()) * cosh(my_z.real()),
                         sin(my_z.imag()) * sinh(my_z.real()));
     }
 
-    template<typename T> complex<T> exp(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> exp(const complex<T, EnableType>& my_z)
     {
       using std::cos;
       using std::exp;
       using std::sin;
 
-      return complex<T>(cos(my_z.imag()), sin(my_z.imag())) * T(exp(my_z.real()));
+      return complex<T, EnableType>(cos(my_z.imag()), sin(my_z.imag())) * T(exp(my_z.real()));
     }
 
-    template<typename T> complex<T> log(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> log(const complex<T, EnableType>& my_z)
     {
       using std::atan2;
       using std::log;
@@ -1250,29 +893,29 @@
       const T my_real_part(log(norm(my_z)) / 2U);
       const T my_imag_part(atan2(my_z.imag(), my_z.real()));
 
-      return complex<T>(my_real_part, my_imag_part);
+      return complex<T, EnableType>(my_real_part, my_imag_part);
     }
 
-    template<typename T> complex<T> log10(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> log10(const complex<T, EnableType>& my_z)
     {
       using std::log;
 
       return log(my_z) / T(log(T(10)));
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_z, int my_pn)
+    template<typename T, typename EnableType> complex<T, EnableType> pow(const complex<T, EnableType>& my_z, int my_pn)
     {
       if     (my_pn <  0) { return  T(1U) / pow(my_z, -my_pn); }
-      else if(my_pn == 0) { return  complex<T>(T(1U)); }
+      else if(my_pn == 0) { return  complex<T, EnableType>(T(1U)); }
       else if(my_pn == 1) { return  my_z; }
       else if(my_pn == 2) { return  my_z * my_z; }
       else if(my_pn == 3) { return (my_z * my_z) * my_z; }
-      else if(my_pn == 4) { const complex<T> my_z2(my_z * my_z); return (my_z2 * my_z2); }
+      else if(my_pn == 4) { const complex<T, EnableType> my_z2(my_z * my_z); return (my_z2 * my_z2); }
       else
       {
-        complex<T> my_result = T(static_cast<unsigned>(UINT8_C(1)));
+        complex<T, EnableType> my_result = T(static_cast<unsigned>(UINT8_C(1)));
 
-        complex<T> y(my_z);
+        complex<T, EnableType> y(my_z);
 
         auto p_local = static_cast<std::uint64_t>(my_pn);
 
@@ -1301,46 +944,46 @@
       }
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_z, const T& my_a)
+    template<typename T, typename EnableType> complex<T, EnableType> pow(const complex<T, EnableType>& my_z, const T& my_a)
     {
       return exp(my_a * log(my_z));
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_z, const complex<T>& my_a)
+    template<typename T, typename EnableType> complex<T, EnableType> pow(const complex<T, EnableType>& my_z, const complex<T, EnableType>& my_a)
     {
       return exp(my_a * log(my_z));
     }
 
-    template<typename T> complex<T> pow(const T& my_z, const complex<T>& my_a)
+    template<typename T, typename EnableType> complex<T, EnableType> pow(const T& my_z, const complex<T, EnableType>& my_a)
     {
       using std::log;
 
       return exp(my_a * T(log(my_z)));
     }
 
-    template<typename T> complex<T> sin(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> sin(const complex<T, EnableType>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(sin(my_z.real()) * cosh(my_z.imag()),
+      return complex<T, EnableType>(sin(my_z.real()) * cosh(my_z.imag()),
                         cos(my_z.real()) * sinh(my_z.imag()));
     }
 
-    template<typename T> complex<T> sinh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> sinh(const complex<T, EnableType>& my_z)
     {
       using std::cos;
       using std::cosh;
       using std::sin;
       using std::sinh;
 
-      return complex<T>(cos (my_z.imag()) * sinh(my_z.real()),
+      return complex<T, EnableType>(cos (my_z.imag()) * sinh(my_z.real()),
                         cosh(my_z.real()) * sin (my_z.imag()));
     }
 
-    template<typename T> complex<T> sqrt(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> sqrt(const complex<T, EnableType>& my_z)
     {
       using std::fabs;
       using std::sqrt;
@@ -1357,7 +1000,7 @@
 
       if(real_part_is_neg == false)
       {
-        return complex<T>(s_part,
+        return complex<T, EnableType>(s_part,
                           my_z.imag() / (s_part * 2U));
       }
       else
@@ -1365,17 +1008,17 @@
         const bool imag_part_is_neg(my_z.imag() < T(0U));
         const T    imag_part_fabs  ((imag_part_is_neg == false) ? my_z.imag() : -my_z.imag());
 
-        return complex<T>( imag_part_fabs / (s_part * 2U),
+        return complex<T, EnableType>( imag_part_fabs / (s_part * 2U),
                          ((imag_part_is_neg == false) ? s_part : -s_part));
       }
     }
 
-    template<typename T> complex<T> tan(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> tan(const complex<T, EnableType>& my_z)
     {
       return sin(my_z) / cos(my_z);
     }
 
-    template<typename T> complex<T> tanh(const complex<T>& my_z)
+    template<typename T, typename EnableType> complex<T, EnableType> tanh(const complex<T, EnableType>& my_z)
     {
       return sinh(my_z) / cosh(my_z);
     }
@@ -1384,84 +1027,84 @@
 
     // Template specializations of unary +/- operators
     // for mp::complex<mp::mp_cpp>.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>&);
 
     // Template specializations of global add, sub, mul, div operators
     // for mp::complex<mp::mp_cpp>.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>&, const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
 
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const complex<mp_cpp, EnableType>&, const mp_cpp&);
 
-    template<> inline complex<mp_cpp> operator+(const mp_cpp&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator-(const mp_cpp&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator*(const mp_cpp&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> operator/(const mp_cpp&, const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const mp_cpp&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const mp_cpp&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const mp_cpp&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const mp_cpp&, const complex<mp_cpp, EnableType>&);
 
     // Template specializations of equality and inequality operators
     // for mp::complex<mp::mp_cpp>.
-    template<> inline bool operator==(const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline bool operator==(const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline bool operator==(const mp_cpp&,          const complex<mp_cpp>&);
-    template<> inline bool operator!=(const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline bool operator!=(const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline bool operator!=(const mp_cpp&,          const complex<mp_cpp>&);
+    template<typename EnableType> bool operator==(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> bool operator==(const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> bool operator==(const mp_cpp&,          const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> bool operator!=(const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> bool operator!=(const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> bool operator!=(const mp_cpp&,          const complex<mp_cpp, EnableType>&);
 
     // Template specializations of elementary and transcendental functions
     // for mp::complex<mp::mp_cpp>.
-    template<> inline mp_cpp          real(const complex<mp_cpp>&);
-    template<> inline mp_cpp          imag(const complex<mp_cpp>&);
+    template<typename EnableType> mp_cpp          real(const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> mp_cpp          imag(const complex<mp_cpp, EnableType>&);
 
-    template<> inline mp_cpp          abs (const complex<mp_cpp>&);
-    template<> inline mp_cpp          arg (const complex<mp_cpp>&);
-    template<> inline mp_cpp          norm(const complex<mp_cpp>&);
+    template<typename EnableType> mp_cpp          abs (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> mp_cpp          arg (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> mp_cpp          norm(const complex<mp_cpp, EnableType>&);
 
-    template<> inline complex<mp_cpp> conj (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> proj (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> polar(const mp_cpp&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> conj (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> proj (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> polar(const mp_cpp&, const mp_cpp&);
 
-    template<> inline complex<mp_cpp> acos (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> asin (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> atan (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> asinh(const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> acosh(const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> atanh(const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> acos (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> asin (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> atan (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> asinh(const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> acosh(const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> atanh(const complex<mp_cpp, EnableType>&);
 
-    template<> inline complex<mp_cpp> cos  (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> cosh (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> exp  (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> log  (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> log10(const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> cos  (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> cosh (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> exp  (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> log  (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> log10(const complex<mp_cpp, EnableType>&);
 
-    template<> inline complex<mp_cpp> pow  (const complex<mp_cpp>&, int);
-    template<> inline complex<mp_cpp> pow  (const complex<mp_cpp>&, const mp_cpp&);
-    template<> inline complex<mp_cpp> pow  (const complex<mp_cpp>&, const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> pow  (const mp_cpp&, const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> pow  (const complex<mp_cpp, EnableType>&, int);
+    template<typename EnableType> complex<mp_cpp, EnableType> pow  (const complex<mp_cpp, EnableType>&, const mp_cpp&);
+    template<typename EnableType> complex<mp_cpp, EnableType> pow  (const complex<mp_cpp, EnableType>&, const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> pow  (const mp_cpp&, const complex<mp_cpp, EnableType>&);
 
-    template<> inline complex<mp_cpp> sin  (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> sinh (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> sqrt (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> tan  (const complex<mp_cpp>&);
-    template<> inline complex<mp_cpp> tanh (const complex<mp_cpp>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> sin  (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> sinh (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> sqrt (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> tan  (const complex<mp_cpp, EnableType>&);
+    template<typename EnableType> complex<mp_cpp, EnableType> tanh (const complex<mp_cpp, EnableType>&);
 
     // Template specializations of I/O stream operators for mp::complex<mp_cpp>.
-    template<typename char_type, typename traits_type>
-    inline std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, complex<mp_cpp>&);
+    template<typename char_type, typename traits_type, typename EnableType>
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, complex<mp_cpp, EnableType>&);
 
-    template<typename char_type, typename traits_type>
-    inline std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<mp_cpp>&);
+    template<typename char_type, typename traits_type, typename EnableType>
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<mp_cpp, EnableType>&);
 
     // Specialization of class template mp::complex<mp::mp_cpp>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.3.
 
-    template<>
-    class complex<mp_cpp>
+    template<typename EnableType>
+    class complex<mp_cpp, EnableType>
     {
     public:
       typedef mp_cpp value_type;
@@ -1652,7 +1295,7 @@
       value_type my_im;
     };
 
-    inline complex<mp_cpp>& complex<mp_cpp>::calculate_inv()
+    template<typename EnableType> complex<mp_cpp, EnableType>& complex<mp_cpp, EnableType>::calculate_inv()
     {
       // Compute inverse 1 / (x + iy) = (x - iy) / (x^2 + y^2)
       const mp_cpp one_over_denom(norm(*this).calculate_inv());
@@ -1665,7 +1308,7 @@
       return *this;
     }
 
-    inline complex<mp_cpp>& complex<mp_cpp>::calculate_sqrt()
+    template<typename EnableType> complex<mp_cpp, EnableType>& complex<mp_cpp, EnableType>::calculate_sqrt()
     {
       // Handle pure real and also pure zero arguments.
       if((my_im.iszero)())
@@ -1717,7 +1360,7 @@
       return *this;
     }
 
-    inline complex<mp_cpp>& complex<mp_cpp>::calculate_log()
+    template<typename EnableType> complex<mp_cpp, EnableType>& complex<mp_cpp, EnableType>::calculate_log()
     {
       const bool real_argument_is_zero = (real().iszero)();
       const bool imag_argument_is_zero = (imag().iszero)();
@@ -1838,7 +1481,7 @@
       return *this;
     }
 
-    inline complex<mp_cpp>& complex<mp_cpp>::calculate_exp()
+    template<typename EnableType> complex<mp_cpp, EnableType>& complex<mp_cpp, EnableType>::calculate_exp()
     {
       if((my_im.iszero)())
       {
@@ -2071,111 +1714,111 @@
     // See also ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u) { return complex<mp_cpp>(my_u); }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u) { return complex<mp_cpp>(-my_u.real(), -my_u.imag()); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>& my_u) { return complex<mp_cpp, EnableType>(my_u); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>& my_u) { return complex<mp_cpp, EnableType>(-my_u.real(), -my_u.imag()); }
 
     // Global binary add, sub, mul, div of complex op complex.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) += my_v; }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) -= my_v; }
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) *= my_v; }
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) /= my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) += my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) -= my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) *= my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) /= my_v; }
 
     // Global binary add, sub, mul, div of complex op T.
-    template<> inline complex<mp_cpp> operator+(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() + my_v, my_u.imag()); }
-    template<> inline complex<mp_cpp> operator-(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() - my_v, my_u.imag()); }
-    template<> inline complex<mp_cpp> operator*(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() * my_v, my_u.imag() * my_v); }
-    template<> inline complex<mp_cpp> operator/(const complex<mp_cpp>& my_u, const mp_cpp& my_v) { return complex<mp_cpp>(my_u.real() / my_v, my_u.imag() / my_v); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const complex<mp_cpp, EnableType>& my_u, const mp_cpp& my_v) { return complex<mp_cpp, EnableType>(my_u.real() + my_v, my_u.imag()); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const complex<mp_cpp, EnableType>& my_u, const mp_cpp& my_v) { return complex<mp_cpp, EnableType>(my_u.real() - my_v, my_u.imag()); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const complex<mp_cpp, EnableType>& my_u, const mp_cpp& my_v) { return complex<mp_cpp, EnableType>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const complex<mp_cpp, EnableType>& my_u, const mp_cpp& my_v) { return complex<mp_cpp, EnableType>(my_u.real() / my_v, my_u.imag() / my_v); }
 
     // Global binary add, sub, mul, div of T op complex.
-    template<> inline complex<mp_cpp> operator+(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) += my_v; }
-    template<> inline complex<mp_cpp> operator-(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_u) -= my_v; }
-    template<> inline complex<mp_cpp> operator*(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_v.real() * my_u, my_v.imag() * my_u); }
-    template<> inline complex<mp_cpp> operator/(const mp_cpp& my_u, const complex<mp_cpp>& my_v) { return complex<mp_cpp>(my_v).calculate_inv() * my_u; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator+(const mp_cpp& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) += my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator-(const mp_cpp& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_u) -= my_v; }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator*(const mp_cpp& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_v.real() * my_u, my_v.imag() * my_u); }
+    template<typename EnableType> complex<mp_cpp, EnableType> operator/(const mp_cpp& my_u, const complex<mp_cpp, EnableType>& my_v) { return complex<mp_cpp, EnableType>(my_v).calculate_inv() * my_u; }
 
-    template<> inline bool operator==(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
-    template<> inline bool operator==(const complex<mp_cpp>& my_u, const mp_cpp         & my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == mp_cpp(0U))); }
-    template<> inline bool operator==(const mp_cpp&          my_u, const complex<mp_cpp>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == mp_cpp(0U))); }
-    template<> inline bool operator!=(const complex<mp_cpp>& my_u, const complex<mp_cpp>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
-    template<> inline bool operator!=(const complex<mp_cpp>& my_u, const mp_cpp         & my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != mp_cpp(0U))); }
-    template<> inline bool operator!=(const mp_cpp&          my_u, const complex<mp_cpp>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != mp_cpp(0U))); }
+    template<typename EnableType> bool operator==(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<typename EnableType> bool operator==(const complex<mp_cpp, EnableType>& my_u, const mp_cpp         & my_v) { return ((my_u.real() == my_v)        && (my_u.imag() == mp_cpp(0U))); }
+    template<typename EnableType> bool operator==(const mp_cpp&          my_u, const complex<mp_cpp, EnableType>& my_v) { return ((my_u == my_v.real())        && (my_v.imag() == mp_cpp(0U))); }
+    template<typename EnableType> bool operator!=(const complex<mp_cpp, EnableType>& my_u, const complex<mp_cpp, EnableType>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
+    template<typename EnableType> bool operator!=(const complex<mp_cpp, EnableType>& my_u, const mp_cpp         & my_v) { return ((my_u.real() != my_v)        || (my_u.imag() != mp_cpp(0U))); }
+    template<typename EnableType> bool operator!=(const mp_cpp&          my_u, const complex<mp_cpp, EnableType>& my_v) { return ((my_u != my_v.real())        || (my_v.imag() != mp_cpp(0U))); }
 
-    template<> inline mp_cpp real(const complex<mp_cpp>& z) { return z.real(); }
-    template<> inline mp_cpp imag(const complex<mp_cpp>& z) { return z.imag(); }
+    template<typename EnableType> mp_cpp real(const complex<mp_cpp, EnableType>& z) { return z.real(); }
+    template<typename EnableType> mp_cpp imag(const complex<mp_cpp, EnableType>& z) { return z.imag(); }
 
-    template<> inline mp_cpp abs (const complex<mp_cpp>& z) { return sqrt((z.real() * z.real()) + (z.imag() * z.imag())); }
-    template<> inline mp_cpp arg (const complex<mp_cpp>& z) { return atan2(z.imag(), z.real()); }
-    template<> inline mp_cpp norm(const complex<mp_cpp>& z) { return (z.real() * z.real()) + (z.imag() * z.imag()); }
+    template<typename EnableType> mp_cpp abs (const complex<mp_cpp, EnableType>& z) { return sqrt((z.real() * z.real()) + (z.imag() * z.imag())); }
+    template<typename EnableType> mp_cpp arg (const complex<mp_cpp, EnableType>& z) { return atan2(z.imag(), z.real()); }
+    template<typename EnableType> mp_cpp norm(const complex<mp_cpp, EnableType>& z) { return (z.real() * z.real()) + (z.imag() * z.imag()); }
 
-    template<> inline complex<mp_cpp> conj(const complex<mp_cpp>& z)
+    template<typename EnableType> complex<mp_cpp, EnableType> conj(const complex<mp_cpp, EnableType>& z)
     {
-      return complex<mp_cpp>(z.real(), -z.imag());
+      return complex<mp_cpp, EnableType>(z.real(), -z.imag());
     }
 
-    template<> inline complex<mp_cpp> proj(const complex<mp_cpp>& z)
+    template<typename EnableType> complex<mp_cpp, EnableType> proj(const complex<mp_cpp, EnableType>& z)
     {
       const mp_cpp one_over_denom((norm(z) + one()).calculate_inv());
 
-      return complex<mp_cpp>((z.real() * 2) * one_over_denom,
+      return complex<mp_cpp, EnableType>((z.real() * 2) * one_over_denom,
                              (z.imag() * 2) * one_over_denom);
     }
 
-    template<> inline complex<mp_cpp> polar(const mp_cpp& my_rho, const mp_cpp& my_theta)
+    template<typename EnableType> complex<mp_cpp, EnableType> polar(const mp_cpp& my_rho, const mp_cpp& my_theta)
     {
       mp_cpp my_s;
       mp_cpp my_c;
 
       sincos(my_theta, my_s, my_c);
 
-      return complex<mp_cpp>(my_rho * my_c, my_rho * my_s);
+      return complex<mp_cpp, EnableType>(my_rho * my_c, my_rho * my_s);
     }
 
-    template<> inline complex<mp_cpp> acos(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> acos(const complex<mp_cpp, EnableType>& my_z)
     {
-      return complex<mp_cpp>(pi_half()) - asin(my_z);
+      return complex<mp_cpp, EnableType>(pi_half()) - asin(my_z);
     }
 
-    template<> inline complex<mp_cpp> asin(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> asin(const complex<mp_cpp, EnableType>& my_z)
     {
-      const complex<mp_cpp> my_z_times_i(-my_z.imag(), my_z.real());
+      const complex<mp_cpp, EnableType> my_z_times_i(-my_z.imag(), my_z.real());
 
-      const complex<mp_cpp> my_pre_result(log(my_z_times_i + sqrt(one() - (my_z * my_z))));
+      const complex<mp_cpp, EnableType> my_pre_result(log(my_z_times_i + sqrt(one() - (my_z * my_z))));
 
-      return complex<mp_cpp>(my_pre_result.imag(), -my_pre_result.real());
+      return complex<mp_cpp, EnableType>(my_pre_result.imag(), -my_pre_result.real());
     }
 
-    template<> inline complex<mp_cpp> atan(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> atan(const complex<mp_cpp, EnableType>& my_z)
     {
-      const complex<mp_cpp> my_z_times_i(-my_z.imag(), my_z.real());
+      const complex<mp_cpp, EnableType> my_z_times_i(-my_z.imag(), my_z.real());
 
-      const complex<mp_cpp> my_pre_result(log(one() - my_z_times_i) - log(one() + my_z_times_i));
+      const complex<mp_cpp, EnableType> my_pre_result(log(one() - my_z_times_i) - log(one() + my_z_times_i));
 
-      return complex<mp_cpp>(-my_pre_result.imag() / 2,
+      return complex<mp_cpp, EnableType>(-my_pre_result.imag() / 2,
                               my_pre_result.real() / 2);
     }
 
-    template<> inline complex<mp_cpp> acosh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> acosh(const complex<mp_cpp, EnableType>& my_z)
     {
-      const complex<mp_cpp> my_zp = my_z + one();
-      const complex<mp_cpp> my_zm = my_z - one();
+      const complex<mp_cpp, EnableType> my_zp = my_z + one();
+      const complex<mp_cpp, EnableType> my_zm = my_z - one();
 
       return log(my_z + (my_zp * sqrt(my_zm / my_zp)));
     }
 
-    template<> inline complex<mp_cpp> asinh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> asinh(const complex<mp_cpp, EnableType>& my_z)
     {
       return log(my_z + sqrt((my_z * my_z) + one()));
     }
 
-    template<> inline complex<mp_cpp> atanh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> atanh(const complex<mp_cpp, EnableType>& my_z)
     {
-      const complex<mp_cpp> my_pre_result(  log(one() + my_z)
+      const complex<mp_cpp, EnableType> my_pre_result(  log(one() + my_z)
                                             - log(one() - my_z));
 
-      return complex<mp_cpp>(my_pre_result.real() / 2,
+      return complex<mp_cpp, EnableType>(my_pre_result.real() / 2,
                              my_pre_result.imag() / 2);
     }
 
-    template<> inline complex<mp_cpp> cos(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> cos(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_x;
       mp_cpp my_cos_x;
@@ -2185,10 +1828,10 @@
       sincos  (my_z.real(), my_sin_x,  my_cos_x);
       sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      return complex<mp_cpp>(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
+      return complex<mp_cpp, EnableType>(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
     }
 
-    template<> inline complex<mp_cpp> cosh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> cosh(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_y;
       mp_cpp my_cos_y;
@@ -2198,37 +1841,37 @@
       sincos  (my_z.imag(), my_sin_y,  my_cos_y);
       sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      return complex<mp_cpp>(my_cos_y * my_cosh_x, my_sin_y * my_sinh_x);
+      return complex<mp_cpp, EnableType>(my_cos_y * my_cosh_x, my_sin_y * my_sinh_x);
     }
 
-    template<> inline complex<mp_cpp> exp(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> exp(const complex<mp_cpp, EnableType>& my_z)
     {
-      return complex<mp_cpp>(my_z).calculate_exp();
+      return complex<mp_cpp, EnableType>(my_z).calculate_exp();
     }
 
-    template<> inline complex<mp_cpp> log(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> log(const complex<mp_cpp, EnableType>& my_z)
     {
-      return complex<mp_cpp>(my_z).calculate_log();
+      return complex<mp_cpp, EnableType>(my_z).calculate_log();
     }
 
-    template<> inline complex<mp_cpp> log10(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> log10(const complex<mp_cpp, EnableType>& my_z)
     {
       return log(my_z) / ln10();
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, int my_pn)
+    template<typename EnableType> complex<mp_cpp, EnableType> pow(const complex<mp_cpp, EnableType>& my_z, int my_pn)
     {
       if     (my_pn <  0) { return  mp_cpp(1U) / pow(my_z, -my_pn); }
-      else if(my_pn == 0) { return  complex<mp_cpp>(mp_cpp(1U)); }
+      else if(my_pn == 0) { return  complex<mp_cpp, EnableType>(mp_cpp(1U)); }
       else if(my_pn == 1) { return  my_z; }
       else if(my_pn == 2) { return  my_z * my_z; }
       else if(my_pn == 3) { return (my_z * my_z) * my_z; }
-      else if(my_pn == 4) { const complex<mp_cpp> my_z2(my_z * my_z); return (my_z2 * my_z2); }
+      else if(my_pn == 4) { const complex<mp_cpp, EnableType> my_z2(my_z * my_z); return (my_z2 * my_z2); }
       else
       {
-        complex<mp_cpp> my_result = mp_cpp(static_cast<unsigned>(UINT8_C(1)));
+        complex<mp_cpp, EnableType> my_result = mp_cpp(static_cast<unsigned>(UINT8_C(1)));
 
-        complex<mp_cpp> y(my_z);
+        complex<mp_cpp, EnableType> y(my_z);
 
         auto p_local = static_cast<std::uint64_t>(my_pn);
 
@@ -2257,22 +1900,22 @@
       }
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, const mp_cpp& my_a)
+    template<typename EnableType> complex<mp_cpp, EnableType> pow(const complex<mp_cpp, EnableType>& my_z, const mp_cpp& my_a)
     {
       return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> pow(const complex<mp_cpp>& my_z, const complex<mp_cpp>& my_a)
+    template<typename EnableType> complex<mp_cpp, EnableType> pow(const complex<mp_cpp, EnableType>& my_z, const complex<mp_cpp, EnableType>& my_a)
     {
       return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> pow(const mp_cpp& my_z, const complex<mp_cpp>& my_a)
+    template<typename EnableType> complex<mp_cpp, EnableType> pow(const mp_cpp& my_z, const complex<mp_cpp, EnableType>& my_a)
     {
       return exp(my_a * log(my_z));
     }
 
-    template<> inline complex<mp_cpp> sin(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> sin(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_x;
       mp_cpp my_cos_x;
@@ -2282,10 +1925,10 @@
       sincos  (my_z.real(), my_sin_x,  my_cos_x);
       sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      return complex<mp_cpp>(my_sin_x * my_cosh_y, my_cos_x * my_sinh_y);
+      return complex<mp_cpp, EnableType>(my_sin_x * my_cosh_y, my_cos_x * my_sinh_y);
     }
 
-    template<> inline complex<mp_cpp> sinh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> sinh(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_y;
       mp_cpp my_cos_y;
@@ -2295,15 +1938,15 @@
       sincos  (my_z.imag(), my_sin_y,  my_cos_y);
       sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      return complex<mp_cpp>(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
+      return complex<mp_cpp, EnableType>(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
     }
 
-    template<> inline complex<mp_cpp> sqrt(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> sqrt(const complex<mp_cpp, EnableType>& my_z)
     {
-      return complex<mp_cpp>(my_z).calculate_sqrt();
+      return complex<mp_cpp, EnableType>(my_z).calculate_sqrt();
     }
 
-    template<> inline complex<mp_cpp> tan(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> tan(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_x;
       mp_cpp my_cos_x;
@@ -2313,13 +1956,13 @@
       sincos  (my_z.real(), my_sin_x,  my_cos_x);
       sinhcosh(my_z.imag(), my_sinh_y, my_cosh_y);
 
-      const complex<mp_cpp> my_s(my_sin_x * my_cosh_y,   my_cos_x * my_sinh_y);
-      const complex<mp_cpp> my_c(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
+      const complex<mp_cpp, EnableType> my_s(my_sin_x * my_cosh_y,   my_cos_x * my_sinh_y);
+      const complex<mp_cpp, EnableType> my_c(my_cos_x * my_cosh_y, -(my_sin_x * my_sinh_y));
 
       return my_s / my_c;
     }
 
-    template<> inline complex<mp_cpp> tanh(const complex<mp_cpp>& my_z)
+    template<typename EnableType> complex<mp_cpp, EnableType> tanh(const complex<mp_cpp, EnableType>& my_z)
     {
       mp_cpp my_sin_y;
       mp_cpp my_cos_y;
@@ -2329,15 +1972,15 @@
       sincos  (my_z.imag(), my_sin_y,  my_cos_y);
       sinhcosh(my_z.real(), my_sinh_x, my_cosh_x);
 
-      const complex<mp_cpp> my_sh(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
-      const complex<mp_cpp> my_ch(my_cos_y * my_cosh_x, my_sin_y  * my_sinh_x);
+      const complex<mp_cpp, EnableType> my_sh(my_cos_y * my_sinh_x, my_cosh_x * my_sin_y);
+      const complex<mp_cpp, EnableType> my_ch(my_cos_y * my_cosh_x, my_sin_y  * my_sinh_x);
 
       return my_sh / my_ch;
     }
 
     // I/O stream operators.
-    template<typename char_type, typename traits_type>
-    inline std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<mp_cpp>& my_z)
+    template<typename char_type, typename traits_type, typename EnableType>
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<mp_cpp, EnableType>& my_z)
     {
       // Parse an (extended) complex number of any of the forms u, (u) or (u,v).
 
@@ -2474,14 +2117,14 @@
       }
       else
       {
-        my_z = complex<mp_cpp>(my_real_input, my_imag_input);
+        my_z = complex<mp_cpp, EnableType>(my_real_input, my_imag_input);
       }
 
       return my_istream;
     }
 
-    template<typename char_type, typename traits_type>
-    inline std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<mp_cpp>& my_z)
+    template<typename char_type, typename traits_type, typename EnableType>
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<mp_cpp, EnableType>& my_z)
     {
       std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
