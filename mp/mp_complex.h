@@ -341,8 +341,9 @@
                                          value_type my_y = value_type()) : my_re(my_x),
                                                                            my_im(my_y) { }
 
-      template<typename OtherFloatingPointType = typename std::enable_if<std::is_floating_point<OtherFloatingPointType>::value && (sizeof(OtherFloatingPointType) >= sizeof(value_type))>::type>
-      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<OtherFloatingPointType>& other)
+      template<typename OtherFloatingPointType>
+      explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<OtherFloatingPointType>& other,
+                                                  const typename std::enable_if<std::is_floating_point<OtherFloatingPointType>::value && (sizeof(OtherFloatingPointType) >= sizeof(value_type))>::type* = nullptr)
         : my_re(static_cast<value_type>(other.my_re)),
           my_im(static_cast<value_type>(other.my_im)) { }
 
