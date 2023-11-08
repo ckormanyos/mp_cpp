@@ -341,7 +341,7 @@
                                          value_type my_y = value_type()) : my_re(my_x),
                                                                            my_im(my_y) { }
 
-      template<typename OtherFpType = std::enable_if_t<(!std::is_same<T, OtherFpType>::value) && (sizeof(OtherFpType) >= sizeof(T))>>
+      template<typename OtherFpType = typename std::enable_if<(!std::is_same<T, OtherFpType>::value) && (sizeof(OtherFpType) >= sizeof(T))>::type>
       explicit EXTENDED_COMPLEX_CONSTEXPR complex(const complex<OtherFpType>& other)
         : my_re(static_cast<T>(other.my_re)),
           my_im(static_cast<T>(other.my_im)) { }
