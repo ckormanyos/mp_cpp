@@ -37,13 +37,13 @@
     }
 
     template<typename input_iterator1, typename input_iterator2>
-    inline bool xequal(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
+    bool xequal(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
     {
-      typedef typename std::iterator_traits<input_iterator1>::value_type my_first_type;
-
       while(my_first1 != my_last1)
       {
-        if(*my_first1 != my_first_type(*my_first2))
+        using my_first_type = typename std::iterator_traits<input_iterator1>::value_type;
+
+        if(*my_first1 != static_cast<my_first_type>(*my_first2))
         {
           break;
         }
@@ -56,7 +56,7 @@
     }
 
     template<typename input_iterator, typename function_type>
-    inline function_type xfor_each(input_iterator my_first, input_iterator my_last, function_type my_func)
+    function_type xfor_each(input_iterator my_first, input_iterator my_last, function_type my_func)
     {
       while(my_first != my_last)
       {
@@ -73,7 +73,9 @@
     {
       while(my_first != my_last)
       {
-        *my_first = typename std::iterator_traits<input_iterator>::value_type(my_fill_value);
+        using local_value_type = typename std::iterator_traits<input_iterator>::value_type;
+
+        *my_first = static_cast<local_value_type>(my_fill_value);
 
         ++my_first;
       }
@@ -85,7 +87,9 @@
     {
       while(my_first != my_last)
       {
-        *my_copy_result = typename std::iterator_traits<output_iterator>::value_type(*my_first);
+        using local_value_type = typename std::iterator_traits<input_iterator>::value_type;
+
+        *my_copy_result = static_cast<local_value_type>(*my_first);
 
         ++my_first;
         ++my_copy_result;
@@ -99,12 +103,7 @@
     {
       while(my_first1 != my_last1)
       {
-        typedef typename std::iterator_traits<input_iterator1>::value_type my_first_type;
-
-        const my_first_type my_tmp1(*my_first1);
-
-        *my_first1 = *my_first2;
-        *my_first2 =  my_tmp1;
+        std::iter_swap(my_first1, my_first2);
 
         ++my_first1;
         ++my_first2;
@@ -116,7 +115,7 @@
     template<typename input_iterator, typename allocator_type>
     void xdeallocate_range(input_iterator my_first, input_iterator my_last, const allocator_type& my_alloc)
     {
-      (allocator_type(my_alloc)).deallocate(my_first, std::size_t(my_last - my_first));
+      (allocator_type(my_alloc)).deallocate(my_first, static_cast<std::size_t>(static_cast<std::ptrdiff_t>(my_last - my_first)));
     }
   }
 

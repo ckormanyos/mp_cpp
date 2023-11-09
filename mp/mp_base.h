@@ -140,19 +140,19 @@
     mp_fpclass_type fpclass;
 
     // Default constructor.
-    mp_base() noexcept : my_data  (mp_elem_number()),
-                        prec_elem(mp_elem_number()),
-                        fpclass  (mp_finite) { }
+    mp_base() : my_data  (mp_elem_number()),
+                prec_elem(mp_elem_number()),
+                fpclass  (mp_finite) { }
 
     // Copy constructor.
-    mp_base(const mp_base& other) noexcept : my_data  (other.my_data),
-                                            prec_elem(other.prec_elem),
-                                            fpclass  (other.fpclass) { }
+    mp_base(const mp_base& other) : my_data  (other.my_data),
+                                    prec_elem(other.prec_elem),
+                                    fpclass  (other.fpclass) { }
 
     // Move constructor.
     mp_base(mp_base&& other) noexcept : my_data  (static_cast<array_type&&>(other.my_data)),
-                                       prec_elem(other.prec_elem),
-                                       fpclass  (other.fpclass) { }
+                                        prec_elem(other.prec_elem),
+                                        fpclass  (other.fpclass) { }
 
     // Constructor from the floating-point class.
     explicit mp_base(const mp_fpclass_type floating_point_class) noexcept
@@ -160,6 +160,7 @@
         prec_elem(mp_elem_number()),
         fpclass  (floating_point_class) { }
 
+    // Assignment operator.
     mp_base& operator=(const mp_base& other)
     {
       if(this != &other)
@@ -168,6 +169,16 @@
         prec_elem = other.prec_elem;
         fpclass   = other.fpclass;
       }
+
+      return *this;
+    }
+
+    // Move assignment operator.
+    mp_base& operator=(mp_base&& other) noexcept
+    {
+      my_data   = static_cast<array_type&&>(other.my_data);
+      prec_elem = other.prec_elem;
+      fpclass   = other.fpclass;
 
       return *this;
     }

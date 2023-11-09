@@ -32,6 +32,7 @@
   #include <sstream>
   #include <string>
   #include <type_traits>
+  #include <utility>
 
   #include <mp/mp_base.h>
   #include <mp/mp_detail_pown_template.h>
@@ -74,14 +75,12 @@
   class mp::mp_cpp : public mp::mp_base
   {
   public:
-    mp_cpp() noexcept : my_neg(false),
-                       my_exp(static_cast<std::int64_t>(0)) { }
+    mp_cpp() { }
 
     template<typename UnsignedIntegralType,
              typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
                                       && (std::numeric_limits<UnsignedIntegralType>::is_signed == false))>::type const* = nullptr>
-    mp_cpp(const UnsignedIntegralType u) noexcept : my_neg(false),
-                                                   my_exp(static_cast<std::int64_t>(0))
+    mp_cpp(const UnsignedIntegralType u) noexcept
     {
       from_uint64(u);
     }
@@ -89,30 +88,26 @@
     template<typename SignedIntegralType,
              typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
                                       && (std::numeric_limits<SignedIntegralType>::is_signed == true))>::type const* = nullptr>
-    mp_cpp(const SignedIntegralType n) noexcept : my_neg(n < static_cast<std::int64_t>(0)),
-                                                 my_exp(static_cast<std::int64_t>(0))
+    mp_cpp(const SignedIntegralType n) noexcept : my_neg(n < static_cast<std::int64_t>(0))
     {
       from_uint64((my_neg ? static_cast<std::uint64_t>(-n) : static_cast<std::uint64_t>(n)));
     }
 
     template<typename FloatingPointType,
              typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type const* = nullptr>
-    mp_cpp(const FloatingPointType f) noexcept : my_neg(false),
-                                                my_exp(static_cast<std::int64_t>(0))
+    mp_cpp(const FloatingPointType f) noexcept
     {
       from_long_double(static_cast<long double>(f));
     }
 
-    explicit mp_cpp(const char* const s) noexcept : my_neg(false),
-                                                   my_exp(static_cast<std::int64_t>(0))
+    explicit mp_cpp(const char* const s) noexcept
     {
       const bool read_is_ok = read_string(s);
 
       static_cast<void>(read_is_ok);
     }
 
-    explicit mp_cpp(const std::string& str) noexcept: my_neg(false),
-                                                     my_exp(static_cast<std::int64_t>(0))
+    explicit mp_cpp(const std::string& str) noexcept
     {
       const bool read_is_ok = read_string(str.c_str());
 
@@ -126,14 +121,12 @@
 
     // Move constructor.
     mp_cpp(mp_cpp&& other) noexcept : mp_base(other),
-                                     my_neg(other.my_neg),
-                                     my_exp(other.my_exp) { }
+                                      my_neg(other.my_neg),
+                                      my_exp(other.my_exp) { }
 
     // Constructor from the floating-point class.
     explicit mp_cpp(const mp_fpclass_type other_fpclass) noexcept
-      : mp_base(other_fpclass),
-        my_neg(false),
-        my_exp(static_cast<std::int64_t>(0)) { }
+      : mp_base(other_fpclass) { }
 
     virtual ~mp_cpp() = default;
 
@@ -158,13 +151,20 @@
       return *this;
     }
 
+    // Move assignment operator.
+    mp_cpp& operator=(mp_cpp&& other) noexcept
+    {
+      static_cast<void>(mp_base::operator=(static_cast<const mp_base&&>(other)));
+
+      my_neg = other.my_neg;
+      my_exp = other.my_exp;
+
+      return *this;
+    }
+
     void swap(mp_cpp& other)
     {
-      const mp_cpp tmp(*this);
-
-      *this = other;
-
-      other = tmp;
+      std::swap(*this, other);
     }
 
     // Basic unary math operations.
@@ -236,8 +236,8 @@
     bool (iseven)() const;
 
   private:
-    bool         my_neg;
-    std::int64_t my_exp;
+    bool         my_neg { };
+    std::int64_t my_exp { };
 
     // Constructor from mantissa and exponent.
     mp_cpp(const double mantissa, const std::int64_t exponent) noexcept;
