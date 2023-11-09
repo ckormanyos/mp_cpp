@@ -44,9 +44,7 @@
         : my_count(other_count),
           my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xfill(my_elems,
-                      my_elems + my_count,
-                      value_type());
+        xutils::xfill(my_elems, my_elems + my_count, value_type());
       }
 
       fixed_length_dynamic_array_from_scratch(const size_type other_count,
@@ -54,9 +52,7 @@
         : my_count(other_count),
           my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xfill(my_elems,
-                      my_elems + my_count,
-                      init_value);
+        xutils::xfill(my_elems, my_elems + my_count, init_value);
       }
 
       fixed_length_dynamic_array_from_scratch(const size_type other_count,
@@ -65,27 +61,22 @@
         : my_count(other_count),
           my_elems(allocator_type(other_alloc).allocate(my_count))
       {
-        xutils::xfill(my_elems,
-                      my_elems + my_count,
-                      init_value);
+        xutils::xfill(my_elems, my_elems + my_count, init_value);
       }
 
-      fixed_length_dynamic_array_from_scratch(const fixed_length_dynamic_array_from_scratch& other_array)
-        : my_count(other_array.my_count),
-          my_elems(allocator_type().allocate(other_array.my_count))
+      fixed_length_dynamic_array_from_scratch(const fixed_length_dynamic_array_from_scratch& other)
+        : my_count(other.my_count),
+          my_elems(allocator_type().allocate(other.my_count))
       {
-        const iterator my_copy_result =
-          xutils::xcopy(other_array.cbegin(),
-                        other_array.cend(),
-                        begin());
+        const iterator my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
 
         static_cast<void>(my_copy_result);
       }
 
       // Move constructor.
-      fixed_length_dynamic_array_from_scratch(fixed_length_dynamic_array_from_scratch&& other_array)
-        : my_count( other_array.my_count),
-          my_elems(&other_array.my_elems[0U]) { }
+      fixed_length_dynamic_array_from_scratch(fixed_length_dynamic_array_from_scratch&& other)
+        : my_count( other.my_count),
+          my_elems(&other.my_elems[0U]) { }
 
       // Constructor from initializer_list.
       fixed_length_dynamic_array_from_scratch(std::initializer_list<value_type> init_list,
@@ -93,9 +84,9 @@
         : my_count(init_list.size()),
           my_elems(allocator_type(other_alloc).allocate(init_list.size()))
       {
-        xutils::xcopy(init_list.cbegin(),
-                      init_list.cend(),
-                      begin());
+        auto my_copy_result = xutils::xcopy(init_list.cbegin(), init_list.cend(), begin());
+
+        static_cast<void>(my_copy_result);
       }
 
       template<typename OtherIteratorType>
@@ -104,9 +95,9 @@
         : my_count(other_last - other_first),
           my_elems(allocator_type().allocate(my_count))
       {
-        xutils::xcopy(other_first,
-                      other_last,
-                      my_elems);
+        auto my_copy_result = xutils::xcopy(other_first, other_last, my_elems);
+
+        static_cast<void>(my_copy_result);
       }
 
       template<typename OtherIteratorType>
@@ -116,15 +107,22 @@
         : my_count(other_last - other_first),
           my_elems(allocator_type(other_alloc).allocate(my_count))
       {
-        xutils::xcopy(other_first,
-                      other_last,
-                      my_elems);
+        auto my_copy_result = xutils::xcopy(other_first, other_last, my_elems);
+
+        static_cast<void>(my_copy_result);
       }
+
+      // Since the size of fixed_length_dynamic_array_from_scratch must be
+      // known at construction time, the following constructors
+      // are not intended to be used. They are private and deleted.
+
+      fixed_length_dynamic_array_from_scratch() = delete;
+      explicit fixed_length_dynamic_array_from_scratch(const allocator_type&) = delete;
 
       // Destructor.
       ~fixed_length_dynamic_array_from_scratch()
       {
-        xutils::xdeallocate_range( begin(),  end(), allocator_type());
+        xutils::xdeallocate_range(begin(),  end(), allocator_type());
       }
 
       // Iterator access.
@@ -150,39 +148,33 @@
       const_reference at(const size_type random_access_index) const { return my_elems[random_access_index]; }
 
       // Front and back functions.
-      reference       front()       { return my_elems[0U]; }
-      const_reference front() const { return my_elems[0U]; }
-      reference       back ()       { return my_elems[my_count - 1U]; }
-      const_reference back () const { return my_elems[my_count - 1U]; }
+      reference       front()       { return my_elems[static_cast<std::size_t>(UINT8_C(0))]; }
+      const_reference front() const { return my_elems[static_cast<std::size_t>(UINT8_C(0))]; }
+      reference       back ()       { return my_elems[static_cast<std::size_t>(my_count - static_cast<std::ptrdiff_t>(INT8_C(1)))]; }
+      const_reference back () const { return my_elems[static_cast<std::size_t>(my_count - static_cast<std::ptrdiff_t>(INT8_C(1)))]; }
 
       // Size functions. (The size is constant.)
-      size_type   size    () const { return my_count; }
-      static bool empty   ()       { return false; }
-      size_type   max_size() const { return my_count; }
+             constexpr size_type   size    () const { return my_count; }
+      static constexpr bool        empty   ()       { return false; }
+             constexpr size_type   max_size() const { return my_count; }
 
       // Swap with linear complexity.
-      void swap(fixed_length_dynamic_array_from_scratch& other_array)
+      void swap(fixed_length_dynamic_array_from_scratch& other)
       {
-        if(this != &other_array)
+        if(this != &other)
         {
-          const iterator my_swap_result =
-            xutils::xswap_ranges(begin(),
-                                 end(),
-                                 other_array.begin());
+          auto my_swap_result = xutils::xswap_ranges(begin(), end(), other.begin());
 
           static_cast<void>(my_swap_result);
         }
       }
 
-      // Assignment.
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch& other_array)
+      // Assignment operator.
+      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch& other)
       {
-        if(this != &other_array)
+        if(this != &other)
         {
-          const iterator my_copy_result =
-            xutils::xcopy(other_array.cbegin(),
-                          other_array.cend(),
-                          begin());
+          auto my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
 
           static_cast<void>(my_copy_result);
         }
@@ -190,14 +182,21 @@
         return *this;
       }
 
-      // Assignment with type conversion.
-      template<typename OtherValueType>
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& other_array)
+      // Move assignment operator.
+      fixed_length_dynamic_array_from_scratch& operator=(fixed_length_dynamic_array_from_scratch&& other) noexcept
       {
-        const iterator my_copy_result =
-          xutils::xcopy(other_array.cbegin(),
-                        other_array.cend(),
-                        begin());
+        my_elems = &other.my_elems[0U];
+
+        other.my_elems = nullptr;
+
+        return *this;
+      }
+
+      // Assignment operator with type conversion.
+      template<typename OtherValueType>
+      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& other)
+      {
+        auto my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
 
         static_cast<void>(my_copy_result);
 
@@ -207,21 +206,12 @@
       // Assign a single value to all elements.
       void assign(const value_type& value_fill)
       {
-        xutils::xfill(my_elems,
-                      my_elems + my_count,
-                      value_fill);
+        xutils::xfill(my_elems, my_elems + my_count, value_fill);
       }
 
     private:
       const size_type my_count;
       pointer         my_elems;
-
-      // Since the size of fixed_length_dynamic_array_from_scratch must be
-      // known at construction time, the following constructors
-      // are not intended to be used. They are private and deleted.
-
-      fixed_length_dynamic_array_from_scratch() = delete;
-      explicit fixed_length_dynamic_array_from_scratch(const allocator_type&) = delete;
     };
 
     // Implement non-member operator==() and operator!=().
