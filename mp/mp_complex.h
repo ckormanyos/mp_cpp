@@ -1865,10 +1865,10 @@
         // This represents a complex number real and imaginary parts.
 
         // Rule out erroneous match of invalid mantissa or exponent parts.
-        const std::string my_str1(my_mr[static_cast<std::unsigned>(UINT8_C(1))]);
-        const std::string my_str2(my_mr[static_cast<std::unsigned>(UINT8_C(2))]);
-        const std::string my_str3(my_mr[static_cast<std::unsigned>(UINT8_C(3))]);
-        const std::string my_str4(my_mr[static_cast<std::unsigned>(UINT8_C(4))]);
+        const std::string my_str1(my_mr[static_cast<std::size_t>(UINT8_C(1))]);
+        const std::string my_str2(my_mr[static_cast<std::size_t>(UINT8_C(2))]);
+        const std::string my_str3(my_mr[static_cast<std::size_t>(UINT8_C(3))]);
+        const std::string my_str4(my_mr[static_cast<std::size_t>(UINT8_C(4))]);
 
         const std::string my_decimal_digits("0123456789");
 
