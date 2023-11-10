@@ -277,7 +277,7 @@ namespace local
 
       using local::tgamma;
 
-      const wide_decimal_type g = tgamma(half + i);
+      const wide_decimal_type result_gamma = tgamma(half + i);
 
       // Calculate the control value.
 
@@ -285,7 +285,7 @@ namespace local
 
       const wide_decimal_type control = (sqrt(pi<wide_decimal_type>()) * ratios[i].first) / ratios[i].second; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-      const wide_decimal_type closeness = fabs(1 - (g / control));
+      const wide_decimal_type closeness = fabs(1 - (result_gamma / control));
 
       const auto result_gamma_is_ok = (closeness < tol);
 
@@ -294,7 +294,7 @@ namespace local
       {
         std::stringstream strm;
 
-        strm << "closeness: " << closeness << ", tol: " << tol << ", result_is_ok: " << std::boolalpha << result_is_ok;
+        strm << "result_gamma: " << result_gamma << ", closeness: " << closeness << ", tol: " << tol << ", result_is_ok: " << std::boolalpha << result_is_ok;
 
         std::cout << strm.str()  << std::endl;
       }
@@ -309,7 +309,9 @@ auto samples::gamma(const int argc, const char* argv[]) -> bool
   static_cast<void>(argc);
   static_cast<void>(argv);
 
-  const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(1001);
+  constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(1001));
+
+  const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10);
 
   const auto begin = std::clock();
 
