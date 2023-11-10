@@ -63,7 +63,8 @@ namespace local
       (
         static_cast<float>
         (
-          static_cast<long double>(std::numeric_limits<wide_decimal_type>::digits10) * 0.95L
+            static_cast<long double>(std::numeric_limits<wide_decimal_type>::digits10)
+          * static_cast<long double>(0.95L)
         )
       );
 
@@ -89,8 +90,8 @@ namespace local
 
     container_type tangent_numbers(m_plus_one);
 
-    tangent_numbers[static_cast<local_size_type>(UINT8_C(0))] = 0U;
-    tangent_numbers[static_cast<local_size_type>(UINT8_C(1))] = 1U;
+    tangent_numbers[static_cast<local_size_type>(UINT8_C(0))] = static_cast<unsigned>(UINT8_C(0));
+    tangent_numbers[static_cast<local_size_type>(UINT8_C(1))] = static_cast<unsigned>(UINT8_C(1));
 
     for(auto k = static_cast<local_size_type>(UINT8_C(1)); k < m; ++k) // NOLINT(altera-id-dependent-backward-branch)
     {
@@ -128,8 +129,8 @@ namespace local
       two_pow_two_m *= 4U;
     }
 
-    bn[0U] =  1U;                          // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-    bn[1U] = floating_point_type(-1) / 2U; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    bn[static_cast<local_size_type>(UINT8_C(0))] = static_cast<unsigned>(UINT8_C(1));                           // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    bn[static_cast<local_size_type>(UINT8_C(1))] = floating_point_type(-1) / static_cast<unsigned>(UINT8_C(2)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   }
 
   template<typename FloatingPointType>
@@ -165,9 +166,7 @@ namespace local
     const floating_point_type one_over_x2                    =  one_over_x_pow_two_n_minus_one * one_over_x_pow_two_n_minus_one;
           floating_point_type sum                            = (one_over_x_pow_two_n_minus_one * bernoulli_table()[2U]) / 2U;
 
-    floating_point_type tol = std::numeric_limits<floating_point_type>::epsilon();
-
-    using std::log;
+    auto tol = std::numeric_limits<floating_point_type>::epsilon();
 
     if(xx > static_cast<unsigned>(UINT8_C(8)))
     {
@@ -192,7 +191,7 @@ namespace local
     }
 
     // Perform the Bernoulli series expansion.
-    for(auto n2 = static_cast<std::uint32_t>(4U); n2 < static_cast<std::uint32_t>(bernoulli_table().size()); n2 += 2U)
+    for(auto n2 = static_cast<std::uint32_t>(UINT8_C(4)); n2 < static_cast<std::uint32_t>(bernoulli_table().size()); n2 += 2U)
     {
       one_over_x_pow_two_n_minus_one *= one_over_x2;
 
@@ -202,7 +201,7 @@ namespace local
 
       using std::fabs;
 
-      if((n2 > 6U) && (fabs(term) < tol)) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      if((n2 > static_cast<unsigned>(UINT8_C(10))) && (fabs(term) < tol))
       {
         break;
       }
@@ -229,12 +228,24 @@ namespace local
 
   auto example008_bernoulli_tgamma_run() -> bool
   {
+    const auto begin = std::clock();
+
     // Initialize the table of Bernoulli numbers.
     bernoulli_b
     (
       bernoulli_table().data(),
       static_cast<std::uint32_t>(bernoulli_table().size())
     );
+
+    const auto end = std::clock();
+
+    const auto elapsed = static_cast<float>(static_cast<float>(end - begin) / CLOCKS_PER_SEC);
+
+    std::cout << "Initialize coefficient table       : "
+              << elapsed
+              << std::endl;
+
+    using uint_ratio_pair_type = std::pair<std::uint64_t, std::uint32_t>;
 
     // In this example, we compute values of Gamma[1/2 + n].
 
@@ -244,7 +255,9 @@ namespace local
     //                    (4^n) n!
 
     // Table[Factorial[2 n]/((4^n) Factorial[n]), {n, 0, 17, 1}]
-    const std::array<std::pair<std::uint64_t, std::uint32_t>, static_cast<std::size_t>(UINT8_C(17))> ratios =
+    using uint_ratio_pair_array_type = std::array<uint_ratio_pair_type, static_cast<std::size_t>(UINT8_C(18))>;
+
+    const uint_ratio_pair_array_type ratios =
     {{
       { UINT64_C(                  1), UINT32_C(     1) },
       { UINT64_C(                  1), UINT32_C(     2) },
@@ -263,7 +276,7 @@ namespace local
       { UINT64_C(    213458046676875), UINT32_C( 16384) },
       { UINT64_C(   6190283353629375), UINT32_C( 32768) },
       { UINT64_C( 191898783962510625), UINT32_C( 65536) },
-      //{ UINT64_C(6332659870762850625), UINT32_C(131072) }
+      { UINT64_C(6332659870762850625), UINT32_C(131072) }
     }};
 
     bool result_is_ok = true;
@@ -271,7 +284,7 @@ namespace local
     const wide_decimal_type tol (std::numeric_limits<wide_decimal_type>::epsilon() * static_cast<std::uint32_t>(UINT32_C(100000)));
     const wide_decimal_type half(0.5F);
 
-    for(auto i = static_cast<std::size_t>(0U); i < ratios.size(); ++i)
+    for(auto i = static_cast<std::size_t>(0U); i < std::tuple_size<uint_ratio_pair_array_type>::value; ++i)
     {
       // Calculate Gamma[1/2 + i]
 
@@ -312,17 +325,30 @@ auto samples::gamma(const int argc, const char* argv[]) -> bool
   static_cast<void>(argc);
   static_cast<void>(argv);
 
-  constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(1001));
+  auto result_is_ok = true;
 
-  const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10);
+  {
+    constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(1001));
 
-  const auto begin = std::clock();
+    const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10);
 
-  const auto result_is_ok = (result_create_mp_base_is_ok && local::example008_bernoulli_tgamma_run());
+    result_is_ok = (result_create_mp_base_is_ok && result_is_ok);
+  }
 
-  const auto end = std::clock();
+  float elapsed { };
 
-  const auto elapsed = static_cast<float>(static_cast<float>(end - begin) / CLOCKS_PER_SEC);
+  if(result_is_ok)
+  {
+    const auto begin = std::clock();
+
+    const auto result_tgamma_is_ok = local::example008_bernoulli_tgamma_run();
+
+    const auto end = std::clock();
+
+    elapsed = static_cast<float>(static_cast<float>(end - begin) / CLOCKS_PER_SEC);
+
+    result_is_ok = (result_tgamma_is_ok && result_is_ok);
+  }
 
   std::cout << "Time example008_bernoulli_tgamma() : "
             << elapsed
