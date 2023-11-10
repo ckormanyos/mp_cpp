@@ -22,6 +22,7 @@
 #include <algorithm>
 
 #include <mp/mp_cpp.h>
+#include <mp/mp_detail.h>
 #include <mp/mp_fft/mp_fft_base.h>
 #include <mp/mp_fft/mp_fft_multiply.h>
 
@@ -761,10 +762,19 @@ std::int32_t mp::mp_cpp::compare(const mp::mp_cpp& v) const
       // The signs are the same and the exponents are the same.
       // We need to manually compare the data.
 
-      const std::int32_t number_of_digits_to_compare =
-        (std::min)(std::int32_t(prec_elem * mp::mp_core::mp_elem_digits10), mp_digits10());
+      const auto number_of_digits_to_compare =
+        (std::min)(static_cast<std::int32_t>(prec_elem * mp::mp_core::mp_elem_digits10), mp_digits10());
 
-      const int32_t val_cmp_data = compare_data(v.crepresentation(), number_of_digits_to_compare);
+      const auto val_cmp_data =
+        static_cast<std::int32_t>
+        (
+          detail::compare_ranges
+          (
+              crepresentation().cbegin(),
+            v.crepresentation().cbegin(),
+            static_cast<std::uint_fast32_t>(number_of_digits_to_compare)
+          )
+        );
 
       return ((my_neg == false) ? val_cmp_data : -val_cmp_data);
     }

@@ -612,8 +612,5 @@
     <ClInclude Include="mp\mp_detail_pown_template.h">
       <Filter>Source Files\mp</Filter>
     </ClInclude>
-    <ClInclude Include="samples\gamma.h">
-      <Filter>Source Files\samples</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

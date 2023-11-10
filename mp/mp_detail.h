@@ -24,6 +24,7 @@
 
   #include <cstdint>
   #include <ios>
+  #include <iterator>
   #include <string>
 
   namespace mp { class mp_cpp; }
@@ -44,6 +45,40 @@
                                                const mp::mp_cpp& b,
                                                const std::int32_t tol_elems,
                                                      std::int32_t& sig_elems);
+
+  template<typename InputIteratorLeftType,
+           typename InputIteratorRightType>
+  auto compare_ranges(      InputIteratorLeftType  pa,
+                            InputIteratorRightType pb,
+                      const std::uint_fast32_t     count) -> std::int_fast8_t
+  {
+    std::int_fast8_t n_return = 0;
+
+    InputIteratorRightType it_a_end(pa + count);
+
+    while(pa != it_a_end) // NOLINT(altera-id-dependent-backward-branch)
+    {
+      using value_left_type =
+        typename std::iterator_traits<InputIteratorLeftType>::value_type;
+
+      const auto value_a = *pa++;
+      const auto value_b = static_cast<value_left_type>(*pb++);
+
+      if(value_a != value_b)
+      {
+        n_return =
+          static_cast<std::int_fast8_t>
+          (
+            (value_a > value_b) ? static_cast<std::int_fast8_t>(INT8_C(1))
+                                : static_cast<std::int_fast8_t>(INT8_C(-1))
+          );
+
+        break;
+      }
+    }
+
+    return n_return;
+  }
 
   } } // namespace mp::detail
 

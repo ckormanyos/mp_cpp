@@ -1319,7 +1319,6 @@
     <ClInclude Include="mp\mp_fft\mp_fft_fftw2.h" />
     <ClInclude Include="mp\mp_fft\mp_fft_fftw2_protos.h" />
     <ClInclude Include="mp\mp_fft\mp_fft_multiply.h" />
-    <ClInclude Include="samples\gamma.h" />
     <ClInclude Include="samples\samples.h" />
     <ClInclude Include="functions\functions.h" />
     <ClInclude Include="functions\integer\bernoulli_b.h" />
