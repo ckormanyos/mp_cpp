@@ -140,7 +140,7 @@
     mp_fpclass_type fpclass;
 
     // Default constructor.
-    mp_base() : my_data  (mp_elem_number()),
+    mp_base() : my_data  (static_cast<typename array_type::size_type>(mp_elem_number())),
                 prec_elem(mp_elem_number()),
                 fpclass  (mp_finite) { }
 
@@ -156,7 +156,7 @@
 
     // Constructor from the floating-point class.
     explicit mp_base(const mp_fpclass_type floating_point_class) noexcept
-      : my_data  (mp_elem_number()),
+      : my_data  (static_cast<typename array_type::size_type>(mp_elem_number())),
         prec_elem(mp_elem_number()),
         fpclass  (floating_point_class) { }
 

@@ -124,7 +124,6 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/mp/mp_fft/mp_fft_fftw2.h                  \
                     $(PATH_SRC)/mp/mp_fft/mp_fft_fftw2_protos.h           \
                     $(PATH_SRC)/mp/mp_fft/mp_fft_multiply.h               \
-                    $(PATH_SRC)/samples/gamma.h                           \
                     $(PATH_SRC)/samples/samples.h
 
 
