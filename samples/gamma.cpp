@@ -294,7 +294,10 @@ namespace local
       {
         std::stringstream strm;
 
-        strm << "result_gamma: " << result_gamma << ", closeness: " << closeness << ", tol: " << tol << ", result_is_ok: " << std::boolalpha << result_is_ok;
+        strm << "result_gamma: "   << std::scientific << result_gamma
+             << ", closeness: "    << std::scientific << closeness
+             << ", tol: "          << std::scientific << tol
+             << ", result_is_ok: " << std::boolalpha << result_is_ok;
 
         std::cout << strm.str()  << std::endl;
       }
