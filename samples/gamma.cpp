@@ -244,7 +244,7 @@ namespace local
     //                    (4^n) n!
 
     // Table[Factorial[2 n]/((4^n) Factorial[n]), {n, 0, 17, 1}]
-    constexpr std::array<std::pair<std::uint64_t, std::uint32_t>, static_cast<std::size_t>(UINT8_C(17))> ratios =
+    const std::array<std::pair<std::uint64_t, std::uint32_t>, static_cast<std::size_t>(UINT8_C(17))> ratios =
     {{
       { UINT64_C(                  1), UINT32_C(     1) },
       { UINT64_C(                  1), UINT32_C(     2) },
@@ -276,21 +276,20 @@ namespace local
       // Calculate Gamma[1/2 + i]
 
       using local::tgamma;
-      using std::tgamma;
 
       const wide_decimal_type g = tgamma(half + i);
 
       // Calculate the control value.
 
       using local::pi;
-      using std::fabs;
-      using std::sqrt;
 
       const wide_decimal_type control = (sqrt(pi<wide_decimal_type>()) * ratios[i].first) / ratios[i].second; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
       const wide_decimal_type closeness = fabs(1 - (g / control));
 
-      result_is_ok &= (closeness < tol);
+      const auto result_gamma_is_ok = (closeness < tol);
+
+      result_is_ok = (result_gamma_is_ok && result_is_ok);
 
       {
         std::stringstream strm;
