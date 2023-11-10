@@ -200,6 +200,10 @@ mp::mp_cpp& mp::mp_cpp::calculate_exp()
     return operator=((!my_neg) ? std::numeric_limits<mp_cpp>::quiet_NaN() : mp::zero());
   }
 
+  using std::log;
+
+  const std::int64_t n2 = static_cast<std::int64_t>(to_double(*this) / log(2.0));
+
   if(!mp_base::mp_high_digit_range(precision()))
   {
     // Use a Taylor series expansion with a reduced
@@ -213,11 +217,7 @@ mp::mp_cpp& mp::mp_cpp::calculate_exp()
     //   t_prime = t - n*ln(2.0),
     // and where n is chosen such that -0.5*ln(2.0) < t_prime <= 0.5*ln(2.0)
 
-    static const double d_log2 = std::log(2.0);
-
-    const std::int64_t n2 = static_cast<std::int64_t>(to_double(*this) / d_log2);
-
-    mp_cpp r = (*this) - (mp_cpp(n2) * mp::ln2());
+    mp_cpp r = (*this) - (n2 * mp::ln2());
 
     // Argument translation: Divide by a fixed power of 2, q^2.
     const std::int32_t np     =  precision();
@@ -261,12 +261,6 @@ mp::mp_cpp& mp::mp_cpp::calculate_exp()
       operator*=(*this);
     }
 
-    // Multiplication by 2^n except for 2^0 = 1
-    if(n2 > static_cast<std::int64_t>(0))
-    {
-      operator*=(mp::pow2(n2));
-    }
-
     // We are now finished with the Taylor series expansion for exp(x).
   }
   else
@@ -276,6 +270,8 @@ mp::mp_cpp& mp::mp_cpp::calculate_exp()
     const std::int32_t tol_half    = static_cast<std::int32_t>((mp_digits10_tol() + 1) / 2);
     const std::int32_t prec_half   = static_cast<std::int32_t>((precision() + 1) / 2);
     const std::int32_t target_prec = (std::min)(prec_half, tol_half);
+
+    operator-=(n2 * mp::ln2());
 
     const mp_cpp original_this(*this);
 
@@ -336,6 +332,12 @@ mp::mp_cpp& mp::mp_cpp::calculate_exp()
     }
 
     // We are now finished with the Newton-Raphson iteration for exp(x).
+  }
+
+  // Multiplication by 2^n except for 2^0 = 1
+  if(n2 > static_cast<std::int64_t>(0))
+  {
+    operator*=(mp::pow2(n2));
   }
 
   return (b_neg_arg ? calculate_inv() : *this);
