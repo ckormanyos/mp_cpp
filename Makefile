@@ -128,7 +128,7 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
 
 
 .PHONY: all
-all: $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
+all: $(PATH_UNIX)/test.exe
 
 ###############################################################
 #
@@ -305,23 +305,23 @@ $(PATH_OBJ)/test_main.o : $(PATH_SRC)/test/test_main.cpp $(MP_HEADERS)
 #
 ###############################################################
 
-$(PATH_UNIX)/bessel.exe : $(FILES_OBJ)  $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
+$(PATH_UNIX)/bessel.exe : $(FILES_OBJ) $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/bessel_main.o -o $(PATH_UNIX)/bessel.exe
 
-$(PATH_UNIX)/gamma.exe  : $(FILES_OBJ) $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
+$(PATH_UNIX)/gamma.exe  : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/gamma_main.o -o $(PATH_UNIX)/gamma.exe
 
-$(PATH_UNIX)/ln2.exe    : $(FILES_OBJ) $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
+$(PATH_UNIX)/ln2.exe    : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/ln2_main.o -o $(PATH_UNIX)/ln2.exe
 
-$(PATH_UNIX)/pi.exe     :  $(FILES_OBJ) $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
+$(PATH_UNIX)/pi.exe     : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/pi_main.o -o $(PATH_UNIX)/pi.exe
 
-$(PATH_UNIX)/test.exe   :  $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
+$(PATH_UNIX)/test.exe   : $(FILES_OBJ) $(PATH_UNIX)/pi.exe $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe  $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/test_main.o -o $(PATH_UNIX)/test.exe
 

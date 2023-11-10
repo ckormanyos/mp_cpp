@@ -76,8 +76,10 @@ mp::mp_cpp::mp_cpp(const double mantissa,
 
     for(std::int_fast32_t i = static_cast<std::int_fast32_t>(0); i < digit_loops; ++i)
     {
+      const auto index = static_cast<typename array_type::size_type>(i);
+
       std::uint32_t n  = static_cast<std::uint32_t>(static_cast<std::uint64_t>(d));
-      my_data[i]       = static_cast<std::uint32_t>(n);
+      my_data[index]   = static_cast<std::uint32_t>(n);
       d               -= static_cast<double>(n);
       d               *= static_cast<double>(mp_core::mp_elem_mask);
     }

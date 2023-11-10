@@ -216,7 +216,7 @@ struct Jn_algo
   static std::uint32_t mstart1(const double x, const std::uint32_t digits)
   {
     m_z = ((x < 0.1) ? 0.1 : x);
-    m_p = digits;
+    m_p = static_cast<std::int32_t>(digits);
 
     // Get the starting order for recursion.
     const double        d_order = bisect(fn_mstart1, 0.1, x + 10000.0);

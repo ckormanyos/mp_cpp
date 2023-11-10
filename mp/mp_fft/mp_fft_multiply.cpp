@@ -141,6 +141,17 @@ void mp::mp_fft_multiply(std::uint32_t* u, const std::uint32_t* v, const std::in
                              carry = static_cast<std::uint64_t>(xhi / static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2));
     const std::uint_fast32_t nhi   = static_cast<std::uint_fast32_t>(xhi - static_cast<std::uint64_t>(carry * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)));
 
-    u[(j / 2U)] = static_cast<std::uint_fast32_t>(static_cast<std::uint_fast32_t>(nhi * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)) + nlo);
+    u[(j / 2U)] =
+      static_cast<std::uint32_t>
+      (
+        static_cast<std::uint_fast32_t>
+        (
+          static_cast<std::uint_fast32_t>
+          (
+            nhi * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)
+          )
+          + nlo
+        )
+      );
   }
 }

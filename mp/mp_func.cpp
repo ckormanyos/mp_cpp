@@ -274,7 +274,7 @@ mp::mp_cpp mp::rootn(const mp_cpp& x, const std::int32_t p)
   }
   else if(p < static_cast<std::int32_t>(0))
   {
-    rootn_result = mp_cpp(x).calculate_rootn_inv(static_cast<std::int64_t>(-p));
+    rootn_result = mp_cpp(x).calculate_rootn_inv(static_cast<std::int32_t>(-p));
   }
   else if(p == static_cast<std::int32_t>(0))
   {
@@ -310,7 +310,7 @@ mp::mp_cpp& mp::mp_cpp::calculate_rootn_inv(const std::int32_t p)
   }
   else if(p < static_cast<std::int32_t>(0))
   {
-    return (calculate_rootn_inv(static_cast<std::int64_t>(-p))).calculate_inv();
+    return (calculate_rootn_inv(static_cast<std::int32_t>(-p))).calculate_inv();
   }
   else if(p == static_cast<std::int32_t>(0))
   {

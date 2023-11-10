@@ -96,7 +96,7 @@ float local::test_real(bool& result_is_ok)
   {
     std::stringstream strm;
 
-    strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << val;
+    strm << std::scientific << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10)) << val;
 
     const std::string str_val = strm.str();
 
@@ -174,7 +174,7 @@ float local::test_imag(bool& result_is_ok)
     {
       std::stringstream strm;
 
-      strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.real();
+      strm << std::scientific << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10)) << complex_val.real();
 
       const std::string str_real_val = strm.str();
 
@@ -184,7 +184,7 @@ float local::test_imag(bool& result_is_ok)
     {
       std::stringstream strm;
 
-      strm << std::scientific << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10) << complex_val.imag();
+      strm << std::scientific << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10)) << complex_val.imag();
 
       const std::string str_imag_val = strm.str();
 
