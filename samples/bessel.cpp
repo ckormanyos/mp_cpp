@@ -54,6 +54,8 @@
 // *****************************************************************************
 
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -239,7 +241,7 @@ struct Jn_algo
   {
     m_z = ((x < 0.1) ? 0.1 : x);
     m_n = dn;
-    m_p = digits;
+    m_p = static_cast<std::int32_t>(digits);
 
     // Get the starting order for recursion.
     const double        d_order = bisect(fn_mstart2, 0.1, x + 10000.0);
@@ -295,12 +297,12 @@ static bool DoJn(const int argc, const char* argv[])
   // Loop over all lattice orders and initialize the lattice objects.
   for(std::int32_t n = 0; n < Jn_orders; ++n)
   {
-    jn_array[n] = mp::mp_cpp(0U);
+    jn_array[static_cast<typename std::vector<mp::mp_cpp>::size_type>(n)] = mp::mp_cpp(static_cast<unsigned>(UINT8_C(0)));
 
     // Create the output filename and open the associated file.
     // The filename has the form str_Jn = "J00n.dat" where the
     // numerical part of the filename always has three digits.
-    std::stringstream  ss;
+    std::stringstream ss;
     std::string str_Jn;
 
     ss << "J"
@@ -310,15 +312,15 @@ static bool DoJn(const int argc, const char* argv[])
 
     ss >> str_Jn;
 
-    outfiles[n] = new std::ofstream(std::string(str_of + str_Jn).data(), std::ios_base::out | std::ios_base::trunc);
+    outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(n)] = new std::ofstream(std::string(str_of + str_Jn).data(), std::ios_base::out | std::ios_base::trunc);
 
-    if(outfiles[n]->is_open() == false)
+    if(outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(n)]->is_open() == false)
     {
       for(n = 0; n < static_cast<std::int32_t>(outfiles.size()); ++n)
       {
-        outfiles[n]->close();
+        outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(n)]->close();
 
-        delete outfiles[n];
+        delete outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(n)];
       }
       
       std::cerr << "Could not open all output files for Jn lattice" << std::endl;
@@ -332,7 +334,7 @@ static bool DoJn(const int argc, const char* argv[])
   for(nx = 0; nx <= Jn_range * Jn_grain; ++nx)
   {
     std::stringstream ss;
-    std::string str;
+    std::string       str;
 
     std::cout << "Calculating Jn lattice point: "
                 << std::setprecision(1)
@@ -350,10 +352,11 @@ static bool DoJn(const int argc, const char* argv[])
       for(m = 0; m < Jn_orders; ++m)
       {
         // Print Jn(0.0) to output files
-        *outfiles[m] << std::showpos << std::scientific << std::setprecision(6)
+        *outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(m)]
+                     << std::showpos << std::scientific << std::setprecision(6)
                      << double(0.0)
                      << "\t"
-                     << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10)
+                     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
                      << (m == 0 ? mp::one() : mp::zero())
                      << std::endl;
       }
@@ -372,13 +375,30 @@ static bool DoJn(const int argc, const char* argv[])
       mp::mp_cpp Jn_p1        (1U);
       mp::mp_cpp normalization(2U);
 
-      const std::uint32_t d10 = static_cast<std::uint32_t>(std::numeric_limits<mp::mp_cpp>::digits10);
+      const auto d10 = static_cast<std::uint32_t>(std::numeric_limits<mp::mp_cpp>::digits10);
 
       // Get the starting order for recursive calculations.
-      const std::int32_t n_start1 = Jn_algo::mstart1(static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)), d10);
-      const std::int32_t n_start2 = Jn_algo::mstart2(static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)), static_cast<std::int32_t>(Jn_orders) - 1, d10);
+      const auto n_start1 =
+        static_cast<std::int32_t>
+        (
+          Jn_algo::mstart1
+          (
+            static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)), d10
+          )
+        );
 
-      const std::int32_t n_start = ((n_start2 > n_start1) ? n_start2 : n_start1);
+      const auto n_start2 =
+        static_cast<std::int32_t>
+        (
+          Jn_algo::mstart2
+          (
+            static_cast<double>(nx) / static_cast<double>(static_cast<std::int32_t>(Jn_grain)),
+            static_cast<std::int32_t>(static_cast<std::int32_t>(Jn_orders) - static_cast<std::int32_t>(INT8_C(1))),
+            d10
+          )
+        );
+
+      const auto n_start = static_cast<std::int32_t>((n_start2 > n_start1) ? n_start2 : n_start1);
 
       // Do the recursion. The direction of the recursion is downward.
       for(m = n_start; m >= 0; --m)
@@ -402,7 +422,7 @@ static bool DoJn(const int argc, const char* argv[])
         // Store in the array.
         if(m < Jn_orders)
         {
-          jn_array[m] = Jn;
+          jn_array[static_cast<typename std::vector<mp::mp_cpp>::size_type>(m)] = Jn;
         }
       }
 
@@ -412,14 +432,15 @@ static bool DoJn(const int argc, const char* argv[])
       // Normalize the Jn array and print to file.
       for(m = 0; m < Jn_orders; ++m)
       {
-        jn_array[m] *= normalization;
+        jn_array[static_cast<typename std::vector<mp::mp_cpp>::size_type>(m)] *= normalization;
 
         // Print Jn(x) to output files.
-        *outfiles[m] << std::showpos << std::scientific << std::setprecision(6)
+        *outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(m)]
+                     << std::showpos << std::scientific << std::setprecision(6)
                      << x
                      << "\t"
-                     << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10)
-                     << jn_array[m]
+                     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
+                     << jn_array[static_cast<typename std::vector<mp::mp_cpp>::size_type>(m)]
                      << std::endl;
       }
     }
@@ -428,9 +449,9 @@ static bool DoJn(const int argc, const char* argv[])
   // Close all of the output files and delete them.
   for(std::size_t i = 0U; i < outfiles.size(); ++i)
   {
-    outfiles[i]->close();
+    outfiles[static_cast<typename std::vector<std::ofstream*>::size_type>(i)]->close();
 
-    delete outfiles.at(i);
+    delete outfiles.at(static_cast<typename std::vector<std::ofstream*>::size_type>(i));
   }
 
   std::cout << std::endl;

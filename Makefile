@@ -13,19 +13,24 @@
 # make STD=c++11 SANITIZE=1 prepare
 # make STD=c++11 SANITIZE=1 --jobs=8 all
 
-MY_SANITIZE       = 0
+MY_GCC            = g++
 MY_STD            = c++20
+MY_SANITIZE       = 0
 
-ifeq ($(SANITIZE),1)
-MY_SANITIZE      := 1
+ifneq ($(GCC),)
+MY_GCC            = $(GCC)
 endif
 
 ifneq ($(STD),)
 MY_STD            = $(STD)
 endif
 
-CXX               = g++
-CC                = gcc
+ifeq ($(SANITIZE),1)
+MY_SANITIZE      := 1
+endif
+
+CXX               = $(MY_GCC)
+CC                = $(MY_GCC)
 ECHO              = echo
 
 PATH_UNIX         = $(CURDIR)/unix
@@ -52,7 +57,8 @@ UBSAN_FLAGS       = -fsanitize=shift                          \
                     -fsanitize=float-cast-overflow            \
                     -fsanitize=enum
 
-GCCFLAGS          = -Wall                                     \
+GCCFLAGS          = -Werror                                   \
+                    -Wall                                     \
                     -Wextra                                   \
                     -Wodr                                     \
                     -Wpedantic                                \
@@ -68,12 +74,15 @@ GCCFLAGS         := $(GCCFLAGS)                               \
 endif
 
 CFLAGS            = $(GCCFLAGS)                               \
-                    -std=c11
+                    -std=c11                                  \
+                    -x c
 
 CXXFLAGS          = --std=$(MY_STD)                           \
+                    -Wconversion                              \
+                    -Wsign-conversion                         \
                     $(GCCFLAGS)
 
-LDFLAGS           = $(CFLAGS)                                 \
+LDFLAGS           = $(GCCFLAGS)                               \
                     -lpthread
 
 FFTW_OBJ          = $(addprefix $(PATH_OBJ)/,$(basename $(notdir $(wildcard $(PATH_FFTW)/fftw/*.c))))
@@ -126,6 +135,12 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/mp/mp_fft/mp_fft_multiply.h               \
                     $(PATH_SRC)/samples/samples.h
 
+
+###############################################################
+#
+# The main build target.
+#
+###############################################################
 
 .PHONY: all
 all: $(PATH_UNIX)/test.exe
