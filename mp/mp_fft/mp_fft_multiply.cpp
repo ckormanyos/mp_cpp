@@ -131,17 +131,17 @@ void mp::mp_fft_multiply(std::uint32_t* u, const std::uint32_t* v, const std::in
 
   for(std::int_fast32_t j = std::int_fast32_t((p * 2) - 2); j >= std::int_fast32_t(0); j -= static_cast<std::int32_t>(2))
   {
-    double                   xaj   = a[j] * p_fft->get_fft_scale();
+    double                   xaj   = a[static_cast<std::size_t>(j)] * p_fft->get_fft_scale();
     const std::uint64_t      xlo   = static_cast<std::uint64_t>(xaj + 0.5) + carry;
                              carry = static_cast<std::uint64_t>(xlo / static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2));
     const std::uint_fast32_t nlo   = static_cast<std::uint_fast32_t>(xlo - static_cast<std::uint64_t>(carry * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)));
 
-                             xaj   = ((j > static_cast<std::int_fast32_t>(0)) ? (a[j - 1U] * p_fft->get_fft_scale()) : 0.0);
+                             xaj   = ((j > static_cast<std::int_fast32_t>(0)) ? (a[static_cast<std::size_t>(j - 1)] * p_fft->get_fft_scale()) : 0.0);
     const std::uint64_t      xhi   = static_cast<std::uint64_t>(xaj + 0.5) + carry;
                              carry = static_cast<std::uint64_t>(xhi / static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2));
     const std::uint_fast32_t nhi   = static_cast<std::uint_fast32_t>(xhi - static_cast<std::uint64_t>(carry * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)));
 
-    u[(j / 2U)] =
+    u[static_cast<std::size_t>(j / 2)] =
       static_cast<std::uint32_t>
       (
         static_cast<std::uint_fast32_t>
