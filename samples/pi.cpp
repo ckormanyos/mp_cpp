@@ -165,7 +165,7 @@ bool samples::pi(const int argc, const char* argv[])
       // Start the time measurement.
       const auto t0 = std::clock();
 
-      // Calculate pi with the user output trace flag set to true.
+      // Calculate the value with the user output trace flag set to true.
       local_pi::my_pi(true);
 
       // End the time measurement.
@@ -195,7 +195,7 @@ bool samples::pi(const int argc, const char* argv[])
 void local_pi::print_timing_report(std::ostream& os, const double time_for_calculation)
 {
   os << std::endl
-     << "Time for pi calculation: "
+     << "Time for calculation: "
      << std::numeric_limits<mp::mp_cpp>::digits10
      << " digits in "
      << std::setprecision(static_cast<int>(INT8_C(4)))
@@ -214,16 +214,16 @@ void local_pi::print_timing_report(std::ostream& os, const double time_for_calcu
 bool local_pi::print_output_result(std::ostream& os, const double time_for_calculation)
 {
   // Print the calculation time to the output stream.
-  local_pi::print_timing_report(os, time_for_calculation);
+  print_timing_report(os, time_for_calculation);
 
   std::stringstream strm;
 
-  // Pipe the value of pi into a stringstream object with full precision.
+  // Pipe the value into a stringstream object with full precision.
   strm << std::fixed
        << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
-       << local_pi::my_pi(false);
+       << my_pi(false);
 
-  // Extract the string value of pi.
+  // Extract the string value.
   const std::string str_val(strm.str());
 
   const auto result_str_val_head_is_ok = (str_val.find("3.1415926535") != std::string::npos);
@@ -237,7 +237,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
   const auto result_str_val_is_ok = (result_str_val_head_is_ok && result_str_val_tail_is_ok);
 
-  // Print pi using the following paramater-tunable format.
+  // Print the value using the following paramater-tunable format.
 
   // pi = 3.1415926535 8979323846 2643383279 5028841971 6939937510 : 50
   //        5820974944 5923078164 0628620899 8628034825 3421170679 : 100
@@ -265,7 +265,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   // For a simple verification of 1,000,000 digits,
   // for example, go to Wolfram Alpha and ask:
   //   1000000th digit of Pi.
-  // This prints out 50 digits of pi in the neighborhood
+  // This prints out 50 digits of the value in the neighborhood
   // of a million digits, with the millionth digit in bold.
 
   std::string::size_type pos { };
