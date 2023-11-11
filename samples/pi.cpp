@@ -262,26 +262,18 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   // we insert a char_group_separator character string
   // (which likely might be selected as a newline).
 
-  // For a simple verification of 1,000,000 digits,
-  // for example, go to Wolfram Alpha and ask:
-  //   1000000th digit of Pi.
-  // This prints out 50 digits of the value in the neighborhood
-  // of a million digits, with the millionth digit in bold.
-
   std::string::size_type pos { };
 
   if(   ((pos = str_val.find('3', static_cast<std::size_t>(UINT8_C(0)))) != std::string::npos)
      && ((pos = str_val.find('.', static_cast<std::size_t>(UINT8_C(1)))) != std::string::npos)
-     && ((pos = str_val.find('1', static_cast<std::size_t>(UINT8_C(1)))) != std::string::npos))
+     && ((pos = str_val.find('1', static_cast<std::size_t>(UINT8_C(2)))) != std::string::npos))
   {
-    ;
+    os << "pi = " << str_val.substr(static_cast<std::string::size_type>(UINT8_C(0)), pos);
   }
   else
   {
     pos = static_cast<std::string::size_type>(UINT8_C(0));
   }
-
-  os << "pi = " << str_val.substr(static_cast<std::string::size_type>(UINT8_C(0)), pos);
 
   const auto digit_offset = pos;
 
@@ -294,12 +286,12 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   while(all_output_streaming_is_finished == false)
   {
     // Print a set of digits (i.e. having 10 digits per set).
-    const std::string str_pi_substring(str_val.substr(pos, digits_per_set));
+    const std::string str_val_substring(str_val.substr(pos, digits_per_set));
 
-    os << str_pi_substring << char_set_separator;
+    os << str_val_substring << char_set_separator;
 
     {
-      const auto min_ofs = (std::min)(static_cast<std::string::size_type>(digits_per_set), str_pi_substring.length());
+      const auto min_ofs = (std::min)(static_cast<std::string::size_type>(digits_per_set), str_val_substring.length());
 
       pos += min_ofs;
     }
