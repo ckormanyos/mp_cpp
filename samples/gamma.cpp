@@ -139,7 +139,7 @@ namespace local
     using floating_point_type = FloatingPointType;
 
     // Check if the argument should be scaled up for the Bernoulli series expansion.
-    static const auto min_arg_n =
+    const auto min_arg_n =
       static_cast<std::int32_t>
       (
         static_cast<float>(static_cast<float>(std::numeric_limits<floating_point_type>::digits10) * 0.8F)
@@ -296,11 +296,11 @@ namespace local
 
       using local::pi;
 
-      const wide_decimal_type control = (sqrt(pi<wide_decimal_type>()) * ratios[i].first) / ratios[i].second; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      const wide_decimal_type ctrl = (sqrt(pi<wide_decimal_type>()) * ratios[i].first) / ratios[i].second; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-      const wide_decimal_type closeness = fabs(1 - (result_gamma / control));
+      const wide_decimal_type delta = fabs(1 - (result_gamma / ctrl));
 
-      const auto result_gamma_is_ok = (closeness < tol);
+      const auto result_gamma_is_ok = (delta < tol);
 
       result_is_ok = (result_gamma_is_ok && result_is_ok);
 
@@ -308,7 +308,7 @@ namespace local
         std::stringstream strm;
 
         strm << "result_gamma: "   << std::scientific << result_gamma
-             << ", closeness: "    << std::scientific << closeness
+             << ", closeness: "    << std::scientific << delta
              << ", tol: "          << std::scientific << tol
              << ", result_is_ok: " << std::boolalpha << result_is_ok;
 

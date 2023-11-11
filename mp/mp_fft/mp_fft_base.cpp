@@ -31,14 +31,24 @@ void mp::mp_fft_base::convolv() const
   double* a = fwd_fft_traits_1.p_out;
   double* b = fwd_fft_traits_2.p_out;
 
-  for(std::uint_fast32_t i = static_cast<std::uint_fast32_t>(1U); i < static_cast<std::uint_fast32_t>(my_fft_n / 2); ++i)
+  for(auto   i = static_cast<std::uint_fast32_t>(UINT8_C(1));
+             i < static_cast<std::uint_fast32_t>(my_fft_n / 2);
+           ++i)
   {
     const double u  = a[i];
 
-    a[i]            = (u               * b[i]) - (a[my_fft_n - i] * b[my_fft_n - i]);
-    a[my_fft_n - i] = (a[my_fft_n - i] * b[i]) + (u               * b[my_fft_n - i]);
+    const auto n_minus_i =
+      static_cast<std::uint_fast32_t>
+      (
+        static_cast<std::uint_fast32_t>(my_fft_n) - i
+      );
+
+    a[i]         = (u            * b[i]) - (a[n_minus_i] * b[n_minus_i]);
+    a[n_minus_i] = (a[n_minus_i] * b[i]) + (u            * b[n_minus_i]);
   }
 
-  a[std::size_t(my_fft_n / 2)] *= b[std::size_t(my_fft_n / 2)]; // Element [my_fft_n / 2].
-  a[0U]                        *= b[0U];                        // Element [0].
+  const auto n_half = static_cast<std::size_t>(my_fft_n / 2);
+
+  a[n_half]                               *= b[n_half];                               // Element [my_fft_n / 2].
+  a[static_cast<std::size_t>(UINT8_C(0))] *= b[static_cast<std::size_t>(UINT8_C(0))]; // Element [0].
 }

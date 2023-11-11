@@ -182,7 +182,7 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
 
   // Pipe the value of ln2 into a stringstream object with full precision.
   ss << std::fixed
-     << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10)
+     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
      << local::my_ln2(false);
 
   // Extract the string value of ln2.

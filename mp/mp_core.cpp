@@ -54,7 +54,7 @@ bool mp::mp_core::create_mp_core()
   // But use parts of the same memory for all of them.
   if(digit_characteristics.mp_elem_number() < mp_elem_fft_min)
   {
-    mp_core_memory = new (std::nothrow) mp_core_memory_type(digit_characteristics.mp_elem_number());
+    mp_core_memory = new (std::nothrow) mp_core_memory_type(static_cast<std::size_t>(digit_characteristics.mp_elem_number()));
 
     result = true;
   }
@@ -177,12 +177,18 @@ bool mp::mp_core::create_mp_core()
                        static_cast<std::uint32_t>((digit_characteristics.mp_elem_number() * 2) * 2));
 
     mp_core_memory =
-      new (std::nothrow) mp_core_memory_type(digit_characteristics.mp_elem_number(),
+      new (std::nothrow) mp_core_memory_type(static_cast<std::size_t>(digit_characteristics.mp_elem_number()),
                                              static_cast<std::size_t>(*it_hi));
 
     if(mp_core_memory->is_valid())
     {
-      fft_list.reserve(std::distance(it_lo, it_hi + 1U));
+      const auto size_to_reserve =
+        static_cast<std::size_t>
+        (
+          std::distance(it_lo, it_hi + static_cast<std::size_t>(UINT8_C(1)))
+        );
+
+      fft_list.reserve(size_to_reserve);
 
       std::for_each(it_lo,
                     it_hi + 1U,

@@ -141,9 +141,17 @@ bool mp::detail::format_float_string(std::string& result_str,
   const bool has_showpoint  = ((format_flags & std::ios::showpoint)  == std::ios::showpoint);
   const bool has_showpos    = ((format_flags & std::ios::showpos)    == std::ios::showpos);
 
+  const auto result_size =
+    static_cast<std::streamsize>
+    (
+      (std::max)(result_str.size(), static_cast<string_size_type>(UINT8_C(16)))
+    );
+
   const std::streamsize local_digits10 =
-    ((my_digits10 == 0) ? (std::max)(result_str.size(), string_size_type(16U))
-                        : my_digits10);
+    static_cast<std::streamsize>
+    (
+      (my_digits10 == static_cast<std::streamsize>(INT8_C(0))) ? result_size : my_digits10
+    );
 
   if(string_value_is_zero || result_str.empty() || (result_str.find_first_not_of('0') == std::string::npos))
   {
@@ -213,7 +221,7 @@ bool mp::detail::format_float_string(std::string& result_str,
   {
     // Pad out the end with zero's if we need to:
 
-    std::streamsize number_of_chars = result_str.size();
+    auto number_of_chars = static_cast<std::streamsize>(result_str.size());
 
     number_of_chars = local_digits10 - number_of_chars;
 
@@ -262,11 +270,11 @@ bool mp::detail::format_float_string(std::string& result_str,
     if(has_fixed)
     {
       // We may need to add trailing zeros:
-      std::streamsize len = result_str.find('.') + 1;
+      auto len = static_cast<std::streamsize>(result_str.find('.') + static_cast<std::size_t>(UINT8_C(1)));
 
-      len = local_digits10 - (result_str.size() - len);
+      len = local_digits10 - (static_cast<std::streamsize>(result_str.size()) - len);
 
-      if(len > 0)
+      if(len > static_cast<std::streamsize>(INT8_C(0)))
       {
         result_str.append(string_size_type(len), '0');
       }

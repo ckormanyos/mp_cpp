@@ -241,10 +241,10 @@ std::int32_t mp::mp_base::sub_loop_uv(std::uint32_t* const u, const std::uint32_
                      - static_cast<std::int32_t>(v[std::size_t(j)])) - borrow;
 
     // Is there underflow needing borrow?
-    if(t < static_cast<std::int32_t>(0))
+    if(t < static_cast<std::int32_t>(INT8_C(0)))
     {
       // Yes, there is underflow and a borrow is needed.
-      t     += mp_core::mp_elem_mask;
+      t     += static_cast<std::int32_t>(mp_core::mp_elem_mask);
       borrow = static_cast<std::int32_t>(1);
     }
     else
@@ -253,7 +253,10 @@ std::int32_t mp::mp_base::sub_loop_uv(std::uint32_t* const u, const std::uint32_
     }
 
     u[std::size_t(j)] =
-      static_cast<std::uint32_t>(static_cast<std::uint32_t>(t) % static_cast<std::uint32_t>(mp_core::mp_elem_mask));
+      static_cast<std::uint32_t>
+      (
+        static_cast<std::uint32_t>(t) % mp_core::mp_elem_mask
+      );
   }
 
   // Return the borrow flag.

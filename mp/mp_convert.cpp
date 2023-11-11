@@ -239,7 +239,7 @@ bool mp::mp_cpp::read_string(const char* const s) noexcept
       ss << str.substr(static_cast<std::string::size_type>(0U),
                        static_cast<std::string::size_type>(mp_core::mp_elem_digits10));
 
-      ss >> my_data[n_cnt];
+      ss >> my_data[static_cast<typename array_type::size_type>(n_cnt)];
 
       ss.str(std::string());
       ss.clear();
@@ -490,17 +490,17 @@ std::uint64_t mp::mp_cpp::to_uint64(const mp_cpp& x)
   }
   else if(xx.my_exp < static_cast<std::int64_t>(0))
   {
-    val = static_cast<std::int64_t>(0);
+    val = static_cast<std::uint64_t>(UINT8_C(0));
   }
   else
   {
     // Extract my_data into the int64 value.
-    val = static_cast<std::int64_t>(xx.my_data[0U]);
+    val = static_cast<std::uint64_t>(xx.my_data[0U]);
 
-    for(std::int32_t i = static_cast<std::int32_t>(1); i <= static_cast<std::int32_t>(static_cast<std::int32_t>(xx.my_exp) / mp_core::mp_elem_digits10); ++i)
+    for(auto i = static_cast<std::int32_t>(1); i <= static_cast<std::int32_t>(static_cast<std::int32_t>(xx.my_exp) / mp_core::mp_elem_digits10); ++i)
     {
       val *= static_cast<std::uint64_t>(mp_core::mp_elem_mask);
-      val += static_cast<std::uint64_t>(xx.my_data[i]);
+      val += static_cast<std::uint64_t>(xx.my_data[static_cast<typename array_type::size_type>(i)]);
     }
   }
 
@@ -634,7 +634,7 @@ mp::mp_cpp mp::mp_cpp::decimal_part(const mp::mp_cpp& x)
             xd.my_data.cbegin() + last_copy,
             xd.my_data.begin());
 
-  const size_t first_clear = static_cast<size_t>(mp_elem_number() - first_copy);
+  const size_t first_clear = static_cast<size_t>(static_cast<size_t>(mp_elem_number()) - first_copy);
   const size_t last_clear  = static_cast<size_t>(mp_elem_number());
 
   std::fill(xd.my_data.begin() + first_clear,

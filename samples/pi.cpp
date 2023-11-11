@@ -205,7 +205,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
   // Pipe the value of pi into a stringstream object with full precision.
   ss << std::fixed
-     << std::setprecision(std::numeric_limits<mp::mp_cpp>::digits10)
+     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
      << local_pi::my_pi(false);
 
   // Extract the string value of pi.

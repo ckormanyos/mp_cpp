@@ -13,19 +13,24 @@
 # make STD=c++11 SANITIZE=1 prepare
 # make STD=c++11 SANITIZE=1 --jobs=8 all
 
-MY_SANITIZE       = 0
+MY_GCC            = g++
 MY_STD            = c++20
+MY_SANITIZE       = 0
 
-ifeq ($(SANITIZE),1)
-MY_SANITIZE      := 1
+ifneq ($(GCC),)
+MY_GCC            = $(GCC)
 endif
 
 ifneq ($(STD),)
 MY_STD            = $(STD)
 endif
 
-CXX               = g++
-CC                = gcc
+ifeq ($(SANITIZE),1)
+MY_SANITIZE      := 1
+endif
+
+CXX               = $(MY_GCC)
+CC                = $(MY_GCC)
 ECHO              = echo
 
 PATH_UNIX         = $(CURDIR)/unix
@@ -52,7 +57,8 @@ UBSAN_FLAGS       = -fsanitize=shift                          \
                     -fsanitize=float-cast-overflow            \
                     -fsanitize=enum
 
-GCCFLAGS          = -Wall                                     \
+GCCFLAGS          = -Werror                                   \
+                    -Wall                                     \
                     -Wextra                                   \
                     -Wodr                                     \
                     -Wpedantic                                \
@@ -68,12 +74,15 @@ GCCFLAGS         := $(GCCFLAGS)                               \
 endif
 
 CFLAGS            = $(GCCFLAGS)                               \
-                    -std=c11
+                    -std=c11                                  \
+                    -x c
 
 CXXFLAGS          = --std=$(MY_STD)                           \
+                    -Wconversion                              \
+                    -Wsign-conversion                         \
                     $(GCCFLAGS)
 
-LDFLAGS           = $(CFLAGS)                                 \
+LDFLAGS           = $(GCCFLAGS)                               \
                     -lpthread
 
 FFTW_OBJ          = $(addprefix $(PATH_OBJ)/,$(basename $(notdir $(wildcard $(PATH_FFTW)/fftw/*.c))))
@@ -127,8 +136,14 @@ MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/samples/samples.h
 
 
+###############################################################
+#
+# The main build target.
+#
+###############################################################
+
 .PHONY: all
-all: $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_UNIX)/pi.exe $(PATH_UNIX)/test.exe
+all: $(PATH_UNIX)/test.exe
 
 ###############################################################
 #
@@ -305,23 +320,23 @@ $(PATH_OBJ)/test_main.o : $(PATH_SRC)/test/test_main.cpp $(MP_HEADERS)
 #
 ###############################################################
 
-$(PATH_UNIX)/bessel.exe : $(FILES_OBJ)  $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
+$(PATH_UNIX)/bessel.exe : $(FILES_OBJ) $(PATH_OBJ)/bessel_main.o $(PATH_OBJ)/bessel.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/bessel_main.o -o $(PATH_UNIX)/bessel.exe
 
-$(PATH_UNIX)/gamma.exe  : $(FILES_OBJ) $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
+$(PATH_UNIX)/gamma.exe  : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_OBJ)/gamma_main.o $(PATH_OBJ)/gamma.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/gamma_main.o -o $(PATH_UNIX)/gamma.exe
 
-$(PATH_UNIX)/ln2.exe    : $(FILES_OBJ) $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
+$(PATH_UNIX)/ln2.exe    : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_OBJ)/ln2_main.o $(PATH_OBJ)/ln2.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/ln2_main.o -o $(PATH_UNIX)/ln2.exe
 
-$(PATH_UNIX)/pi.exe     :  $(FILES_OBJ) $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
+$(PATH_UNIX)/pi.exe     : $(FILES_OBJ) $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe $(PATH_OBJ)/pi_main.o $(PATH_OBJ)/pi.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/pi_main.o -o $(PATH_UNIX)/pi.exe
 
-$(PATH_UNIX)/test.exe   :  $(FILES_OBJ) $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
+$(PATH_UNIX)/test.exe   : $(FILES_OBJ) $(PATH_UNIX)/pi.exe $(PATH_UNIX)/bessel.exe $(PATH_UNIX)/gamma.exe $(PATH_UNIX)/ln2.exe  $(PATH_OBJ)/test_main.o $(PATH_OBJ)/test.o
 	@$(ECHO) +++ linking executable: $@
 	@$(CXX) $(LDFLAGS) $(FILES_OBJ) -x none $(PATH_OBJ)/test_main.o -o $(PATH_UNIX)/test.exe
 
