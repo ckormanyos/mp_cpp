@@ -75,8 +75,13 @@
 
       // Move constructor.
       fixed_length_dynamic_array_from_scratch(fixed_length_dynamic_array_from_scratch&& other)
-        : my_count( other.my_count),
-          my_elems(&other.my_elems[0U]) { }
+        : my_count(other.my_count),
+          my_elems(other.my_elems)
+      {
+        xutils::xdeallocate_range(other.begin(), other.end(), allocator_type());
+
+        other.my_elems = nullptr;
+      }
 
       // Constructor from initializer_list.
       fixed_length_dynamic_array_from_scratch(std::initializer_list<value_type> init_list,
@@ -124,7 +129,7 @@
       {
         if(my_elems != nullptr)
         {
-          xutils::xdeallocate_range(begin(),  end(), allocator_type());
+          xutils::xdeallocate_range(begin(), end(), allocator_type());
         }
       }
 
@@ -189,6 +194,8 @@
       fixed_length_dynamic_array_from_scratch& operator=(fixed_length_dynamic_array_from_scratch&& other) noexcept
       {
         my_elems = &other.my_elems[0U];
+
+        xutils::xdeallocate_range(other.begin(), other.end(), allocator_type());
 
         other.my_elems = nullptr;
 
