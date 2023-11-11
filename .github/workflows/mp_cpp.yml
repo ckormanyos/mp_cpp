@@ -141,6 +141,35 @@ jobs:
           MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=${{ matrix.example }}_Exe_Release -p:Platform=x64 /t:Build
           dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
           %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
+  msvc-release-vs2022-x64:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [ Bessel, Gamma, Ln2, Pi, Test ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.3
+      - name: msvc-release-lib-vs2022-x64
+        shell: cmd
+        working-directory: ./
+        run: |
+          set INCLUDE=%cd%\fft\FFTW\215\fftw;%cd%\fft\FFTW\215\rfftw;%cd%\fft\FFTW\215\threads;%cd%;%INCLUDE%
+          MSBuild -m mp_cpp_vs2022.sln -p:useenv=true -p:Configuration=Mp_Cpp_Lib_Release -p:Platform=x64 /t:Rebuild
+          dir %cd%\_Out\mp_cpp\x64\Mp_Cpp_Lib_Release\Mp_Cpp_Lib_Release.lib
+      - name: msvc-release-vs2022-x64
+        shell: cmd
+        working-directory: ./
+        run: |
+          set INCLUDE=%cd%;%INCLUDE%
+          MSBuild -m mp_cpp_vs2022.sln -p:useenv=true -p:Configuration=${{ matrix.example }}_Exe_Release -p:Platform=x64 /t:Build
+          dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
+          %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
   msvc-release-boost-x64:
     runs-on: windows-latest
     steps:
