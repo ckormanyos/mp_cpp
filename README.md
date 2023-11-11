@@ -25,20 +25,22 @@ and compatible with modern C++.
 
 ## Description
 
-`mp_cpp` implements a multiple-precision library with compile-time adjustable
-precision ranging from hundreds, to thousands, to millions of decimal digits of precision.
-This original work was subsequently cloned, renamed and adapted to become
-[`e_float`](https://github.com/ckormanyos/e_float-2021),
-which itself ultimately provided some motivation for
-[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
-
-`mp_cpp` still compiles and runs on modern C++ compilers
-from C++11, 14, 17, 20, 23 and beyond.
+`mp_cpp` implements a multiple-precision library with adjustable
+precision ranging from hundreds, to thousands, to millions of decimal digits.
+The precision can be set during run time, but set once only,
+preferably prior to any `mp_cpp`-operations are carried out.
 
 The library offers many functions. This project also features tests
 and a variety of non-trivial examples, including a somewhat fast
 _million_ (i.e., $10^{6}$) decimal-digit $\pi$-calculation.
 
+`mp_cpp` still compiles and runs on modern C++ compilers
+from C++11, 14, 17, 20, 23 and beyond.
+
+This original work was subsequently cloned, renamed and adapted to become
+[`e_float`](https://github.com/ckormanyos/e_float-2021),
+which itself ultimately provided some motivation for
+[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
 
 ## Boost.Multiprecision Backend
 
@@ -52,8 +54,9 @@ of mathematical functions.
 ## Continuous Integration
 
 Continuous integration runs on push using GitHub Actions.
-Various compilers, operating systems, and C++ standards
+Various compilers, operating systems and C++ standards
 ranging from C++11, 14, 17, 20 are included in CI.
+Sanitizer runs add improved confidence to the code-integrity.
 
 There is also a scheduled nightly build. This ensures compatibility
 with modern language evolution and Modular-Boost's
@@ -62,6 +65,8 @@ Math/Multiprecision _develop_ branches.
 ## Licensing
 
 The big-number and mathematical-function implementations in `mp_cpp`
-are licensed under BSL. This work makes additional use of [FFTW](https://www.fftw.org/)
+are licensed under BSL.
+
+This work makes additional use of [FFTW](https://www.fftw.org/)
 version 2.15 for fast FFT multiplication, which has its own separate
 [license](https://www.fftw.org/faq/section1.html#isfftwfree).
