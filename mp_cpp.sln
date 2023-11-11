@@ -156,7 +156,7 @@ Global
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Ln2_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Ln2_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
-		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Pi_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Pi_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
 		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Test_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
@@ -172,7 +172,7 @@ Global
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Ln2_Exe_Debug|x64.ActiveCfg = Boost_Exe_Debug|x64
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Ln2_Exe_Release|x64.ActiveCfg = Boost_Exe_Release|x64
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Boost_Exe_Debug|x64
-		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Boost_Exe_Debug|x64
+		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Boost_Exe_Release|x64
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Pi_Exe_Debug|x64.ActiveCfg = Boost_Exe_Debug|x64
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Pi_Exe_Release|x64.ActiveCfg = Boost_Exe_Release|x64
 		{5CBA0131-9FE5-4EB7-A10F-181E15D7F2C7}.Test_Exe_Debug|x64.ActiveCfg = Boost_Exe_Debug|x64
@@ -188,7 +188,7 @@ Global
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Release|x64.Build.0 = Ln2_Exe_Release|x64
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
-		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Pi_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Pi_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
 		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Test_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
