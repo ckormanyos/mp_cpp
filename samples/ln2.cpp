@@ -192,11 +192,11 @@ bool local_ln2::print_output_result(std::ostream& os, const double time_for_calc
   // Extract the string value.
   const std::string str_val(strm.str());
 
-  const auto result_str_val_head_is_ok = (str_val.find("0.693147180") != std::string::npos);
+  const auto result_str_val_head_is_ok = (str_val.find("0.6931471805") != std::string::npos);
 
   const auto result_str_val_tail_is_ok =
   (
-    (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
+    (static_cast<std::uint32_t>(std::numeric_limits<mp::mp_cpp>::digits10) > static_cast<std::uint32_t>(UINT32_C(999999)))
       ? (str_val.rfind("6808836542") != std::string::npos)
       : true
   );

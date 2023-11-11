@@ -230,7 +230,7 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
   const auto result_str_val_tail_is_ok =
   (
-    (std::numeric_limits<mp::mp_cpp>::digits10 > static_cast<std::uint32_t>(UINT32_C(1000000)))
+    (static_cast<std::uint32_t>(std::numeric_limits<mp::mp_cpp>::digits10) > static_cast<std::uint32_t>(UINT32_C(999999)))
       ? (str_val.rfind("5779458151") != std::string::npos)
       : true
   );
