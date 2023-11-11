@@ -37,7 +37,9 @@ namespace local
 
 const mp::mp_cpp& local::my_ln2(const bool b_trace, std::ostream& os)
 {
-  return mp::mp_cpp::calculate_ln2(b_trace, os);
+  static const mp::mp_cpp& my_local_ln2_ref = mp::mp_cpp::calculate_ln2(b_trace, os);
+
+  return my_local_ln2_ref;
 }
 
 // *****************************************************************************
@@ -51,10 +53,10 @@ bool samples::ln2(const int argc, const char* argv[])
 {
   std::string::size_type pos;
 
-  std::int32_t my_digits10    = 1000000;
-  int          my_fft_threads =       4;
+  auto my_digits10    = static_cast<std::int32_t>(INT32_C(1000000));
+  auto my_fft_threads = static_cast<int>(INT8_C(4));
 
-  std::stringstream ss;
+  std::stringstream strm;
 
   for(std::int32_t n = std::int32_t(0); n < std::int32_t(argc); ++n)
   {
@@ -64,12 +66,12 @@ bool samples::ln2(const int argc, const char* argv[])
     // This command has the form -t4, for example, for 4 FFT threads.
     if((pos = cmd_str.find("-t")) != std::string::npos)
     {
-      ss << cmd_str.c_str() + (pos + 2U);
+      strm << cmd_str.c_str() + (pos + 2U);
 
-      ss >> my_fft_threads;
+      strm >> my_fft_threads;
 
-      ss.str(std::string());
-      ss.clear();
+      strm.str(std::string());
+      strm.clear();
     }
 
     // Extract the number of decimal digits following
@@ -78,12 +80,12 @@ bool samples::ln2(const int argc, const char* argv[])
     // the decimal point.
     if((pos = cmd_str.find("-d")) != std::string::npos)
     {
-      ss << cmd_str.c_str() + (pos + 2U);
+      strm << cmd_str.c_str() + (pos + 2U);
 
-      ss >> my_digits10;
+      strm >> my_digits10;
 
-      ss.str(std::string());
-      ss.clear();
+      strm.str(std::string());
+      strm.clear();
     }
   }
 
@@ -178,15 +180,15 @@ bool local::print_output_result(std::ostream& os, const double time_for_calculat
   // Print the calculation time to the output stream.
   local::print_timing_report(os, time_for_calculation);
 
-  std::stringstream ss;
+  std::stringstream strm;
 
   // Pipe the value of ln2 into a stringstream object with full precision.
-  ss << std::fixed
-     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
-     << local::my_ln2(false);
+  strm << std::fixed
+       << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
+       << local::my_ln2(false);
 
   // Extract the string value of ln2.
-  const std::string str_val(ss.str());
+  const std::string str_val(strm.str());
 
   const auto result_str_val_head_is_ok = (str_val.find("0.693147180") != std::string::npos);
 

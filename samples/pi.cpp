@@ -36,7 +36,7 @@ namespace local_pi
 
   int& my_pi_computation_method()
   {
-    static int the_method;
+    static int the_method { };
 
     return the_method;
   }
@@ -44,10 +44,15 @@ namespace local_pi
 
 const mp::mp_cpp& local_pi::my_pi(const bool b_trace, std::ostream& os)
 {
-  if     (my_pi_computation_method() == 3) { return mp::mp_cpp::calculate_pi_borwein_quintic(b_trace, os); }
-  else if(my_pi_computation_method() == 2) { return mp::mp_cpp::calculate_pi_borwein_quartic(b_trace, os); }
-  else if(my_pi_computation_method() == 1) { return mp::mp_cpp::calculate_pi_borwein_cubic  (b_trace, os); }
-  else                                     { return mp::mp_cpp::calculate_pi                (b_trace, os); }
+  static const mp::mp_cpp& my_local_pi_ref =
+    (
+      (my_pi_computation_method() == static_cast<int>(INT8_C(3))) ? mp::mp_cpp::calculate_pi_borwein_quintic(b_trace, os) :
+      (my_pi_computation_method() == static_cast<int>(INT8_C(2))) ? mp::mp_cpp::calculate_pi_borwein_quartic(b_trace, os) :
+      (my_pi_computation_method() == static_cast<int>(INT8_C(1))) ? mp::mp_cpp::calculate_pi_borwein_cubic  (b_trace, os) :
+                                                                    mp::mp_cpp::calculate_pi                (b_trace, os)
+    );
+
+  return my_local_pi_ref;
 }
 
 // *****************************************************************************
@@ -59,27 +64,27 @@ const mp::mp_cpp& local_pi::my_pi(const bool b_trace, std::ostream& os)
 // *****************************************************************************
 bool samples::pi(const int argc, const char* argv[])
 {
-  std::string::size_type pos;
+  std::string::size_type pos { };
 
-  std::int32_t my_digits10    = 1000000;
-  int          my_fft_threads =       4;
+  auto my_digits10    = static_cast<std::int32_t>(INT32_C(1000000));
+  auto my_fft_threads = static_cast<int>(INT8_C(4));
 
-  std::stringstream ss;
+  std::stringstream strm;
 
-  for(std::int32_t n = std::int32_t(0); n < std::int32_t(argc); ++n)
+  for(auto n = static_cast<std::int32_t>(INT8_C(0)); n < std::int32_t(argc); ++n)
   {
-    const std::string cmd_str = argv[n];
+    const std::string cmd_str = argv[static_cast<std::size_t>(n)];
 
     // Extract the number of FFT threads.
     // This command has the form -t4, for example, for 4 FFT threads.
     if((pos = cmd_str.find("-t")) != std::string::npos)
     {
-      ss << cmd_str.c_str() + (pos + 2U);
+      strm << cmd_str.c_str() + static_cast<std::size_t>(pos + static_cast<std::size_t>(UINT8_C(2)));
 
-      ss >> my_fft_threads;
+      strm >> my_fft_threads;
 
-      ss.str(std::string());
-      ss.clear();
+      strm.str(std::string());
+      strm.clear();
     }
 
     // Extract the number of decimal digits following
@@ -88,12 +93,12 @@ bool samples::pi(const int argc, const char* argv[])
     // the decimal point.
     if((pos = cmd_str.find("-d")) != std::string::npos)
     {
-      ss << cmd_str.c_str() + (pos + 2U);
+      strm << cmd_str.c_str() + static_cast<std::size_t>(pos + static_cast<std::size_t>(UINT8_C(2)));
 
-      ss >> my_digits10;
+      strm >> my_digits10;
 
-      ss.str(std::string());
-      ss.clear();
+      strm.str(std::string());
+      strm.clear();
     }
 
     // Extract the index of the calculation method.
@@ -101,16 +106,22 @@ bool samples::pi(const int argc, const char* argv[])
     // for calculation method 1.
     if((pos = cmd_str.find("-m")) != std::string::npos)
     {
-      ss << cmd_str.c_str() + (pos + 2U);
+      strm << cmd_str.c_str() + static_cast<std::size_t>(pos + static_cast<std::size_t>(UINT8_C(2)));
 
-      ss >> local_pi::my_pi_computation_method();
+      {
+        int pi_method { };
 
-      ss.str(std::string());
-      ss.clear();
+        strm >> pi_method;
+
+        local_pi::my_pi_computation_method() = pi_method;
+      }
+
+      strm.str(std::string());
+      strm.clear();
     }
   }
 
-  bool result_calculation_is_ok = false;
+  auto result_calculation_is_ok = false;
 
   // Initialize the multiple precision base.
   // Set the decimal precision and the number of FFT threads.
@@ -124,20 +135,20 @@ bool samples::pi(const int argc, const char* argv[])
     // Get the output file path relative to the path
     // of the executable program.
 
-    std::string str_outfile = std::string(argv[0U]);
+    auto str_outfile = std::string(argv[static_cast<std::size_t>(UINT8_C(0))]);
 
     if((pos = str_outfile.rfind(".exe")) != std::string::npos)
     {
-      str_outfile = str_outfile.substr(0U, pos + 1U) + "out";
+      str_outfile = str_outfile.substr(static_cast<std::size_t>(UINT8_C(0)), pos + static_cast<std::size_t>(UINT8_C(1))) + "out";
 
       if((pos = str_outfile.rfind('\\')) != std::string::npos)
       {
-        str_outfile = str_outfile.substr(0U, pos + 1U) + std::string(default_fileout_name);
+        str_outfile = str_outfile.substr(static_cast<std::size_t>(UINT8_C(0)), pos + static_cast<std::size_t>(UINT8_C(1))) + std::string(default_fileout_name);
       }
 
       if((pos = str_outfile.rfind('/')) != std::string::npos)
       {
-        str_outfile = str_outfile.substr(0U, pos + 1U) + std::string(default_fileout_name);
+        str_outfile = str_outfile.substr(static_cast<std::size_t>(UINT8_C(0)), pos + static_cast<std::size_t>(UINT8_C(1))) + std::string(default_fileout_name);
       }
     }
     else
@@ -150,13 +161,15 @@ bool samples::pi(const int argc, const char* argv[])
     if(outfile.is_open())
     {
       // Start the time measurement.
-      const std::clock_t t0 = std::clock();
+      const auto t0 = std::clock();
 
       // Calculate pi with the user output trace flag set to true.
       local_pi::my_pi(true);
 
       // End the time measurement.
-      const double time_for_calculation = double(std::clock() - t0) / double(CLOCKS_PER_SEC);
+      const auto t1 = std::clock();
+
+      const auto time_for_calculation = static_cast<double>(static_cast<double>(t1 - t0) / CLOCKS_PER_SEC);
 
       // Print the calculation time to the standard output.
       local_pi::print_timing_report(std::cout, time_for_calculation);
@@ -183,7 +196,7 @@ void local_pi::print_timing_report(std::ostream& os, const double time_for_calcu
      << "Time for pi calculation: "
      << std::numeric_limits<mp::mp_cpp>::digits10
      << " digits in "
-     << std::setprecision(4)
+     << std::setprecision(static_cast<int>(INT8_C(4)))
      << time_for_calculation
      << " seconds."
      << std::endl
@@ -201,15 +214,15 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   // Print the calculation time to the output stream.
   local_pi::print_timing_report(os, time_for_calculation);
 
-  std::stringstream ss;
+  std::stringstream strm;
 
   // Pipe the value of pi into a stringstream object with full precision.
-  ss << std::fixed
-     << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
-     << local_pi::my_pi(false);
+  strm << std::fixed
+       << std::setprecision(static_cast<int>(std::numeric_limits<mp::mp_cpp>::digits10))
+       << local_pi::my_pi(false);
 
   // Extract the string value of pi.
-  const std::string str_val(ss.str());
+  const std::string str_val(strm.str());
 
   const auto result_str_val_head_is_ok = (str_val.find("3.1415926535") != std::string::npos);
 
@@ -233,9 +246,9 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   const char* char_set_separator   = " ";
   const char* char_group_separator = "\n";
 
-  const std::size_t digits_per_set   = 10U;
-  const std::size_t digits_per_line  = digits_per_set * 10U;
-  const std::size_t digits_per_group = digits_per_line * 10U;
+  constexpr auto digits_per_set   = static_cast<std::size_t>(UINT8_C(10));
+  constexpr auto digits_per_line  = static_cast<std::size_t>(digits_per_set  * static_cast<std::size_t>(UINT8_C(10)));
+  constexpr auto digits_per_group = static_cast<std::size_t>(digits_per_line * static_cast<std::size_t>(UINT8_C(10)));
 
   // The digits after the decimal point are grouped
   // in sets of digits_per_set with digits_per_line
@@ -253,28 +266,28 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
   // This prints out 50 digits of pi in the neighborhood
   // of a million digits, with the millionth digit in bold.
 
-  std::string::size_type pos;
+  std::string::size_type pos { };
 
-  if(   ((pos = str_val.find('3', 0U)) != std::string::npos)
-     && ((pos = str_val.find('.', 1U)) != std::string::npos)
-     && ((pos = str_val.find('1', 1U)) != std::string::npos))
+  if(   ((pos = str_val.find('3', static_cast<std::size_t>(UINT8_C(0)))) != std::string::npos)
+     && ((pos = str_val.find('.', static_cast<std::size_t>(UINT8_C(1)))) != std::string::npos)
+     && ((pos = str_val.find('1', static_cast<std::size_t>(UINT8_C(1)))) != std::string::npos))
   {
     ;
   }
   else
   {
-    pos = 0U;
+    pos = static_cast<std::string::size_type>(UINT8_C(0));
   }
 
-  os << "pi = " << str_val.substr(0U, pos);
+  os << "pi = " << str_val.substr(static_cast<std::string::size_type>(UINT8_C(0)), pos);
 
-  const std::size_t digit_offset = pos;
+  const auto digit_offset = pos;
 
   // Extract the digits after the decimal point in a loop.
   // Insert spaces, newlines and a running-digit count
   // in order to create a format for comfortable reading.
 
-  bool all_output_streaming_is_finished = false;
+  auto all_output_streaming_is_finished = false;
 
   while(all_output_streaming_is_finished == false)
   {
@@ -283,10 +296,13 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
 
     os << str_pi_substring << char_set_separator;
 
-    pos += (std::min)(std::string::size_type(digits_per_set),
-                      str_pi_substring.length());
+    {
+      const auto min_ofs = (std::min)(static_cast<std::string::size_type>(digits_per_set), str_pi_substring.length());
 
-    const std::size_t number_of_digits(pos - digit_offset);
+      pos += min_ofs;
+    }
+
+    const auto number_of_digits = static_cast<std::size_t>(pos - digit_offset);
 
     // Check if all output streaming is finished.
     all_output_streaming_is_finished = (pos >= str_val.length());
@@ -301,16 +317,16 @@ bool local_pi::print_output_result(std::ostream& os, const double time_for_calcu
     }
     else
     {
-      const bool this_line_is_finished =
-        (std::size_t(number_of_digits % digits_per_line) == std::size_t(0U));
+      const auto this_line_is_finished =
+        (static_cast<std::size_t>(number_of_digits % digits_per_line) == static_cast<std::size_t>(UINT8_C(0)));
 
       if(this_line_is_finished)
       {
         // Print the running-digit count and start a new line.
         os << ": " << number_of_digits << '\n';
 
-        const bool this_group_of_lines_is_finished =
-          (std::size_t(number_of_digits % digits_per_group) == std::size_t(0U));
+        const auto this_group_of_lines_is_finished =
+          (static_cast<std::size_t>(number_of_digits % digits_per_group) == static_cast<std::size_t>(UINT8_C(0)));
 
         if(this_group_of_lines_is_finished)
         {
