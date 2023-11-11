@@ -207,21 +207,26 @@ mp::mp_cpp& mp::mp_cpp::operator*=(const mp::mp_cpp& v)
                           &v.my_data[0U],
                           static_cast<std::int32_t>(prec_mul));
 
-          // Adjust the exponent because of the internal scaling of the FFT multiplication.
-          my_exp += static_cast<std::int64_t>(mp_core::mp_elem_digits10);
-
-          // Check for justify
-          if(my_data.front() == static_cast<std::uint32_t>(0U))
+          if(my_data.front() != static_cast<std::uint32_t>(UINT8_C(0)))
           {
-            // Justify my_data.
-            std::copy(my_data.cbegin() + static_cast<std::size_t>(1U),
-                      my_data.cbegin() + static_cast<std::size_t>(prec_elem),
+            // Adjust the exponent because of the internal scaling of the FFT multiplication.
+            my_exp += static_cast<std::int64_t>(mp_core::mp_elem_digits10);
+          }
+          else
+          {
+            const auto copy_limit =
+              static_cast<std::ptrdiff_t>
+              (
+                (std::min)(static_cast<std::int32_t>(prec_mul + static_cast<std::int32_t>(INT8_C(1))),
+                           static_cast<std::int32_t>(my_data.size()))
+              );
+
+            // Justify the data if necessary.
+            std::copy(my_data.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                      my_data.cbegin() + copy_limit,                             // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                       my_data.begin());
 
-            my_data.back() = static_cast<std::uint32_t>(0U);
-
-            // Adjust the exponent accordingly.
-            my_exp -= static_cast<std::int64_t>(mp_core::mp_elem_digits10);
+            my_data.back() = static_cast<std::uint32_t>(UINT8_C(0));
           }
         }
       }
