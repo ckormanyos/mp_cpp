@@ -44,9 +44,11 @@ namespace local_pi
 
 const mp::mp_cpp& local_pi::my_pi(const bool b_trace, std::ostream& os)
 {
+  // TBD: Borwein quintic algorithm hangs near the last steps.
+  // TBD: Is it stuck in the n'th root finding?
+
   static const mp::mp_cpp& my_local_pi_ref =
     (
-      (my_pi_computation_method() == static_cast<int>(INT8_C(3))) ? mp::mp_cpp::calculate_pi_borwein_quintic(b_trace, os) :
       (my_pi_computation_method() == static_cast<int>(INT8_C(2))) ? mp::mp_cpp::calculate_pi_borwein_quartic(b_trace, os) :
       (my_pi_computation_method() == static_cast<int>(INT8_C(1))) ? mp::mp_cpp::calculate_pi_borwein_cubic  (b_trace, os) :
                                                                     mp::mp_cpp::calculate_pi                (b_trace, os)
