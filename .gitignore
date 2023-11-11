@@ -1,0 +1,9 @@
+mp_cpp.vcxproj.user
+.vs/
+_Out/
+bessel/bessel.vcxproj.user
+boost/boost.vcxproj.user
+gamma/gamma.vcxproj.user
+ln2/ln2.vcxproj.user
+pi/pi.vcxproj.user
+test/test.vcxproj.user
