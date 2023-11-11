@@ -6,27 +6,29 @@
 #
 
 # cd /mnt/c/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/mp_cpp
-# make STD=c++11 SANITIZE=0 prepare
-# make STD=c++11 SANITIZE=0 --jobs=8 all
+# make GCC=g++ STD=c++11 clean
+# make GCC=g++ STD=c++11 prepare
+# make GCC=g++ STD=c++11 --jobs=8 all
 
 # To run sanitizers
-# make STD=c++11 SANITIZE=1 prepare
-# make STD=c++11 SANITIZE=1 --jobs=8 all
+# make GCC=g++ STD=c++11 SAN=1 clean
+# make GCC=g++ STD=c++11 SAN=1 prepare
+# make GCC=g++ STD=c++11 SAN=1 --jobs=8 all
 
 MY_GCC            = g++
 MY_STD            = c++20
-MY_SANITIZE       = 0
+MY_SAN            =
 
 ifneq ($(GCC),)
-MY_GCC            = $(GCC)
+MY_GCC           := $(GCC)
 endif
 
 ifneq ($(STD),)
-MY_STD            = $(STD)
+MY_STD           := $(STD)
 endif
 
-ifeq ($(SANITIZE),1)
-MY_SANITIZE      := 1
+ifneq ($(SAN),)
+MY_SAN           := $(SAN)
 endif
 
 CXX               = $(MY_GCC)
@@ -60,14 +62,13 @@ UBSAN_FLAGS       = -fsanitize=shift                          \
 GCCFLAGS          = -Werror                                   \
                     -Wall                                     \
                     -Wextra                                   \
-                    -Wodr                                     \
                     -Wpedantic                                \
                     -O3                                       \
                     -march=native                             \
                     -mtune=native                             \
                     $(CINCLUDES)
 
-ifeq ($(MY_SANITIZE),1)
+ifneq ($(MY_SAN),)
 GCCFLAGS         := $(GCCFLAGS)                               \
                     $(ASAN_FLAGS)                             \
                     $(UBSAN_FLAGS)
@@ -80,6 +81,13 @@ CFLAGS            = $(GCCFLAGS)                               \
 CXXFLAGS          = --std=$(MY_STD)                           \
                     -Wconversion                              \
                     -Wsign-conversion                         \
+                    -Wshadow                                  \
+                    -Wundef                                   \
+                    -Wunused-parameter                        \
+                    -Wuninitialized                           \
+                    -Wunreachable-code                        \
+                    -Winit-self                               \
+                    -Wzero-as-null-pointer-constant           \
                     $(GCCFLAGS)
 
 LDFLAGS           = $(GCCFLAGS)                               \
