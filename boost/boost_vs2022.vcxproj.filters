@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="boost">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="boost\multiprecision">
+      <UniqueIdentifier>{785a5b21-f9c2-4cce-9186-ddaff0f1289b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="boost_main.cpp">
+      <Filter>boost</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="multiprecision\mp_cpp_backend.hpp">
+      <Filter>boost\multiprecision</Filter>
+    </ClInclude>
+    <ClInclude Include="multiprecision\mp_cpp_backend_base.hpp">
+      <Filter>boost\multiprecision</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

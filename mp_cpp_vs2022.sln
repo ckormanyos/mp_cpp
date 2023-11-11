@@ -1,0 +1,169 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D86F22C-4244-41E9-98CC-0407DD769B1E}"
+	ProjectSection(SolutionItems) = preProject
+		Makefile = Makefile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EA34D345-71C3-4817-A29D-0C84CA2D14D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{BE8AF653-27F9-4B87-A9B4-0DAA7C3F1618}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\mp_cpp.yml = .github\workflows\mp_cpp.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_doc", "_doc", "{CEEC6B80-AC90-4F48-A89F-70234F5C40E7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bessel_vs2022", "bessel\bessel_vs2022.vcxproj", "{E192DBF2-B5EE-480E-A000-85A854318BC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E} = {5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gamma_vs2022", "gamma\gamma_vs2022.vcxproj", "{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E} = {5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp_cpp_vs2022", "mp_cpp_vs2022.vcxproj", "{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ln2_vs2022", "ln2\ln2_vs2022.vcxproj", "{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E} = {5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_vs2022", "test\test_vs2022.vcxproj", "{CC333713-26EF-40B2-B781-7253EDE58FCE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E} = {5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pi_vs2022", "pi\pi_vs2022.vcxproj", "{98E912D9-34FD-4258-8886-D8AFB043909F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E} = {5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Bessel_Exe_Debug|x64 = Bessel_Exe_Debug|x64
+		Bessel_Exe_Release|x64 = Bessel_Exe_Release|x64
+		Gamma_Exe_Debug|x64 = Gamma_Exe_Debug|x64
+		Gamma_Exe_Release|x64 = Gamma_Exe_Release|x64
+		Ln2_Exe_Debug|x64 = Ln2_Exe_Debug|x64
+		Ln2_Exe_Release|x64 = Ln2_Exe_Release|x64
+		Mp_Cpp_Lib_Debug|x64 = Mp_Cpp_Lib_Debug|x64
+		Mp_Cpp_Lib_Release|x64 = Mp_Cpp_Lib_Release|x64
+		Pi_Exe_Debug|x64 = Pi_Exe_Debug|x64
+		Pi_Exe_Release|x64 = Pi_Exe_Release|x64
+		Test_Exe_Debug|x64 = Test_Exe_Debug|x64
+		Test_Exe_Release|x64 = Test_Exe_Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Bessel_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Bessel_Exe_Debug|x64.Build.0 = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Bessel_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Bessel_Exe_Release|x64.Build.0 = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Gamma_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Gamma_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Ln2_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Ln2_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Pi_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Pi_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Test_Exe_Debug|x64.ActiveCfg = Bessel_Exe_Debug|x64
+		{E192DBF2-B5EE-480E-A000-85A854318BC0}.Test_Exe_Release|x64.ActiveCfg = Bessel_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Bessel_Exe_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Bessel_Exe_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Gamma_Exe_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Gamma_Exe_Debug|x64.Build.0 = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Gamma_Exe_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Gamma_Exe_Release|x64.Build.0 = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Ln2_Exe_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Ln2_Exe_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Pi_Exe_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Pi_Exe_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Test_Exe_Debug|x64.ActiveCfg = Gamma_Exe_Debug|x64
+		{B4410A0A-BABD-43AC-BF6B-8EC02928D30E}.Test_Exe_Release|x64.ActiveCfg = Gamma_Exe_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Bessel_Exe_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Bessel_Exe_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Bessel_Exe_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Bessel_Exe_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Gamma_Exe_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Gamma_Exe_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Gamma_Exe_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Gamma_Exe_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Ln2_Exe_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Ln2_Exe_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Ln2_Exe_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Ln2_Exe_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Mp_Cpp_Lib_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Mp_Cpp_Lib_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Pi_Exe_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Pi_Exe_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Pi_Exe_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Pi_Exe_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Test_Exe_Debug|x64.ActiveCfg = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Test_Exe_Debug|x64.Build.0 = Mp_Cpp_Lib_Debug|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Test_Exe_Release|x64.ActiveCfg = Mp_Cpp_Lib_Release|x64
+		{5F0844E5-1F60-4AD8-AEC6-6D7A9224EF8E}.Test_Exe_Release|x64.Build.0 = Mp_Cpp_Lib_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Bessel_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Bessel_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Gamma_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Gamma_Exe_Release|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Debug|x64.Build.0 = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Ln2_Exe_Release|x64.Build.0 = Ln2_Exe_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Pi_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Pi_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Test_Exe_Debug|x64.ActiveCfg = Ln2_Exe_Debug|x64
+		{8833CA5F-8EB0-45C8-ADBA-BE6D76A9F4A5}.Test_Exe_Release|x64.ActiveCfg = Ln2_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Bessel_Exe_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Bessel_Exe_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Gamma_Exe_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Gamma_Exe_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Ln2_Exe_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Ln2_Exe_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Pi_Exe_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Pi_Exe_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Test_Exe_Debug|x64.ActiveCfg = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Test_Exe_Debug|x64.Build.0 = Test_Exe_Debug|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Test_Exe_Release|x64.ActiveCfg = Test_Exe_Release|x64
+		{CC333713-26EF-40B2-B781-7253EDE58FCE}.Test_Exe_Release|x64.Build.0 = Test_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Bessel_Exe_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Bessel_Exe_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Gamma_Exe_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Gamma_Exe_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Ln2_Exe_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Ln2_Exe_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Mp_Cpp_Lib_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Mp_Cpp_Lib_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Pi_Exe_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Pi_Exe_Debug|x64.Build.0 = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Pi_Exe_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Pi_Exe_Release|x64.Build.0 = Pi_Exe_Release|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Test_Exe_Debug|x64.ActiveCfg = Pi_Exe_Debug|x64
+		{98E912D9-34FD-4258-8886-D8AFB043909F}.Test_Exe_Release|x64.ActiveCfg = Pi_Exe_Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE8AF653-27F9-4B87-A9B4-0DAA7C3F1618} = {EA34D345-71C3-4817-A29D-0C84CA2D14D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {638430E0-E269-47D7-95A7-C9E6AFB1E621}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,616 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{e18e573d-a3df-4fee-9868-4af6fb65d0c1}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\mp">
+      <UniqueIdentifier>{0351cdd4-f06f-4598-8cfd-a0e9ff80c5cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mp\mp_fft">
+      <UniqueIdentifier>{24e823b7-1c77-4933-8aa9-e730417ad239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\samples">
+      <UniqueIdentifier>{87f3385c-da54-47c6-b605-17109a68e38f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\functions">
+      <UniqueIdentifier>{922c67b9-124c-448b-9d3b-dfb9f1b14dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\functions\integer">
+      <UniqueIdentifier>{2a8aa35d-6cd0-44a4-877b-1710d21366da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{24c322fd-f570-4296-b95a-fd4f1bbbe636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft">
+      <UniqueIdentifier>{89f2f582-5d22-4077-a00d-a1a954e84645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft\FFTW">
+      <UniqueIdentifier>{9e953553-cb4b-4d06-bdd6-50f33bd63983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft\FFTW\215">
+      <UniqueIdentifier>{5d0af001-29ea-4f88-b4c1-8c6c9bb0c9b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft\FFTW\215\fftw">
+      <UniqueIdentifier>{7bc15472-d963-4174-b63c-b5b3a2b4c659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft\FFTW\215\threads">
+      <UniqueIdentifier>{83ab6b5c-1a63-48d1-9cf5-b354fe0b462c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fft\FFTW\215\rfftw">
+      <UniqueIdentifier>{60c48134-13c1-439b-be66-171ab458fd06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mp\mp_base.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_core.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_func.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_hyp.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_num.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_op.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_pow.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_trig.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_fft\mp_fft_base.cpp">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_fft\mp_fft_fftw2.cpp">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_fft\mp_fft_multiply.cpp">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClCompile>
+    <ClCompile Include="samples\bessel.cpp">
+      <Filter>Source Files\samples</Filter>
+    </ClCompile>
+    <ClCompile Include="samples\pi.cpp">
+      <Filter>Source Files\samples</Filter>
+    </ClCompile>
+    <ClCompile Include="functions\integer\bernoulli_b.cpp">
+      <Filter>Source Files\functions\integer</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\config.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\executor.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fftwf77.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fftwnd.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_1.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_10.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_11.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_12.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_13.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_14.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_15.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_16.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_2.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_3.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_32.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_4.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_5.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_6.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_64.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_7.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_8.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fn_9.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_1.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_10.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_11.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_12.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_13.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_14.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_15.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_16.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_2.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_3.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_32.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_4.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_5.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_6.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_64.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_7.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_8.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\fni_9.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_10.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_16.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_2.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_3.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_32.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_4.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_5.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_6.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_64.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_7.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_8.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftw_9.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_10.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_16.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_2.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_3.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_32.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_4.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_5.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_6.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_64.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_7.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_8.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\ftwi_9.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\generic.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\malloc.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\planner.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\putils.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\rader.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\timer.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\twiddle.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\wisdom.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\fftw\wisdomio.c">
+      <Filter>Source Files\fft\FFTW\215\fftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\executor_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\fftw_f77_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\fftw_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\fftwnd_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\rexec2_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\rexec_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\rfftw_f77_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\threads\rfftwnd_threads.c">
+      <Filter>Source Files\fft\FFTW\215\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_1.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_10.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_11.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_12.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_128.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_13.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_14.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_15.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_16.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_2.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_3.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_32.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_4.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_5.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_6.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_64.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_7.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_8.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fcr_9.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_10.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_16.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_2.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_3.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_32.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_4.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_5.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_6.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_7.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_8.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhb_9.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_10.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_16.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_2.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_3.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_32.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_4.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_5.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_6.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_7.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_8.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\fhf_9.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_1.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_10.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_11.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_12.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_128.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_13.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_14.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_15.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_16.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_2.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_3.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_32.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_4.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_5.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_6.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_64.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_7.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_8.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\frc_9.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rconfig.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rexec.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rexec2.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rfftwf77.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rfftwnd.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rgeneric.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="fft\FFTW\215\rfftw\rplanner.c">
+      <Filter>Source Files\fft\FFTW\215\rfftw</Filter>
+    </ClCompile>
+    <ClCompile Include="samples\test.cpp">
+      <Filter>Source Files\samples</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_cpp.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_detail.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_convert.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="samples\ln2.cpp">
+      <Filter>Source Files\samples</Filter>
+    </ClCompile>
+    <ClCompile Include="mp\mp_cpp_limits.cpp">
+      <Filter>Source Files\mp</Filter>
+    </ClCompile>
+    <ClCompile Include="samples\gamma.cpp">
+      <Filter>Source Files\samples</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mp\mp_base.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_core.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_math.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_fft\mp_fft_base.h">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_fft\mp_fft_fftw2.h">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_fft\mp_fft_fftw2_protos.h">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_fft\mp_fft_multiply.h">
+      <Filter>Source Files\mp\mp_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="samples\samples.h">
+      <Filter>Source Files\samples</Filter>
+    </ClInclude>
+    <ClInclude Include="functions\functions.h">
+      <Filter>Source Files\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="functions\integer\bernoulli_b.h">
+      <Filter>Source Files\functions\integer</Filter>
+    </ClInclude>
+    <ClInclude Include="util\noncopyable.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\xutils.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_complex.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_cpp.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_detail.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="util\fixed_length_dynamic_array_from_vector.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\fixed_length_dynamic_array_from_scratch.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_cpp_limits.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+    <ClInclude Include="util\parallel_for.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\mp_detail_pown_template.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
