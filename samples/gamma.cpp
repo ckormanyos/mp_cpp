@@ -329,17 +329,10 @@ auto samples::gamma(const int argc, const char* argv[]) -> bool
   auto result_is_ok = true;
 
   {
-    constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(5001));
+    constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(10001));
+    constexpr auto thr = static_cast<int>(INT8_C(4));
 
-    const auto number_of_threads_hint =
-      static_cast<unsigned>
-      (
-        std::thread::hardware_concurrency()
-      );
-
-    const auto n_threads = static_cast<int>(number_of_threads_hint / 2);
-
-    const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10, n_threads);
+    const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10, thr);
 
     result_is_ok = (result_create_mp_base_is_ok && result_is_ok);
   }
