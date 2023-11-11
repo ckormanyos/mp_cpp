@@ -30,16 +30,39 @@ jobs:
       - name: gcc-native
         run: |
           make GCC=${{ matrix.compiler }} STD=${{ matrix.standard }} prepare
-          make GCC=${{ matrix.compiler }} STD=${{ matrix.standard }} --jobs=8 all
+          make GCC=${{ matrix.compiler }} STD=${{ matrix.standard }} --jobs=12 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
-          ./unix/pi.exe
+          ./unix/pi.exe -t6
           echo grep around the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
-          ./unix/ln2.exe
+          ./unix/ln2.exe -t6
           echo grep around the millionth tail digits of ln2
           grep '6808836542' ./unix/ln2.out
           ./unix/gamma.exe
           ./unix/test.exe
+  gcc-native-pi-algos:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [ g++ ]
+        standard: [ c++20 ]
+        algo: [ -m0, -m1, -m2 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: gcc-native
+        run: |
+          make GCC=${{ matrix.compiler }} STD=${{ matrix.standard }} prepare
+          make GCC=${{ matrix.compiler }} STD=${{ matrix.standard }} --jobs=12 all
+          ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
+          ./unix/pi.exe -t6 ${{ matrix.algo }}
+          echo grep around the millionth tail digits of pi
+          grep '5779458151' ./unix/pi.out
   gcc-native-sanitize:
     runs-on: ubuntu-latest
     defaults:
@@ -56,12 +79,12 @@ jobs:
       - name: gcc-native-sanitize
         run: |
           make GCC=g++ STD=${{ matrix.standard }} SAN=1 prepare
-          make GCC=g++ STD=${{ matrix.standard }} SAN=1 --jobs=8 all
+          make GCC=g++ STD=${{ matrix.standard }} SAN=1 --jobs=12 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
-          ./unix/pi.exe
+          ./unix/pi.exe -t6
           echo grep around the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
-          ./unix/ln2.exe
+          ./unix/ln2.exe -t6
           echo grep around the millionth tail digits of ln2
           grep '6808836542' ./unix/ln2.out
           ./unix/gamma.exe
@@ -79,12 +102,12 @@ jobs:
       - name: macos-native
         run: |
           make GCC=clang++ STD=${{ matrix.standard }} prepare
-          make GCC=clang++ STD=${{ matrix.standard }} --jobs=8 all
+          make GCC=clang++ STD=${{ matrix.standard }} --jobs=12 all
           ls -la ./unix/bessel.exe ./unix/gamma.exe ./unix/ln2.exe ./unix/pi.exe ./unix/test.exe
-          ./unix/pi.exe
+          ./unix/pi.exe -t6
           echo grep around the millionth tail digits of pi
           grep '5779458151' ./unix/pi.out
-          ./unix/ln2.exe
+          ./unix/ln2.exe -t6
           echo grep around the millionth tail digits of ln2
           grep '6808836542' ./unix/ln2.out
           ./unix/gamma.exe
