@@ -122,7 +122,10 @@
       // Destructor.
       ~fixed_length_dynamic_array_from_scratch()
       {
-        xutils::xdeallocate_range(begin(),  end(), allocator_type());
+        if(my_elems != nullptr)
+        {
+          xutils::xdeallocate_range(begin(),  end(), allocator_type());
+        }
       }
 
       // Iterator access.
