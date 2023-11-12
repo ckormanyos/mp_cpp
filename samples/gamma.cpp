@@ -23,6 +23,16 @@
 // 
 // *****************************************************************************
 
+#if defined(__clang__)
+  #if defined __has_feature && (__has_feature(thread_sanitizer) || __has_feature(address_sanitizer))
+  #define MP_CPP_REDUCE_TEST_DEPTH
+  #endif
+#elif defined(__GNUC__)
+  #if defined(__SANITIZE_THREAD__) || defined(__SANITIZE_ADDRESS__) || defined(WIDE_DECIMAL_HAS_COVERAGE)
+  #define MP_CPP_REDUCE_TEST_DEPTH
+  #endif
+#endif
+
 #include <array>
 #include <cstdint>
 #include <ctime>
@@ -329,10 +339,14 @@ auto samples::gamma(const int argc, const char* argv[]) -> bool
   auto result_is_ok = true;
 
   {
-    constexpr auto d10 = static_cast<std::int32_t>(UINT16_C(10001));
-    constexpr auto thr = static_cast<int>(INT8_C(4));
+    #if !defined(MP_CPP_REDUCE_TEST_DEPTH)
+    constexpr auto digit_count = static_cast<std::int32_t>(UINT16_C(5001));
+    #else
+    constexpr auto digit_count = static_cast<std::int32_t>(UINT16_C(1001));
+    #endif
+    constexpr auto thread_count = static_cast<int>(INT8_C(4));
 
-    const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(d10, thr);
+    const auto result_create_mp_base_is_ok = mp::mp_base::create_mp_base(digit_count, thread_count);
 
     result_is_ok = (result_create_mp_base_is_ok && result_is_ok);
   }
