@@ -13,63 +13,63 @@
   namespace xutils
   {
     template<typename value_type>
-    const value_type& xmin(const value_type& my_value_a, const value_type& my_value_b)
+    constexpr auto xmin(const value_type& my_value_a, const value_type& my_value_b) -> value_type&
     {
       return ((my_value_a < my_value_b) ? my_value_a : my_value_b);
     }
 
     template<typename value_type, typename binary_predicate>
-    const value_type& xmin(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp)
+    constexpr auto xmin(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp) -> value_type&
     {
       return (*my_cmp)(my_value_a, my_value_b);
     }
 
     template<typename value_type>
-    const value_type& xmax(const value_type& my_value_a, const value_type& my_value_b)
+    constexpr auto xmax(const value_type& my_value_a, const value_type& my_value_b) -> value_type&
     {
       return ((my_value_a > my_value_b) ? my_value_a : my_value_b);
     }
 
     template<typename value_type, typename binary_predicate>
-    const value_type& xmax(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp)
+    constexpr auto xmax(const value_type& my_value_a, const value_type& my_value_b, binary_predicate my_cmp) -> value_type&
     {
       return (*my_cmp)(my_value_a, my_value_b);
     }
 
-    template<typename input_iterator1, typename input_iterator2>
-    bool xequal(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
+    template<typename input_iterator_left, typename input_iterator_right>
+    auto xequal(input_iterator_left first_left, input_iterator_left last_left, input_iterator_right first_right) -> bool
     {
-      while(my_first1 != my_last1)
+      while(first_left != last_left)
       {
-        using my_first_type = typename std::iterator_traits<input_iterator1>::value_type;
+        using my_first_type = typename std::iterator_traits<input_iterator_left>::value_type;
 
-        if(*my_first1 != static_cast<my_first_type>(*my_first2))
+        if(*first_left != static_cast<my_first_type>(*first_right))
         {
           break;
         }
 
-        ++my_first1;
-        ++my_first2;
+        ++first_left;
+        ++first_right;
       }
 
-      return (my_first1 == my_last1);
+      return (first_left == last_left);
     }
 
     template<typename input_iterator, typename function_type>
-    function_type xfor_each(input_iterator my_first, input_iterator my_last, function_type my_func)
+    auto xfor_each(input_iterator first, input_iterator last, function_type func) -> function_type
     {
-      while(my_first != my_last)
+      while(first != last)
       {
-        my_func(*my_first);
+        func(*first);
 
-        ++my_first;
+        ++first;
       }
 
-      return my_func;
+      return func;
     }
 
     template<class input_iterator, class value_type>
-    void xfill(input_iterator my_first, input_iterator my_last, const value_type& my_fill_value)
+    auto xfill(input_iterator my_first, input_iterator my_last, const value_type& my_fill_value) -> void
     {
       while(my_first != my_last)
       {
@@ -83,23 +83,23 @@
 
     template<class input_iterator,
              class output_iterator>
-    output_iterator xcopy(input_iterator my_first, input_iterator my_last, output_iterator my_copy_result)
+    auto xcopy(input_iterator in_first, input_iterator in_last, output_iterator out_first) -> output_iterator
     {
-      while(my_first != my_last)
+      while(in_first != in_last)
       {
         using local_value_type = typename std::iterator_traits<input_iterator>::value_type;
 
-        *my_copy_result = static_cast<local_value_type>(*my_first);
+        *out_first = static_cast<local_value_type>(*in_first);
 
-        ++my_first;
-        ++my_copy_result;
+        ++in_first;
+        ++out_first;
       }
 
-      return my_copy_result;
+      return out_first;
     }
 
     template<class input_iterator1, class input_iterator2>
-    input_iterator2 xswap_ranges(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2)
+    auto xswap_ranges(input_iterator1 my_first1, input_iterator1 my_last1, input_iterator2 my_first2) -> input_iterator2
     {
       while(my_first1 != my_last1)
       {
@@ -113,9 +113,11 @@
     }
 
     template<typename input_iterator, typename allocator_type>
-    void xdeallocate_range(input_iterator my_first, input_iterator my_last, const allocator_type& my_alloc)
+    auto xdeallocate_range(input_iterator my_first, input_iterator my_last, const allocator_type& my_alloc) -> void
     {
-      (allocator_type(my_alloc)).deallocate(my_first, static_cast<std::size_t>(static_cast<std::ptrdiff_t>(my_last - my_first)));
+      const auto count = static_cast<std::size_t>(std::distance(my_first, my_last));
+
+      (allocator_type(my_alloc)).deallocate(my_first, count);
     }
   }
 
