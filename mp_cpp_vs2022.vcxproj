@@ -203,7 +203,6 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Mp_Cpp_Lib_Release|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Mp_Cpp_Lib_Release|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="mp\mp_fft\mp_fft_base.cpp" />
     <ClCompile Include="mp\mp_fft\mp_fft_fftw2.cpp" />
     <ClCompile Include="mp\mp_fft\mp_fft_multiply.cpp" />
     <ClCompile Include="samples\bessel.cpp">
