@@ -220,8 +220,6 @@ bool mp::mp_core::create_mp_core()
 
 const mp::mp_fft_base* mp::mp_core::get_fft(const std::int32_t n) const
 {
-  const mp::mp_fft_base* pointer_to_fft;
-
   const auto it =
     std::find_if(fft_list.cbegin(),
                  fft_list.cend(),
@@ -230,30 +228,7 @@ const mp::mp_fft_base* mp::mp_core::get_fft(const std::int32_t n) const
                    return (p_fft->get_fft_n() >= n);
                  });
 
-  if(it != fft_list.cend())
-  {
-    if((*it)->get_is_created() == false)
-    {
-      const bool create_fft_is_ok = (*it)->create_fft();
-
-      static_cast<void>(create_fft_is_ok);
-    }
-
-    pointer_to_fft = *it;
-  }
-  else
-  {
-    if(fft_list.back()->get_is_created() == false)
-    {
-      const bool create_fft_is_ok = fft_list.back()->create_fft();
-
-      static_cast<void>(create_fft_is_ok);
-    }
-
-    pointer_to_fft = fft_list.back();
-  }
-
-  return pointer_to_fft;
+  return (it != fft_list.cend()) ? *it : fft_list.back();
 }
 
 mp::mp_core::mp_core_memory_type::mp_core_memory_type(const std::size_t int_count,

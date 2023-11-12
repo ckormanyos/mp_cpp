@@ -108,7 +108,6 @@ FFTW_THREADS_OBJ := $(addsuffix .o,$(FFTW_THREADS_OBJ))
 FILES_OBJ         = $(FFTW_OBJ)                               \
                     $(RFFTW_OBJ)                              \
                     $(FFTW_THREADS_OBJ)                       \
-                    $(PATH_OBJ)/mp_fft_base.o                 \
                     $(PATH_OBJ)/mp_fft_fftw2.o                \
                     $(PATH_OBJ)/mp_fft_multiply.o             \
                     $(PATH_OBJ)/mp_base.o                     \
@@ -237,10 +236,6 @@ $(PATH_OBJ)/mp_pow.o: $(PATH_SRC)/mp/mp_pow.cpp $(MP_HEADERS)
 	@$(CXX) $(CXXFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o
 
 $(PATH_OBJ)/mp_trig.o: $(PATH_SRC)/mp/mp_trig.cpp $(MP_HEADERS)
-	@$(ECHO) +++ compile: $< to $@
-	@$(CXX) $(CXXFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o
-
-$(PATH_OBJ)/mp_fft_base.o: $(PATH_SRC)/mp/mp_fft/mp_fft_base.cpp $(MP_HEADERS)
 	@$(ECHO) +++ compile: $< to $@
 	@$(CXX) $(CXXFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o
 

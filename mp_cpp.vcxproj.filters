@@ -67,9 +67,6 @@
     <ClCompile Include="mp\mp_trig.cpp">
       <Filter>Source Files\mp</Filter>
     </ClCompile>
-    <ClCompile Include="mp\mp_fft\mp_fft_base.cpp">
-      <Filter>Source Files\mp\mp_fft</Filter>
-    </ClCompile>
     <ClCompile Include="mp\mp_fft\mp_fft_fftw2.cpp">
       <Filter>Source Files\mp\mp_fft</Filter>
     </ClCompile>

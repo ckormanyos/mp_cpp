@@ -21,17 +21,22 @@
   {
   public:
     mp_fft_fftw2(const std::int32_t     n,
-                 const fft_traits_type& fwd_1,
-                 const fft_traits_type& fwd_2,
-                 const fft_traits_type& rev);
+      const fft_traits_type& fwd_1,
+      const fft_traits_type& fwd_2,
+      const fft_traits_type& rev)
+      : mp_fft_base(n, fwd_1, fwd_2, rev)
+    {
+      create_fft();
+    }
 
     virtual ~mp_fft_fftw2();
 
   private:
-    virtual bool create_fft() const override;
-    virtual void forward_1 () const override;
-    virtual void forward_2 () const override;
-    virtual void reverse   () const override;
+    void create_fft() const;
+
+    void forward_1 () const override;
+    void forward_2 () const override;
+    void reverse   () const override;
 
     mp_fft_fftw2() = delete;
   };
