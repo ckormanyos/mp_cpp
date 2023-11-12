@@ -41,12 +41,12 @@
   class mp::mp_core final : private util::noncopyable
   {
   public:
-    static const std::int32_t  mp_elem_digits10       = static_cast<std::int32_t> (        8);
-    static const std::int32_t  mp_default_digits10    = static_cast<std::int32_t> (     1000);
-    static const std::uint32_t mp_elem_mask           = static_cast<std::uint32_t>(100000000U);
-    static const std::uint32_t mp_elem_mask2          = static_cast<std::uint32_t>(    10000U);
-    static const std::int32_t  mp_elem_fft_min        = static_cast<std::int32_t> (      300);  // About 2,400 decimal digits.
-    static const int           mp_default_fft_threads = 4;
+    static constexpr auto mp_elem_digits10       = static_cast<std::int32_t> (        8);
+    static constexpr auto mp_default_digits10    = static_cast<std::int32_t> (     1000);
+    static constexpr auto mp_elem_mask           = static_cast<std::uint32_t>(100000000U);
+    static constexpr auto mp_elem_mask2          = static_cast<std::uint32_t>(    10000U);
+    static constexpr auto mp_elem_fft_min        = static_cast<std::int32_t> (      300);  // About 2,400 decimal digits.
+    static constexpr auto mp_default_fft_threads = static_cast<int>(INT8_C(4));
 
     ~mp_core();
 
