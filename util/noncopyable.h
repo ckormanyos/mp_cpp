@@ -1,30 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef NONCOPYABLE_2008_12_01_H
-  #define NONCOPYABLE_2008_12_01_H
+#ifndef UTIL_NONCOPYABLE_2008_12_16_H // NOLINT(llvm-header-guard)
+  #define UTIL_NONCOPYABLE_2008_12_16_H
 
-  // Implement a non-copyable private base class,
-  // taken and slightly modified from boost::noncopyable.
+  // Taken (with slight modification) from boost::noncopyable.
 
-  namespace util
+  namespace util {
+  namespace my_noncopyable_namespace {
+
+  class noncopyable
   {
-    class noncopyable
-    {
-    public:
-      ~noncopyable() = default;
+  protected:
+    noncopyable() = default;  // LCOV_EXCL_LINE
+    ~noncopyable() = default; // LCOV_EXCL_LINE
 
-    protected:
-      noncopyable() = default;
+  private:
+    // Emphasize: The following members are private.
+    noncopyable(const noncopyable&) = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+    noncopyable(noncopyable&&)      = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
 
-    private:  // emphasize the following members are private
-      noncopyable(const noncopyable&) = delete;
-      noncopyable& operator=(const noncopyable&) = delete;
-    };
-  }
+    auto operator=(const noncopyable&) -> noncopyable& = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+    auto operator=(noncopyable&&)      -> noncopyable& = delete; // NOLINT(hicpp-use-equals-delete,modernize-use-equals-delete)
+  };
 
-#endif // NONCOPYABLE_2008_12_01_H
+  } // namespace my_noncopyable_namespace
+
+  using noncopyable = my_noncopyable_namespace::noncopyable;
+
+  } // namespace util
+
+#endif // UTIL_NONCOPYABLE_2008_12_16_H
