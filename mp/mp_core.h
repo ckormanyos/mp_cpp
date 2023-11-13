@@ -58,7 +58,7 @@
     struct digit_characteristics_type final : private util::noncopyable
     {
     public:
-      digit_characteristics_type(std::int32_t input_digits10)
+      constexpr digit_characteristics_type(std::int32_t input_digits10)
         : my_digits10      ((input_digits10 < std::numeric_limits<float>::digits10) ? std::numeric_limits<float>::digits10 : input_digits10),
           my_digits10_extra(static_cast<std::int32_t>(static_cast<float>(my_digits10) * 0.15F)),
           my_digits10_tol  (my_digits10 + ((my_digits10_extra < 16) ? 16 : ((my_digits10_extra > 32) ? 32 : my_digits10_extra))),
