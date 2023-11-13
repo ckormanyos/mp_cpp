@@ -27,10 +27,9 @@
 
 bool mp::mp_base::create_mp_base(const std::int32_t my_digits10, const int n_fft_threads)
 {
-  static const bool mp_core_instance_is_valid =
-    mp_core_instance(my_digits10, n_fft_threads).is_valid();
+  static const bool mp_core_instance_is_valid = mp_core_instance(my_digits10, n_fft_threads).is_valid();
 
-  return mp_core_instance_is_valid;
+  return (mp_core_instance_is_valid ? true : false);
 }
 
 const mp::mp_core& mp::mp_base::mp_core_instance(const std::int32_t my_digits10, const int n_fft_threads)
@@ -42,10 +41,9 @@ const mp::mp_core& mp::mp_base::mp_core_instance(const std::int32_t my_digits10,
 
 void mp::mp_base::precision(const std::int32_t prec_digits)
 {
-  static const std::int32_t prec_min =
-    static_cast<std::int32_t>(static_cast<std::int32_t>(8) * mp_core::mp_elem_digits10);
+  constexpr auto prec_min = static_cast<std::int32_t>(static_cast<std::int32_t>(8) * mp_core::mp_elem_digits10);
 
-  const std::int32_t prec = (std::max)(prec_digits, prec_min);
+  const auto prec = (std::max)(prec_digits, prec_min);
 
   const int elems =
         (prec / mp_core::mp_elem_digits10)
@@ -81,7 +79,7 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
   // of significance, or (at most) to the actual end of the data array.
   const array_type::const_iterator u_compare_end =
       my_data.cbegin()
-    + (std::min)(number_of_elements_to_compare, my_data.size());
+    + static_cast<difference_type>((std::min)(number_of_elements_to_compare, my_data.size()));
 
   // Compare the element arrays using a standard comparison algorithm.
   const std::pair<array_type::const_iterator,

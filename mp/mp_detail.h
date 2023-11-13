@@ -54,12 +54,13 @@
   {
     std::int_fast8_t n_return = 0;
 
-    InputIteratorRightType it_a_end(pa + count);
+    using difference_left_type = typename std::iterator_traits<InputIteratorLeftType>::difference_type;
+
+    InputIteratorRightType it_a_end(pa + static_cast<difference_left_type>(count));
 
     while(pa != it_a_end) // NOLINT(altera-id-dependent-backward-branch)
     {
-      using value_left_type =
-        typename std::iterator_traits<InputIteratorLeftType>::value_type;
+      using value_left_type = typename std::iterator_traits<InputIteratorLeftType>::value_type;
 
       const auto value_a = *pa++;
       const auto value_b = static_cast<value_left_type>(*pb++);

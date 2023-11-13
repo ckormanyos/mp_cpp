@@ -591,8 +591,8 @@ mp::mp_cpp mp::mp_cpp::integer_part(const mp::mp_cpp& x)
   const size_t first_clear = (static_cast<size_t>(xn.my_exp) / static_cast<size_t>(mp_core::mp_elem_digits10)) + 1U;
   const size_t last_clear  =  static_cast<size_t>(mp_elem_number());
 
-  std::fill(xn.my_data.begin() + first_clear,
-            xn.my_data.begin() + last_clear,
+  std::fill(xn.my_data.begin() + static_cast<difference_type>(first_clear),
+            xn.my_data.begin() + static_cast<difference_type>(last_clear),
             static_cast<std::uint32_t>(0U));
 
   return xn;
@@ -630,15 +630,15 @@ mp::mp_cpp mp::mp_cpp::decimal_part(const mp::mp_cpp& x)
   const std::size_t first_copy = static_cast<size_t>((static_cast<size_t>(xd.my_exp) / static_cast<size_t>(mp_core::mp_elem_digits10)) + 1U);
   const std::size_t last_copy  = static_cast<size_t>(mp_elem_number());
 
-  std::copy(xd.my_data.cbegin() + first_copy,
-            xd.my_data.cbegin() + last_copy,
+  std::copy(xd.my_data.cbegin() + static_cast<difference_type>(first_copy),
+            xd.my_data.cbegin() + static_cast<difference_type>(last_copy),
             xd.my_data.begin());
 
   const size_t first_clear = static_cast<size_t>(static_cast<size_t>(mp_elem_number()) - first_copy);
   const size_t last_clear  = static_cast<size_t>(mp_elem_number());
 
-  std::fill(xd.my_data.begin() + first_clear,
-            xd.my_data.begin() + last_clear,
+  std::fill(xd.my_data.begin() + static_cast<difference_type>(first_clear),
+            xd.my_data.begin() + static_cast<difference_type>(last_clear),
             static_cast<std::uint32_t>(0U));
 
   // Is it necessary to justify the data?
@@ -666,17 +666,17 @@ mp::mp_cpp mp::mp_cpp::decimal_part(const mp::mp_cpp& x)
       // Justify my_data
       sj = static_cast<std::size_t>(first_nonzero_elem - xd.my_data.cbegin());
 
-      std::copy(xd.my_data.cbegin() + sj,
+      std::copy(xd.my_data.cbegin() + static_cast<difference_type>(sj),
                 xd.my_data.cend(),
                 xd.my_data.begin());
 
-      std::fill(xd.my_data.begin() + static_cast<std::size_t>(static_cast<std::size_t>(mp_elem_number()) - sj),
+      std::fill(xd.my_data.begin() + static_cast<difference_type>(static_cast<std::size_t>(mp_elem_number()) - sj),
                 xd.my_data.end(),
                 static_cast<std::uint32_t>(0U));
     }
   }
 
   xd.my_exp -= static_cast<std::int64_t>((first_copy + sj) * static_cast<size_t>(mp_core::mp_elem_digits10));
-  
+
   return xd;
 }

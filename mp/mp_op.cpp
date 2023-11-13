@@ -148,7 +148,7 @@ mp::mp_cpp& mp::mp_cpp::operator*=(const mp::mp_cpp& v)
         my_exp = static_cast<std::int64_t>(0);
 
         std::fill(my_data.begin(),
-                  my_data.begin() + static_cast<std::size_t>(mp_elem_number()),
+                  my_data.begin() + static_cast<difference_type>(mp_elem_number()),
                   static_cast<std::uint32_t>(0U));
       }
       else
@@ -380,7 +380,7 @@ void mp::mp_cpp::add(const mp::mp_cpp& v, const std::int64_t v_ofs)
   if(v_ofs > static_cast<std::int64_t>(0))
   {
     std::copy(v.my_data.cbegin(),
-              v.my_data.cbegin() + static_cast<std::size_t>(static_cast<std::int64_t>(prec_elem) - v_ofs),
+              v.my_data.cbegin() + static_cast<difference_type>(static_cast<std::int64_t>(prec_elem) - v_ofs),
               my_mem_n + static_cast<std::size_t>(v_ofs));
 
     std::fill(my_mem_n,
@@ -392,7 +392,7 @@ void mp::mp_cpp::add(const mp::mp_cpp& v, const std::int64_t v_ofs)
   else if(v_ofs < static_cast<std::int64_t>(0))
   {
     std::copy(my_data.cbegin(),
-              my_data.cbegin() + static_cast<std::size_t>(prec_elem + v_ofs),
+              my_data.cbegin() + static_cast<difference_type>(prec_elem + v_ofs),
               my_mem_n + static_cast<std::size_t>(-v_ofs));
 
     std::fill(my_mem_n,
@@ -470,7 +470,7 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
       // into the array my_mem_n. Set the operand pointer my_p_v
       // to point to the copied and shifted data in my_mem_n.
       std::copy(v.my_data.cbegin(),
-                v.my_data.cbegin() + static_cast<std::size_t>(prec_elem - v_ofs),
+                v.my_data.cbegin() + static_cast<difference_type>(prec_elem - v_ofs),
                 my_mem_n + static_cast<std::size_t>(v_ofs));
 
       std::fill(my_mem_n,
@@ -487,11 +487,11 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
       // In this case, |u| < |v| and ofs is negative.
       // Shift the data of u down to a lower value.
       std::copy_backward(my_data.cbegin(),
-                         my_data.cbegin() + static_cast<std::size_t>(prec_elem + v_ofs),
-                         my_data.begin()  + static_cast<std::size_t>(prec_elem));
+                         my_data.cbegin() + static_cast<difference_type>(prec_elem + v_ofs),
+                         my_data.begin()  + static_cast<difference_type>(prec_elem));
 
       std::fill(my_data.begin(),
-                my_data.begin() + static_cast<std::size_t>(-v_ofs),
+                my_data.begin() + static_cast<difference_type>(-v_ofs),
                 static_cast<std::uint32_t>(0U));
     }
 
@@ -499,7 +499,7 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
     // Set the u-pointer my_p_u to point to my_mem_n and the
     // operand pointer my_p_v to point to the shifted data in my_mem_n.
     std::copy(v.my_data.cbegin(),
-              v.my_data.cbegin() + static_cast<std::size_t>(prec_elem),
+              v.my_data.cbegin() + static_cast<difference_type>(prec_elem),
               my_mem_n);
 
     my_p_u    = static_cast<      std::uint32_t*>(my_mem_n);
@@ -529,7 +529,7 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
 
   const auto first_nonzero_elem =
     std::find_if(my_data.cbegin(),
-                 my_data.cbegin() + static_cast<std::size_t>(prec_elem),
+                 my_data.cbegin() + static_cast<difference_type>(prec_elem),
                  [](const std::uint32_t& u) -> bool
                  {
                    return (u != static_cast<std::uint32_t>(0));
@@ -560,11 +560,11 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
 
       const std::size_t n_shift = static_cast<std::size_t>(first_nonzero_elem - my_data.cbegin());
 
-      std::copy(my_data.cbegin() + n_shift,
-                my_data.cbegin() + static_cast<std::size_t>(prec_elem),
+      std::copy(my_data.cbegin() + static_cast<difference_type>(n_shift),
+                my_data.cbegin() + static_cast<difference_type>(prec_elem),
                 my_data.begin());
 
-      std::fill(my_data.begin() + static_cast<std::size_t>(static_cast<std::size_t>(prec_elem) - n_shift),
+      std::fill(my_data.begin() + static_cast<difference_type>(static_cast<std::size_t>(prec_elem) - n_shift),
                 my_data.end(),
                 static_cast<std::uint32_t>(0U));
 
@@ -619,8 +619,8 @@ mp::mp_cpp& mp::mp_cpp::mul_by_int(const std::int64_t n)
 
       // Shift result of the multiplication one element to the right.
       std::copy_backward(my_data.cbegin(),
-                         my_data.cbegin() + static_cast<std::size_t>(jm - 1),
-                         my_data.begin()  + static_cast<std::size_t>(jm));
+                         my_data.cbegin() + static_cast<difference_type>(jm - 1),
+                         my_data.begin()  + static_cast<difference_type>(jm));
 
       my_data[static_cast<std::size_t>(0U)] = static_cast<std::uint32_t>(carry);
     }
@@ -671,8 +671,8 @@ mp::mp_cpp& mp::mp_cpp::div_by_int(const std::int64_t n)
       my_exp -= static_cast<std::int64_t>(mp_core::mp_elem_digits10);
 
       // Shift the result of the division one element to the left.
-      std::copy(my_data.cbegin() + static_cast<std::size_t>(1U),
-                my_data.cbegin() + static_cast<std::size_t>(jm),
+      std::copy(my_data.cbegin() + static_cast<difference_type>(1U),
+                my_data.cbegin() + static_cast<difference_type>(jm),
                 my_data.begin());
 
       my_data[static_cast<std::size_t>(jm - 1)] = static_cast<std::uint32_t>(static_cast<std::uint64_t>(prev * static_cast<std::uint64_t>(mp_core::mp_elem_mask)) / nn);

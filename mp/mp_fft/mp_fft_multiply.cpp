@@ -17,39 +17,38 @@ namespace local
   class fwd_parallel final : private util::noncopyable
   {
   public:
-    fwd_parallel(const mp::mp_fft_base* f)
-      : pfft      (f),
-        h_thread_1(std::thread(thread_factory_1, this)),
-        h_thread_2(std::thread(thread_factory_2, this)) { }
+    explicit fwd_parallel(const mp::mp_fft_base* f)
+      : pfft      (f)
+    {
+      h_thread_1 = std::thread(thread_factory_1, this);
+      h_thread_2 = std::thread(thread_factory_2, this);
+    }
 
-    ~fwd_parallel();
+    ~fwd_parallel() = default;
 
-    static void thread_factory_1(const fwd_parallel* const my_fwd_parallel)
+    static auto thread_factory_1(const fwd_parallel* const my_fwd_parallel) -> void
     {
       my_fwd_parallel->pfft->forward_1();
     }
 
-    static void thread_factory_2(const fwd_parallel* const my_fwd_parallel)
+    static auto thread_factory_2(const fwd_parallel* const my_fwd_parallel) -> void
     {
       my_fwd_parallel->pfft->forward_2();
     }
 
-    void wait() const
+    auto wait() const -> void
     {
       h_thread_1.join();
       h_thread_2.join();
     }
 
   private:
-    typedef std::thread thread_handle_type;
+    using thread_handle_type = std::thread;
 
     const   mp::mp_fft_base*   pfft;
     mutable thread_handle_type h_thread_1;
     mutable thread_handle_type h_thread_2;
   };
-
-  fwd_parallel::~fwd_parallel() { }
-
 } // namespace local
 
 void mp::mp_fft_multiply(std::uint32_t* u, const std::uint32_t* v, const std::int32_t p)
@@ -129,7 +128,9 @@ void mp::mp_fft_multiply(std::uint32_t* u, const std::uint32_t* v, const std::in
   // and set the data elements.
   std::uint64_t carry = static_cast<std::uint64_t>(0U);
 
-  for(std::int_fast32_t j = std::int_fast32_t((p * 2) - 2); j >= std::int_fast32_t(0); j -= static_cast<std::int32_t>(2))
+  for(auto j  = static_cast<std::int_fast32_t>((p * 2) - 2);
+           j >= static_cast<std::int_fast32_t>(INT8_C(0));
+           j -= static_cast<std::int32_t>(INT8_C(2)))
   {
     double                   xaj   = a[static_cast<std::size_t>(j)] * p_fft->get_fft_scale();
     const std::uint64_t      xlo   = static_cast<std::uint64_t>(xaj + 0.5) + carry;
@@ -146,12 +147,9 @@ void mp::mp_fft_multiply(std::uint32_t* u, const std::uint32_t* v, const std::in
       (
         static_cast<std::uint_fast32_t>
         (
-          static_cast<std::uint_fast32_t>
-          (
-            nhi * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)
-          )
-          + nlo
+          nhi * static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask2)
         )
+        + nlo
       );
   }
 }
