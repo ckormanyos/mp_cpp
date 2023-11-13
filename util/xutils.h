@@ -111,14 +111,6 @@
 
       return my_first2;
     }
-
-    template<typename input_iterator, typename allocator_type>
-    auto xdeallocate_range(input_iterator my_first, input_iterator my_last, const allocator_type& my_alloc) -> void
-    {
-      const auto count = static_cast<std::size_t>(std::distance(my_first, my_last));
-
-      (allocator_type(my_alloc)).deallocate(my_first, count);
-    }
   }
 
 #endif // XUTILS_2002_10_09_H

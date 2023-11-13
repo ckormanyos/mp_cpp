@@ -68,7 +68,7 @@
         : my_count(other.my_count),
           my_elems(allocator_type().allocate(other.my_count))
       {
-        const iterator my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
+        auto my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
 
         static_cast<void>(my_copy_result);
       }
@@ -78,7 +78,7 @@
         : my_count(other.my_count),
           my_elems(other.my_elems)
       {
-        xutils::xdeallocate_range(other.begin(), other.end(), allocator_type());
+        deallocate_range(other.begin(), other.end());
 
         other.my_elems = nullptr;
       }
@@ -127,10 +127,9 @@
       // Destructor.
       ~fixed_length_dynamic_array_from_scratch()
       {
-        if(my_elems != nullptr)
-        {
-          xutils::xdeallocate_range(begin(), end(), allocator_type());
-        }
+        deallocate_range(begin(), end());
+
+        my_elems = nullptr;
       }
 
       // Iterator access.
@@ -178,7 +177,7 @@
       }
 
       // Assignment operator.
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch& other)
+      auto operator=(const fixed_length_dynamic_array_from_scratch& other) -> fixed_length_dynamic_array_from_scratch&
       {
         if(this != &other)
         {
@@ -191,11 +190,11 @@
       }
 
       // Move assignment operator.
-      fixed_length_dynamic_array_from_scratch& operator=(fixed_length_dynamic_array_from_scratch&& other) noexcept
+      auto operator=(fixed_length_dynamic_array_from_scratch&& other) noexcept -> fixed_length_dynamic_array_from_scratch&
       {
         my_elems = &other.my_elems[0U];
 
-        xutils::xdeallocate_range(other.begin(), other.end(), allocator_type());
+        deallocate_range(other.begin(), other.end());
 
         other.my_elems = nullptr;
 
@@ -204,7 +203,7 @@
 
       // Assignment operator with type conversion.
       template<typename OtherValueType>
-      fixed_length_dynamic_array_from_scratch& operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& other)
+      auto operator=(const fixed_length_dynamic_array_from_scratch<OtherValueType>& other) -> fixed_length_dynamic_array_from_scratch&
       {
         auto my_copy_result = xutils::xcopy(other.cbegin(), other.cend(), begin());
 
@@ -214,7 +213,7 @@
       }
 
       // Assign a single value to all elements.
-      void assign(const value_type& value_fill)
+      auto assign(const value_type& value_fill) -> void
       {
         xutils::xfill(my_elems, my_elems + my_count, value_fill);
       }
@@ -222,13 +221,21 @@
     private:
       const size_type my_count;
       pointer         my_elems;
+
+      template<typename input_iterator>
+      auto deallocate_range(input_iterator my_first, input_iterator my_last) -> void
+      {
+        const auto count = static_cast<std::size_t>(std::distance(my_first, my_last));
+
+        allocator_type().deallocate(my_first, count);
+      }
     };
 
     // Implement non-member operator==() and operator!=().
     template<typename ValueType,
              typename AllocatorType>
-    bool operator==(const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& a,
-                    const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& b)
+    auto operator==(const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& a,
+                    const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& b) noexcept -> bool
     {
       return (   (a.size() == b.size())
               && (xutils::xequal(a.cbegin(), a.cend(), b.cbegin()) == true));
@@ -236,8 +243,8 @@
 
     template<typename ValueType,
              typename AllocatorType>
-    bool operator!=(const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& a,
-                    const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& b)
+    auto operator!=(const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& a,
+                    const fixed_length_dynamic_array_from_scratch<ValueType, AllocatorType>& b) noexcept -> bool
     {
       return (   (a.size() != b.size())
               || (xutils::xequal(a.cbegin(), a.cend(), b.cbegin()) == false));
