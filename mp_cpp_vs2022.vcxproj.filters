@@ -609,5 +609,8 @@
     <ClInclude Include="mp\mp_detail_pown_template.h">
       <Filter>Source Files\mp</Filter>
     </ClInclude>
+    <ClInclude Include="mp\mp_core_memory.h">
+      <Filter>Source Files\mp</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -131,6 +131,7 @@ FILES_OBJ         = $(FFTW_OBJ)                               \
 MP_HEADERS       =  $(PATH_SRC)/mp/mp_base.h                              \
                     $(PATH_SRC)/mp/mp_complex.h                           \
                     $(PATH_SRC)/mp/mp_core.h                              \
+                    $(PATH_SRC)/mp/mp_core_memory.h                       \
                     $(PATH_SRC)/mp/mp_cpp.h                               \
                     $(PATH_SRC)/mp/mp_cpp_limits.h                        \
                     $(PATH_SRC)/mp/mp_detail.h                            \

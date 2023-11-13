@@ -42,11 +42,11 @@
         : base_class_type(other_count, init_value, other_alloc) { }
 
       fixed_length_dynamic_array_from_vector(const fixed_length_dynamic_array_from_vector& other_array)
-        : base_class_type(other_array) { }
+        : base_class_type(static_cast<const base_class_type&>(other_array)) { }
 
       fixed_length_dynamic_array_from_vector(const fixed_length_dynamic_array_from_vector& other_array,
                                              const allocator_type& other_alloc)
-        : base_class_type(other_array, other_alloc) { }
+        : base_class_type(static_cast<const base_class_type&>(other_array), other_alloc) { }
 
       template<typename OtherIteratorType>
       fixed_length_dynamic_array_from_vector(OtherIteratorType other_first,
@@ -61,11 +61,11 @@
 
       // Move constructors.
       fixed_length_dynamic_array_from_vector(fixed_length_dynamic_array_from_vector&& other_array)
-        : base_class_type(other_array) { }
+        : base_class_type(static_cast<base_class_type&&>(other_array)) { }
 
       fixed_length_dynamic_array_from_vector(fixed_length_dynamic_array_from_vector&& other_array,
                                              const allocator_type& other_alloc)
-        : base_class_type(other_array, other_alloc) { }
+        : base_class_type(static_cast<base_class_type&&>(other_array), other_alloc) { }
 
       // Constructor from initializer_list.
       fixed_length_dynamic_array_from_vector(std::initializer_list<value_type> init_list,
@@ -75,24 +75,24 @@
       // Destructor.
       virtual ~fixed_length_dynamic_array_from_vector();
 
-      // Assignment from another fixed_length_dynamic_array_from_vector.
-      fixed_length_dynamic_array_from_vector& operator=(const fixed_length_dynamic_array_from_vector& other_array)
+      // Assignment operator.
+      auto operator=(const fixed_length_dynamic_array_from_vector& other_array) -> fixed_length_dynamic_array_from_vector&
       {
-        static_cast<void>(base_class_type::operator=(other_array));
+        static_cast<void>(base_class_type::operator=(static_cast<const base_class_type&>(other_array)));
 
         return *this;
       }
 
-      // Move assignment.
-      fixed_length_dynamic_array_from_vector& operator=(fixed_length_dynamic_array_from_vector&& other_array)
+      // Move assignment operator.
+      auto operator=(fixed_length_dynamic_array_from_vector&& other_array) noexcept -> fixed_length_dynamic_array_from_vector&
       {
-        static_cast<void>(base_class_type::operator=(other_array));
+        static_cast<void>(base_class_type::operator=(static_cast<base_class_type&&>(other_array)));
 
         return *this;
       }
 
       // Assignment from initializer_list.
-      fixed_length_dynamic_array_from_vector& operator=(std::initializer_list<value_type> init_list)
+      auto operator=(std::initializer_list<value_type> init_list) -> fixed_length_dynamic_array_from_vector&
       {
         static_cast<void>(base_class_type::operator=(init_list));
 
@@ -121,16 +121,16 @@
     // Implement non-member operator==() and operator!=().
     template<typename ValueType,
              typename AllocatorType>
-    bool operator==(const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& a,
-                    const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& b)
+    auto operator==(const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& a,
+                    const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& b) noexcept -> bool
     {
       return ((a.size() == b.size()) && (a == b));
     }
 
     template<typename ValueType,
              typename AllocatorType>
-    bool operator!=(const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& a,
-                    const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& b)
+    auto operator!=(const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& a,
+                    const fixed_length_dynamic_array_from_vector<ValueType, AllocatorType>& b) noexcept -> bool
     {
       return ((a.size() != b.size()) || (a != b));
     }
