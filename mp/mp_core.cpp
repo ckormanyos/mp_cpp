@@ -161,7 +161,9 @@ auto mp::mp_core::create_mp_core() -> bool
           UINT32_C(460800000),   UINT32_C(466560000),   UINT32_C(468750000),   UINT32_C(471859200),   UINT32_C(472392000),   UINT32_C(477757440),   UINT32_C(478296900),   UINT32_C(480000000),   UINT32_C(483729408),   UINT32_C(486000000),   UINT32_C(488281250),   UINT32_C(491520000),   UINT32_C(492075000),   UINT32_C(497664000),   UINT32_C(500000000),
     }};
 
+    #if (defined(_MSC_VER) || (defined(__cplusplus) && (__cplusplus > 201103L)))
     static_assert(A051037_even.back() == UINT32_C(500000000), "Error: FFT array initialization seems incorrect.");
+    #endif
 
     // Dynamically create a container of FFT objects within a min/max range
     // appropriate for the dynamic precision of mp_cpp. Each FFT has a size
