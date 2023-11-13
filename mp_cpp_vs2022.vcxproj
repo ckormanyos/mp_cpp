@@ -832,6 +832,7 @@
     <ClInclude Include="mp\mp_base.h" />
     <ClInclude Include="mp\mp_complex.h" />
     <ClInclude Include="mp\mp_core.h" />
+    <ClInclude Include="mp\mp_core_memory.h" />
     <ClInclude Include="mp\mp_cpp.h" />
     <ClInclude Include="mp\mp_cpp_limits.h" />
     <ClInclude Include="mp\mp_detail.h" />

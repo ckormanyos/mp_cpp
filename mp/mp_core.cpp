@@ -67,13 +67,10 @@ auto mp::mp_core::create_mp_core() -> bool
       (
         static_cast<std::uint32_t>
         (
-          static_cast<std::uint32_t>
-          (
-              static_cast<std::uint32_t>(UINT8_C(79))
-            * static_cast<std::uint32_t>(UINT8_C(16))
-          )
-          - static_cast<std::uint32_t>(UINT8_C(1))
+            static_cast<std::uint32_t>(UINT8_C(79))
+          * static_cast<std::uint32_t>(UINT8_C(16))
         )
+        - static_cast<std::uint32_t>(UINT8_C(1))
       );
 
     using A051037_even_array_type = std::array<std::uint32_t, A051037_even_array_size>;
@@ -196,19 +193,15 @@ auto mp::mp_core::create_mp_core() -> bool
 
       while(itr_n != itr_n_hi)
       {
-        // Make the traits for the next FFT.
-        mp_fft_base::fft_traits_type traits_fwd_1(mp_core_memory->mem_a(),    mp_core_memory->mem_buf0(), number_of_fft_threads);
-        mp_fft_base::fft_traits_type traits_fwd_2(mp_core_memory->mem_b(),    mp_core_memory->mem_buf1(), number_of_fft_threads);
-        mp_fft_base::fft_traits_type traits_rev  (mp_core_memory->mem_buf0(), mp_core_memory->mem_a(),    number_of_fft_threads);
-
-        // Allocate the next FFT and add it to the list.
-        *itr_fft = new mp_fft_fftw2(static_cast<std::int32_t>(*itr_n),
-                                    traits_fwd_1,
-                                    traits_fwd_2,
-                                    traits_rev);
-
-        ++itr_n;
-        ++itr_fft;
+        // Allocate the next FFT and add its pointer-to-self to the FFT-pointer-list.
+        *itr_fft++ =
+          new mp_fft_fftw2
+              {
+                static_cast<std::int32_t>(*itr_n++),
+                mp_fft_base::fft_traits_type(mp_core_memory->mem_a(),    mp_core_memory->mem_buf0(), number_of_fft_threads),
+                mp_fft_base::fft_traits_type(mp_core_memory->mem_b(),    mp_core_memory->mem_buf1(), number_of_fft_threads),
+                mp_fft_base::fft_traits_type(mp_core_memory->mem_buf0(), mp_core_memory->mem_a(),    number_of_fft_threads)
+              };
       }
     }
 
