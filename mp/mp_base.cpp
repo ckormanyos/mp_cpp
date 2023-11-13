@@ -79,7 +79,7 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
   // of significance, or (at most) to the actual end of the data array.
   const array_type::const_iterator u_compare_end =
       my_data.cbegin()
-    + (std::min)(number_of_elements_to_compare, my_data.size());
+    + static_cast<difference_type>((std::min)(number_of_elements_to_compare, my_data.size()));
 
   // Compare the element arrays using a standard comparison algorithm.
   const std::pair<array_type::const_iterator,

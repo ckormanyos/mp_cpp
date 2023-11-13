@@ -79,8 +79,9 @@
     }
     mp_fpclass_type;
 
-    using array_type = fixed_length_dynamic_array_type;
-    using value_type = array_type::value_type;
+    using array_type      = fixed_length_dynamic_array_type;
+    using value_type      = array_type::value_type;
+    using difference_type = typename array_type::difference_type;
 
     static constexpr bool mp_high_digit_range(const std::int32_t n) { return (n >= static_cast<std::int32_t>(5000)); }
 
