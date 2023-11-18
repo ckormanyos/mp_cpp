@@ -469,9 +469,9 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
 
   // Add v to *this, where the data array of either *this or v
   // might have to be treated with a positive, negative or zero offset.
-  auto my_p_u   = static_cast<      std::uint32_t*      >(  &my_data[0]);
-  auto my_p_v   = static_cast<const std::uint32_t*      >(&v.my_data[0]);
-  auto my_mem_n = static_cast<      std::uint32_t* const>(mp_core_instance().mp_core_memory->mem_n());
+  auto my_p_u   = static_cast<      std::uint32_t*>(  &my_data[0]);
+  auto my_p_v   = static_cast<const std::uint32_t*>(&v.my_data[0]);
+  auto my_mem_n = static_cast<      std::uint32_t*>(mp_core_instance().mp_core_memory->mem_n());
 
   bool b_copy = false;
 
@@ -479,7 +479,7 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
      || (   (v_ofs == static_cast<std::int64_t>(0))
          && (detail::compare_ranges(  crepresentation().cbegin(),
                                     v.crepresentation().cbegin(),
-                                    prec_elem) > static_cast<std::int_fast8_t>(0))))
+                                    static_cast<std::uint_fast32_t>(prec_elem)) > static_cast<std::int_fast8_t>(0))))
   {
     if(v_ofs > static_cast<std::int64_t>(0))
     {
