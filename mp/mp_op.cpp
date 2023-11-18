@@ -20,6 +20,7 @@
 // *****************************************************************************
 
 #include <algorithm>
+#include <cstring>
 
 #include <mp/mp_cpp.h>
 #include <mp/mp_detail.h>
@@ -417,15 +418,30 @@ void mp::mp_cpp::add(const mp::mp_cpp& v, const std::int64_t v_ofs)
   }
 
   // There needs to be a backward carry -1 position in my_data.
-  if((carry != static_cast<std::uint32_t>(0U)) && (v_ofs == static_cast<std::int64_t>(0)))
+  if(carry != static_cast<std::uint32_t>(0U))
   {
-    std::copy_backward(my_data.cbegin(),
-                       my_data.cend() - static_cast<std::size_t>(1U),
-                       my_data.end());
+    // There needs to be a carry into the element -1 of the array data.
+    // But since this can't be done, shift the data to the right by one element.
+    // This makes room to place the carry result and adjust the exponent accordingly.
 
-    my_data[0U] = carry;
+    const auto memmove_size =
+      static_cast<std::size_t>
+      (
+          static_cast<std::size_t>(prec_elem - static_cast<std::int32_t>(INT8_C(1)))
+        * sizeof(typename array_type::value_type)
+      );
 
-    my_exp += static_cast<std::int64_t>(mp_core::mp_elem_digits10);
+    std::memmove(static_cast<void*>(my_data.data() + static_cast<std::ptrdiff_t>(INT8_C(1))),
+                 static_cast<const void*>(my_data.data()),
+                 memmove_size);
+
+    my_data[static_cast<std::uint32_t>(UINT8_C(0))] = carry;
+
+    my_exp =
+      static_cast<std::int64_t>
+      (
+        my_exp + static_cast<std::int64_t>(mp_core::mp_elem_digits10)
+      );
   }
 }
 
@@ -453,17 +469,19 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
 
   // Add v to *this, where the data array of either *this or v
   // might have to be treated with a positive, negative or zero offset.
-        std::uint32_t*       my_p_u    = static_cast<      std::uint32_t*>(  &my_data[0]);
-  const std::uint32_t*       my_p_v    = static_cast<const std::uint32_t*>(&v.my_data[0]);
-        std::uint32_t* const my_mem_n  = mp_core_instance().mp_core_memory->mem_n();
+  auto my_p_u   = static_cast<      std::uint32_t*>(  &my_data[0]);
+  auto my_p_v   = static_cast<const std::uint32_t*>(&v.my_data[0]);
+  auto my_mem_n = static_cast<      std::uint32_t*>(mp_core_instance().mp_core_memory->mem_n());
 
   bool b_copy = false;
 
   if(       (v_ofs  > static_cast<std::int64_t>(0))
      || (   (v_ofs == static_cast<std::int64_t>(0))
-         && (compare_data(v.crepresentation(), prec_elem * mp::mp_core::mp_elem_digits10) > static_cast<std::int32_t>(0))))
+         && (detail::compare_ranges(  crepresentation().cbegin(),
+                                    v.crepresentation().cbegin(),
+                                    static_cast<std::uint_fast32_t>(prec_elem)) > static_cast<std::int_fast8_t>(0))))
   {
-    if(v_ofs != static_cast<std::int64_t>(0))
+    if(v_ofs > static_cast<std::int64_t>(0))
     {
       // In this case, |u| > |v| and ofs is positive.
       // Copy my_data of v, shifted down to a lower value
@@ -475,20 +493,27 @@ void mp::mp_cpp::sub(const mp::mp_cpp& v, const std::int64_t v_ofs)
 
       std::fill(my_mem_n,
                 my_mem_n + static_cast<std::size_t>(v_ofs),
-                static_cast<std::uint32_t>(0U));
+                static_cast<std::uint32_t>(UINT8_C(0)));
 
       my_p_v = static_cast<const std::uint32_t*>(my_mem_n);
     }
   }
   else
   {
-    if(v_ofs)
+    if(v_ofs < static_cast<std::int64_t>(0))
     {
       // In this case, |u| < |v| and ofs is negative.
       // Shift the data of u down to a lower value.
-      std::copy_backward(my_data.cbegin(),
-                         my_data.cbegin() + static_cast<difference_type>(prec_elem + v_ofs),
-                         my_data.begin()  + static_cast<difference_type>(prec_elem));
+      const auto memmove_size =
+        static_cast<std::size_t>
+        (
+            static_cast<difference_type>(static_cast<difference_type>(prec_elem + v_ofs))
+          * static_cast<difference_type>(sizeof(typename array_type::value_type))
+        );
+
+      std::memmove(static_cast<void*>(my_data.data() + static_cast<std::ptrdiff_t>(-v_ofs)),
+                   static_cast<const void*>(my_data.data()),
+                   memmove_size);
 
       std::fill(my_data.begin(),
                 my_data.begin() + static_cast<difference_type>(-v_ofs),
@@ -618,11 +643,18 @@ mp::mp_cpp& mp::mp_cpp::mul_by_int(const std::int64_t n)
       my_exp += static_cast<std::int64_t>(mp_core::mp_elem_digits10);
 
       // Shift result of the multiplication one element to the right.
-      std::copy_backward(my_data.cbegin(),
-                         my_data.cbegin() + static_cast<difference_type>(jm - 1),
-                         my_data.begin()  + static_cast<difference_type>(jm));
+      const auto memmove_size =
+        static_cast<std::size_t>
+        (
+            static_cast<difference_type>(jm - static_cast<std::int32_t>(INT8_C(1)))
+          * static_cast<difference_type>(sizeof(typename array_type::value_type))
+        );
 
-      my_data[static_cast<std::size_t>(0U)] = static_cast<std::uint32_t>(carry);
+      std::memmove(static_cast<void*>(my_data.data() + static_cast<std::ptrdiff_t>(INT8_C(1))),
+                   static_cast<const void*>(my_data.data()),
+                   memmove_size);
+
+      my_data[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint32_t>(carry);
     }
 
     my_neg = (my_neg != (n < static_cast<std::int32_t>(0)));

@@ -1,15 +1,4 @@
-mp_cpp.vcxproj.user
 .vs/
 _Out/
-bessel/bessel.vcxproj.user
-boost/boost.vcxproj.user
-gamma/gamma.vcxproj.user
-ln2/ln2.vcxproj.user
-pi/pi.vcxproj.user
-test/test.vcxproj.user
-mp_cpp_vs2022.vcxproj.user
-bessel/bessel_vs2022.vcxproj.user
-gamma/gamma_vs2022.vcxproj.user
-ln2/ln2_vs2022.vcxproj.user
-pi/pi_vs2022.vcxproj.user
-test/test_vs2022.vcxproj.user
+*.vcxproj.user
+

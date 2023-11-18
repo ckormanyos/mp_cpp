@@ -28,33 +28,17 @@
 
   #include <mp/mp_core.h>
 
-  // Define either one (but not both) of the following
-  // fixed-length dynamic array types. The one from vector
-  // uses std::vector as a base class. The one from scratch
-  // uses a custom container.
+  // Use MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_VECTOR,
+  // which simulates a fixed-size container having
+  // dynamic-array-like properties. It uses std::vector
+  // as a base class.
 
-  //#define MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_VECTOR
-  #define MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH
-
-  #if (   defined(MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_VECTOR) \
-       && defined(MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH))
-    #error The type of fixed-length dynamic array is multiply defined.
-  #endif
-
-  #if defined(MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_VECTOR)
-    #include <util/fixed_length_dynamic_array_from_vector.h>
-    using fixed_length_dynamic_array_type =
-      util::fixed_length_dynamic_array_from_vector<std::uint32_t>;
-  #elif defined(MP_CPP_USE_FIXED_LENGTH_DYNAMIC_ARRAY_FROM_SCRATCH)
-    #include <util/fixed_length_dynamic_array_from_scratch.h>
-    using fixed_length_dynamic_array_type =
-      util::fixed_length_dynamic_array_from_scratch<std::uint32_t>;
-  #else
-    #error The type of fixed-length dynamic array is undefined.
-  #endif
+  #include <util/fixed_length_dynamic_array_from_vector.h>
 
   namespace mp
   {
+    using mp_fixed_length_dynamic_array_type = ::util::fixed_length_dynamic_array_from_vector<std::uint32_t>;
+
     class mp_base;
 
     void mp_fft_multiply(std::uint32_t*, const std::uint32_t*, const std::int32_t);
@@ -79,7 +63,7 @@
     }
     mp_fpclass_type;
 
-    using array_type      = fixed_length_dynamic_array_type;
+    using array_type      = ::mp::mp_fixed_length_dynamic_array_type;
     using value_type      = array_type::value_type;
     using difference_type = typename array_type::difference_type;
 
@@ -89,7 +73,7 @@
     static std::int32_t mp_digits10_tol() { return mp_core_instance().digit_characteristics.mp_digits10_tol(); }
     static std::int32_t mp_elem_number () { return mp_core_instance().digit_characteristics.mp_elem_number(); }
 
-    static constexpr std::int32_t mp_exp_digits10  = static_cast<std::int32_t>(std::numeric_limits<std::int64_t>::digits10);
+    static constexpr std::int32_t mp_exp_digits10 = static_cast<std::int32_t>(std::numeric_limits<std::int64_t>::digits10);
 
     virtual ~mp_base() = default;
 
@@ -107,7 +91,7 @@
 
       if(fpc == mp_finite)
       {
-        fpc_result = (((iszero)() == true) ? FP_ZERO : FP_NORMAL);
+        fpc_result = ((iszero)() ? FP_ZERO : FP_NORMAL);
       }
       else if(fpc == mp_NaN)
       {
