@@ -597,9 +597,6 @@
     <ClInclude Include="util\fixed_length_dynamic_array_from_vector.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="util\fixed_length_dynamic_array_from_scratch.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="mp\mp_cpp_limits.h">
       <Filter>Source Files\mp</Filter>
     </ClInclude>

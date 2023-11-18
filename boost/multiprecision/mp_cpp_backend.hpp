@@ -15,8 +15,10 @@
 // 
 // Date        : 2015 - 2023
 // 
-// Description : Provide a backend floating-point type based on mp_cpp
-//               that is intended to be used with Boost.Multiprecision.
+// Description : This file implements the base class mp_cpp_backend,
+//               which provides a backend floating-point type based
+//               on mp_cpp. It is intended to be used with the number<>
+//               template from Boost.Multiprecision.
 // 
 // *****************************************************************************
 
@@ -50,15 +52,13 @@
 
   // Forward declaration of the mp_cpp_backend multiple precision class.
   // This class binds native ::mp_cpp to boost::multiprecsion::mp_cpp_backend.
-  template<const std::int32_t MyDigits10,
-           const int MyFftThreadCount>
+  template<const std::int32_t MyDigits10, const int MyFftThreadCount>
   class mp_cpp_backend;
 
   // Define the number category as a floating-point kind
   // for the mp_cpp_backend. This is needed for properly
   // interacting as a backend with boost::muliprecision.
-  template<const std::int32_t MyDigits10,
-           const int          MyFftThreadCount>
+  template<const std::int32_t MyDigits10, const int MyFftThreadCount>
   struct number_category<mp_cpp_backend<MyDigits10, MyFftThreadCount>>
     : public std::integral_constant<int, number_kind_floating_point> { };
 
@@ -68,8 +68,8 @@
   class mp_cpp_backend : public detail::mp_cpp_backend_base<MyDigits10, MyFftThreadCount>
   {
   public:
-    using signed_types   = std::tuple<signed char, signed short, signed int, signed long, signed long long>;
-    using unsigned_types = std::tuple<unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long>;
+    using signed_types   = std::tuple<signed char, signed short, signed int, signed long, signed long long, std::intmax_t>;
+    using unsigned_types = std::tuple<unsigned char, unsigned short, unsigned int, unsigned long, unsigned long long, std::uintmax_t>;
     using float_types    = std::tuple<float, double, long double>;
     using exponent_type  = std::int64_t;
 
@@ -79,55 +79,72 @@
 
     mp_cpp_backend(const mp_cpp_backend& other) : m_value(other.m_value) { }
 
+    mp_cpp_backend(mp_cpp_backend&& other) noexcept
+      : m_value(static_cast<mp::mp_cpp&&>(other.m_value)) { }
+
     template<typename UnsignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
-                                      && (std::is_unsigned<UnsignedIntegralType>::value == true))>::type const* = nullptr>
+             typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                      && std::is_unsigned<UnsignedIntegralType>::value)>::type const* = nullptr>
     mp_cpp_backend(UnsignedIntegralType u) : m_value(mp::mp_cpp(std::uint64_t(u))) { }
 
     template<typename SignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                      && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
+             typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                      && std::is_signed  <SignedIntegralType>::value)>::type const* = nullptr>
     mp_cpp_backend(SignedIntegralType n) : m_value(mp::mp_cpp(std::int64_t(n))) { }
 
     template<typename FloatingPointType,
-             typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true>::type const* = nullptr>
+             typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type const* = nullptr>
     mp_cpp_backend(FloatingPointType f) : m_value(mp::mp_cpp(static_cast<long double>(f))) { }
 
     mp_cpp_backend(const char* c) : m_value(c) { }
 
     mp_cpp_backend(const std::string& str) : m_value(str) { }
 
-    virtual ~mp_cpp_backend() = default;
+    ~mp_cpp_backend() override { }
 
-    mp_cpp_backend& operator=(const mp_cpp_backend& other)
+    auto operator=(const mp_cpp_backend& other) -> mp_cpp_backend&
     {
-      m_value = other.m_value;
+      if(this != &other)
+      {
+        m_value = other.m_value;
+      }
 
       return *this;
     }
 
-    template<typename ArithmeticType,
-             typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-    mp_cpp_backend& operator=(const ArithmeticType& x)
+    auto operator=(mp_cpp_backend&& other) noexcept -> mp_cpp_backend&
+    {
+      m_value = static_cast<mp::mp_cpp&&>(other.m_value);
+
+      return *this;
+    }
+
+    template<typename ArithmeticType>
+    auto operator=(const ArithmeticType& x) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::type, mp_cpp_backend&>::type
     {
       m_value = mp::mp_cpp(x);
 
       return *this;
     }
 
-    mp_cpp_backend& operator=(const std::string& str_rep)  { m_value = mp::mp_cpp(str_rep);  return *this; }
-    mp_cpp_backend& operator=(const char*        char_ptr) { m_value = mp::mp_cpp(char_ptr); return *this; }
+    auto operator=(const std::string& str_rep)  -> mp_cpp_backend& { m_value = mp::mp_cpp(str_rep);  return *this; }
+    auto operator=(const char*        char_ptr) -> mp_cpp_backend& { m_value = mp::mp_cpp(char_ptr); return *this; }
 
-    void swap(mp_cpp_backend& other_mp_cpp_backend)
+    auto swap(mp_cpp_backend& other_mp_cpp_backend) -> void
     {
       m_value.swap(other_mp_cpp_backend.m_value);
     }
 
-          mp::mp_cpp&  representation()       { return m_value; }
-    const mp::mp_cpp&  representation() const { return m_value; }
-    const mp::mp_cpp& crepresentation() const { return m_value; }
+    auto swap(mp_cpp_backend&& other_mp_cpp_backend) -> void
+    {
+      m_value.swap(static_cast<mp::mp_cpp&&>(other_mp_cpp_backend.m_value));
+    }
 
-    std::string str(std::streamsize number_of_digits, const std::ios::fmtflags format_flags) const
+    auto  representation()       ->       mp::mp_cpp& { return m_value; }
+    auto  representation() const -> const mp::mp_cpp& { return m_value; }
+    auto crepresentation() const -> const mp::mp_cpp& { return m_value; }
+
+    auto str(std::streamsize number_of_digits, const std::ios::fmtflags format_flags) const -> std::string
     {
       std::string result_str;
 
@@ -136,27 +153,24 @@
       return result_str;
     }
 
-    void negate()
+    auto negate() -> void
     {
       m_value.negate();
     }
 
-    int compare(const mp_cpp_backend& other_mp_cpp_backend) const
+    auto compare(const mp_cpp_backend& other_mp_cpp_backend) const -> int
     {
       return static_cast<int>(m_value.compare(other_mp_cpp_backend.m_value));
     }
 
-    template<typename ArithmeticType,
-             typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-    int compare(ArithmeticType x)
+    template<typename ArithmeticType>
+    auto compare(ArithmeticType x) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::type, int>::type
     {
       return static_cast<int>(m_value.compare(mp::mp_cpp(x)));
     }
 
   private:
-    mp::mp_cpp m_value;
-
-    mp_cpp_backend& operator=(const mp::mp_cpp&) = delete;
+    mp::mp_cpp m_value { };
   };
 
   template<const std::int32_t MyDigits10,
@@ -182,10 +196,9 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename SignedIntegralType,
-           typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                    && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
-  void eval_multiply(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result, const SignedIntegralType& n)
+           typename SignedIntegralType>
+  auto eval_multiply(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result, const SignedIntegralType& n) -> typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                                                                                                                    && std::is_signed  <SignedIntegralType>::value), void>::type
   {
     result.representation().mul_by_int(static_cast<std::int64_t>(n));
   }
@@ -199,10 +212,9 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename SignedIntegralType,
-           typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                    && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
-  void eval_divide(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result, const SignedIntegralType& n)
+           typename SignedIntegralType>
+  auto eval_divide(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result, const SignedIntegralType& n) -> typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                                                                                                                  && std::is_signed  <SignedIntegralType>::value), void>::type
   {
     result.representation().div_by_int(static_cast<std::int64_t>(n));
   }
@@ -216,18 +228,16 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-  bool eval_eq(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b)
+           typename ArithmeticType>
+  auto eval_eq(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (a.compare(b) == 0);
   }
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-  bool eval_eq(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b)
+           typename ArithmeticType>
+  auto eval_eq(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (mp_cpp_backend(a).compare(b) == 0);
   }
@@ -241,18 +251,16 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-  bool eval_gt(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b)
+           typename ArithmeticType>
+  auto eval_gt(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (a.compare(b) == 1);
   }
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value>::type const* = nullptr>
-  bool eval_gt(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b)
+           typename ArithmeticType>
+  auto eval_gt(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (mp_cpp_backend(a).compare(b) == 1);
   }
@@ -266,18 +274,16 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-  bool eval_lt(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b)
+           typename ArithmeticType>
+  auto eval_lt(const mp_cpp_backend<MyDigits10, MyFftThreadCount>& a, const ArithmeticType& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (a.compare(b) == -1);
   }
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount,
-           typename ArithmeticType,
-           typename std::enable_if<std::is_arithmetic<ArithmeticType>::value == true>::type const* = nullptr>
-  bool eval_lt(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b)
+           typename ArithmeticType>
+  auto eval_lt(const ArithmeticType& a, const mp_cpp_backend<MyDigits10, MyFftThreadCount>& b) -> typename std::enable_if<std::is_arithmetic<ArithmeticType>::value, bool>::type
   {
     return (mp_cpp_backend(a).compare(b) == -1);
   }
@@ -339,10 +345,9 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount>
-  void eval_frexp(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result,
+  auto eval_frexp(      mp_cpp_backend<MyDigits10, MyFftThreadCount>& result,
                   const mp_cpp_backend<MyDigits10, MyFftThreadCount>& x,
-                  int* expptr,
-                  typename std::enable_if<std::is_same<typename mp_cpp_backend<MyDigits10, MyFftThreadCount>::exponent_type, int>::value == false>::type const* = nullptr)
+                        int*                                          expptr) -> typename std::enable_if<!std::is_same<typename mp_cpp_backend<MyDigits10, MyFftThreadCount>::exponent_type, int>::value, void>::type
   {
     typedef std::int64_t local_exponent_type;
 
@@ -366,10 +371,9 @@
 
   template<const std::int32_t MyDigits10,
            const int MyFftThreadCount>
-  void eval_ldexp(mp_cpp_backend<MyDigits10, MyFftThreadCount>& result,
+  auto eval_ldexp(      mp_cpp_backend<MyDigits10, MyFftThreadCount>& result,
                   const mp_cpp_backend<MyDigits10, MyFftThreadCount>& x,
-                  int exp_value,
-                  typename std::enable_if<std::is_same<typename mp_cpp_backend<MyDigits10, MyFftThreadCount>::exponent_type, int>::value == false>::type const* = nullptr)
+                        int                                           exp_value) -> typename std::enable_if<!std::is_same<typename mp_cpp_backend<MyDigits10, MyFftThreadCount>::exponent_type, int>::value, void>::type
   {
     typedef std::int64_t local_exponent_type;
 

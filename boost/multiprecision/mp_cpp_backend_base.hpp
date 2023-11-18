@@ -15,9 +15,7 @@
 // 
 // Date        : 2015 - 2023
 // 
-// Description : Base class for:
-//               Provide a backend floating-point type based on mp_cpp
-//               that is intended to be used with Boost.Multiprecision.
+// Description : This file implements the base class mp_cpp_backend_base.
 // 
 // *****************************************************************************
 
@@ -32,25 +30,29 @@
   class mp_cpp_backend_base
   {
   public:
+    mp_cpp_backend_base(const mp_cpp_backend_base&) = default;
+    mp_cpp_backend_base(mp_cpp_backend_base&&) noexcept = default;
+
+    mp_cpp_backend_base& operator=(const mp_cpp_backend_base&) = default;
+    mp_cpp_backend_base& operator=(mp_cpp_backend_base&&) noexcept = default;
+
     virtual ~mp_cpp_backend_base() = default;
 
   protected:
-    mp_cpp_backend_base()
-    {
-      mp_base_is_created = mp::mp_base::create_mp_base(MyDigits10, MyFftThreadCount);
-    }
-
     static bool mp_base_is_created;
 
-  private:
-    mp_cpp_backend_base(const mp_cpp_backend_base&) = delete;
-
-    mp_cpp_backend_base& operator=(const mp_cpp_backend_base&) = delete;
+    mp_cpp_backend_base()
+    {
+      if(!mp_base_is_created)
+      {
+        mp::mp_base::create_mp_base(MyDigits10, MyFftThreadCount);
+      }
+    }
   };
 
   template<const std::int32_t MyDigits10,
            const int          MyFftThreadCount>
-  bool mp_cpp_backend_base<MyDigits10, MyFftThreadCount>::mp_base_is_created;
+  bool mp_cpp_backend_base<MyDigits10, MyFftThreadCount>::mp_base_is_created { };
 
   } } } // namespace boost::multiprecision.:detail
 

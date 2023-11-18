@@ -27,7 +27,7 @@
 
 bool mp::mp_base::create_mp_base(const std::int32_t my_digits10, const int n_fft_threads)
 {
-  static const bool mp_core_instance_is_valid = mp_core_instance(my_digits10, n_fft_threads).is_valid();
+  static const auto mp_core_instance_is_valid = mp_core_instance(my_digits10, n_fft_threads).is_valid();
 
   return (mp_core_instance_is_valid ? true : false);
 }
@@ -45,13 +45,19 @@ void mp::mp_base::precision(const std::int32_t prec_digits)
 
   const auto prec = (std::max)(prec_digits, prec_min);
 
-  const int elems =
-        (prec / mp_core::mp_elem_digits10)
-    + (((prec % mp_core::mp_elem_digits10) != 0) ? 1 : 0);
+  const auto elems =
+    static_cast<int>
+    (
+          (prec / mp_core::mp_elem_digits10)
+      + (((prec % mp_core::mp_elem_digits10) != 0) ? 1 : 0)
+    );
 
-  static const std::int32_t elems_significant_max =
-      (  mp_digits10_tol() / mp_core::mp_elem_digits10)
-    + (((mp_digits10_tol() % mp_core::mp_elem_digits10) != 0) ? 1 : 0);
+  static const auto elems_significant_max =
+    static_cast<std::int32_t>
+    (
+        (  mp_digits10_tol() / mp_core::mp_elem_digits10)
+      + (((mp_digits10_tol() % mp_core::mp_elem_digits10) != 0) ? 1 : 0)
+    );
 
   prec_elem = ((elems > elems_significant_max) ? static_cast<std::int32_t>(mp_elem_number())
                                                : static_cast<std::int32_t>(elems));
@@ -59,7 +65,7 @@ void mp::mp_base::precision(const std::int32_t prec_digits)
 
 std::int32_t mp::mp_base::precision() const
 {
-  const std::int32_t prec_digits(prec_elem * mp_core::mp_elem_digits10);
+  const auto prec_digits = static_cast<std::int32_t>(prec_elem * mp_core::mp_elem_digits10);
 
   return ((prec_digits >= mp_digits10_tol()) ? mp_digits10_tol() : prec_digits);
 }
@@ -70,10 +76,16 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
 
   // First, find out the number of elements that need to be compared,
   // with a minimum of at least one element.
-  const std::size_t number_of_elements_to_compare =
-    (std::max)(std::size_t(1U),
-               std::size_t(    std::int32_t(my_digits10 / mp::mp_core::mp_elem_digits10)
-                           + ((std::int32_t(my_digits10 % mp::mp_core::mp_elem_digits10) != 0) ? 1 : 0)));
+  const auto number_of_elements_to_compare =
+    (std::max)
+    (
+      static_cast<std::size_t>(UINT8_C(1)),
+      static_cast<std::size_t>
+      (
+            static_cast<std::int32_t>(my_digits10 / mp::mp_core::mp_elem_digits10)
+        + ((static_cast<std::int32_t>(my_digits10 % mp::mp_core::mp_elem_digits10) != 0) ? 1 : 0)
+      )
+    );
 
   // Set the end of element comparison to include the final element
   // of significance, or (at most) to the actual end of the data array.
@@ -82,25 +94,27 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
     + static_cast<difference_type>((std::min)(number_of_elements_to_compare, my_data.size()));
 
   // Compare the element arrays using a standard comparison algorithm.
-  const std::pair<array_type::const_iterator,
-                  array_type::const_iterator> mismatch_result =
-    std::mismatch(my_data.cbegin(),
-                  u_compare_end,
-                  v_data.cbegin());
+  using mismatch_pair_type = std::pair<array_type::const_iterator, array_type::const_iterator>;
 
-  std::int32_t compare_result;
+  const mismatch_pair_type mismatch_result = std::mismatch(my_data.cbegin(),
+                                                           u_compare_end,
+                                                           v_data.cbegin());
+
+  std::int32_t compare_result { };
 
   if(mismatch_result.first == u_compare_end)
   {
     // The arrays are identical.
-    compare_result = INT32_C(0);
   }
   else
   {
     // The arrays are not identical.
     // A more detailed comparison is required.
-    const std::int32_t actual_number_of_digits_compared =
-      std::int32_t(number_of_elements_to_compare * mp::mp_core::mp_elem_digits10);
+    const auto actual_number_of_digits_compared =
+      static_cast<std::int32_t>
+      (
+        number_of_elements_to_compare * mp::mp_core::mp_elem_digits10
+      );
 
     if(   (actual_number_of_digits_compared > my_digits10)
        && (mismatch_result.first == (u_compare_end - 1U)))
@@ -113,9 +127,12 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
 
       // Find out how many extra digits should be disregarded
       // in the final elements of comparison.
-      const std::int32_t number_of_extra_digits_to_disregard =
-          std::int32_t(actual_number_of_digits_compared - my_digits10)
-        + std::int32_t(order_of_an_element(my_data[0U]) + 1U);
+      const auto number_of_extra_digits_to_disregard =
+        static_cast<std::int32_t>
+        (
+            static_cast<std::int32_t>(actual_number_of_digits_compared - my_digits10)
+          + static_cast<std::int32_t>(order_of_an_element(my_data[0U]) + 1U)
+        );
 
       // Create the denominator for disregarding the extra digits.
       const auto denominator_for_disregarding_extra_digits =
@@ -130,8 +147,8 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
 
       // Disregard the extra digits via truncating the values.
       // There is not any sophisticated rounding here.
-      const value_type left  = (*mismatch_result.first)  / denominator_for_disregarding_extra_digits;
-      const value_type right = (*mismatch_result.second) / denominator_for_disregarding_extra_digits;
+      const auto left  = static_cast<value_type>((*mismatch_result.first)  / denominator_for_disregarding_extra_digits);
+      const auto right = static_cast<value_type>((*mismatch_result.second) / denominator_for_disregarding_extra_digits);
 
       compare_result = ((left == right) ? INT32_C(0) : ((left > right) ? INT32_C(1) : INT32_C(-1)));
     }
@@ -142,8 +159,8 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
       // of the elements in the mismatch is sufficient
       // for comparison.
 
-      const value_type left  = (*mismatch_result.first);
-      const value_type right = (*mismatch_result.second);
+      const auto left  = static_cast<value_type>(*mismatch_result.first);
+      const auto right = static_cast<value_type>(*mismatch_result.second);
 
       compare_result = ((left > right) ? INT32_C(1) : INT32_C(-1));
     }
@@ -154,39 +171,54 @@ std::int32_t mp::mp_base::compare_data(const array_type& v_data, const std::int3
 
 void mp::mp_base::mul_loop_uv(const std::uint32_t* const u, const std::uint32_t* const v, std::uint32_t* const w, const std::int32_t p)
 {
-  std::uint64_t carry(0U);
+  std::uint64_t carry { };
 
   for(std::int_fast32_t j = static_cast<std::int_fast32_t>(p - 1); j >= static_cast<std::int_fast32_t>(0); --j)
   {
-    std::uint64_t sum(carry);
+    auto sum = carry;
 
-    for(std::uint_fast32_t i = static_cast<std::uint_fast32_t>(0U); i <= static_cast<std::uint_fast32_t>(j); ++i)
+    for(auto   i  = static_cast<std::uint_fast32_t>(0U);
+               i <= static_cast<std::uint_fast32_t>(j);
+             ++i)
     {
       sum +=
-        std::uint64_t(  u[std::size_t(i)]
-                      * std::uint64_t(v[std::size_t(std::uint_fast32_t(j) - i)]));
+        static_cast<std::uint64_t>
+        (   u[std::size_t(i)]
+          * static_cast<std::uint64_t>(v[std::size_t(std::uint_fast32_t(j) - i)])
+        );
     }
 
     carry =
-      std::uint64_t(sum / static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask));
+      static_cast<std::uint64_t>(sum / static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask));
 
     w[std::size_t(j + 1)] =
-      std::uint32_t(sum % static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask));
+      static_cast<std::uint32_t>(sum % static_cast<std::uint_fast32_t>(mp_core::mp_elem_mask));
   }
 
-  w[0U] = static_cast<std::uint32_t>(carry);
+  w[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint32_t>(carry);
 }
 
 std::uint32_t mp::mp_base::mul_loop_n(std::uint32_t* const u, std::uint32_t n, const std::int32_t p)
 {
-  std::uint64_t carry = static_cast<std::uint64_t>(0U);
+  std::uint64_t carry { };
 
   // Multiplication loop.
   for(std::int_fast32_t j = static_cast<std::int_fast32_t>(p - 1); j >= static_cast<std::int_fast32_t>(0); --j)
   {
-    const std::uint64_t t = static_cast<std::uint64_t>(carry + static_cast<std::uint64_t>(u[std::size_t(j)] * static_cast<std::uint64_t>(n)));
-    carry                 = static_cast<std::uint64_t>(t / static_cast<std::uint32_t>(mp_core::mp_elem_mask));
-    u[std::size_t(j)]     = static_cast<std::uint32_t>(t % static_cast<std::uint32_t>(mp_core::mp_elem_mask));
+    const auto t =
+      static_cast<std::uint64_t>
+      (
+          carry
+        + static_cast<std::uint64_t>(u[std::size_t(j)] * static_cast<std::uint64_t>(n))
+      );
+
+    carry = static_cast<std::uint64_t>(t / static_cast<std::uint32_t>(mp_core::mp_elem_mask));
+
+    u[static_cast<std::size_t>(j)] =
+      static_cast<std::uint32_t>
+      (
+        t % static_cast<std::uint32_t>(mp_core::mp_elem_mask)
+      );
   }
   
   return static_cast<std::uint32_t>(carry);
@@ -194,15 +226,24 @@ std::uint32_t mp::mp_base::mul_loop_n(std::uint32_t* const u, std::uint32_t n, c
 
 std::uint32_t mp::mp_base::div_loop_n(std::uint32_t* const u, std::uint32_t n, const std::int32_t p)
 {
-  std::uint32_t prev = static_cast<std::uint32_t>(0U);
+  std::uint32_t prev { };
 
-  if(n > 1U)
+  if(n > static_cast<std::uint32_t>(UINT8_C(1)))
   {
-    for(std::int_fast32_t j = static_cast<std::int_fast32_t>(0); j < static_cast<std::int_fast32_t>(p); ++j)
+    for(auto   j = static_cast<std::int_fast32_t>(0);
+               j < static_cast<std::int_fast32_t>(p);
+             ++j)
     {
-      const std::uint64_t t = static_cast<std::uint64_t>(u[std::size_t(j)] + static_cast<std::uint64_t>(prev * static_cast<std::uint64_t>(mp_core::mp_elem_mask)));
-      u[std::size_t(j)]     = static_cast<std::uint32_t>(t / n);
-      prev                  = static_cast<std::uint32_t>(t % n);
+      const auto t =
+        static_cast<std::uint64_t>
+        (
+            u[std::size_t(j)]
+          + static_cast<std::uint64_t>(prev * static_cast<std::uint64_t>(mp_core::mp_elem_mask))
+        );
+
+      u[static_cast<std::size_t>(j)] = static_cast<std::uint32_t>(t / n);
+
+      prev = static_cast<std::uint32_t>(t % n);
     }
   }
 
@@ -213,13 +254,26 @@ std::uint32_t mp::mp_base::add_loop_uv(std::uint32_t* const u, const std::uint32
 {
   // Implement the addition algorithm u += v.
 
-  std::uint32_t carry = static_cast<std::uint32_t>(0U);
+  std::uint32_t carry { };
 
-  for(std::int_fast32_t j = static_cast<std::int_fast32_t>(p - 1); j >= static_cast<std::int_fast32_t>(0); --j)
+  for(auto   j  = static_cast<std::int_fast32_t>(p - static_cast<std::int32_t>(INT8_C(1)));
+             j >= static_cast<std::int_fast32_t>(INT8_C(0));
+           --j)
   {
-    const std::uint32_t t = static_cast<std::uint32_t>(static_cast<std::uint32_t>(u[std::size_t(j)] + v[std::size_t(j)]) + carry);
-    carry                 = static_cast<std::uint32_t>(t / static_cast<std::uint32_t>(mp_core::mp_elem_mask));
-    u[std::size_t(j)]     = static_cast<std::uint32_t>(t % static_cast<std::uint32_t>(mp_core::mp_elem_mask));
+    const auto t =
+      static_cast<std::uint32_t>
+      (
+          static_cast<std::uint32_t>(u[std::size_t(j)] + v[std::size_t(j)])
+        + carry
+      );
+
+    carry = static_cast<std::uint32_t>(t / static_cast<std::uint32_t>(mp_core::mp_elem_mask));
+
+    u[static_cast<std::size_t>(j)] =
+      static_cast<std::uint32_t>
+      (
+        t % static_cast<std::uint32_t>(mp_core::mp_elem_mask)
+      );
   }
 
   // Return the carry flag.
@@ -231,23 +285,33 @@ std::int32_t mp::mp_base::sub_loop_uv(std::uint32_t* const u, const std::uint32_
 {
   // Implement the subtraction algorithm u -= v.
 
-  std::int32_t borrow = static_cast<std::int32_t>(0);
+  std::int32_t borrow = { };
 
-  for(std::uint32_t j = static_cast<std::uint32_t>(p - 1); static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(0); --j)
+  for(auto   j  = static_cast<std::int_fast32_t>(p - static_cast<std::int32_t>(INT8_C(1)));
+             j >= static_cast<std::int_fast32_t>(INT8_C(0));
+           --j)
   {
-    std::int32_t t =   static_cast<std::int32_t>(static_cast<std::int32_t>(u[std::size_t(j)])
-                     - static_cast<std::int32_t>(v[std::size_t(j)])) - borrow;
+    auto t =
+      static_cast<std::int32_t>
+      (
+          static_cast<std::int32_t>
+          (
+              static_cast<std::int32_t>(u[static_cast<std::size_t>(j)])
+            - static_cast<std::int32_t>(v[static_cast<std::size_t>(j)])
+          )
+        - borrow
+      );
 
     // Is there underflow needing borrow?
     if(t < static_cast<std::int32_t>(INT8_C(0)))
     {
       // Yes, there is underflow and a borrow is needed.
-      t     += static_cast<std::int32_t>(mp_core::mp_elem_mask);
-      borrow = static_cast<std::int32_t>(1);
+      t      += static_cast<std::int32_t>(mp_core::mp_elem_mask);
+      borrow  = static_cast<std::int32_t>(INT8_C(1));
     }
     else
     {
-      borrow = static_cast<std::int32_t>(0);
+      borrow = static_cast<std::int32_t>(INT8_C(0));
     }
 
     u[std::size_t(j)] =
