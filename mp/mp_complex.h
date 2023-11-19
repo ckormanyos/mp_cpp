@@ -32,6 +32,8 @@
   #include <array>
   #endif
   #include <cmath>
+  #include <cstddef>
+  #include <cstdint>
   #if !defined(EXTENDED_COMPLEX_DISABLE_IOSTREAM)
   #include <istream>
   #include <ostream>
@@ -1124,7 +1126,7 @@
 
     // I/O stream operators.
     template<typename char_type, typename traits_type, typename EnableType>
-    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& my_istream, complex<mp_cpp, EnableType>& my_z)
+    std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>&, complex<mp_cpp, EnableType>&)
     {
       // Parse an (extended) complex number of any of the forms u, (u) or (u,v).
 
@@ -1268,7 +1270,7 @@
     }
 
     template<typename char_type, typename traits_type, typename EnableType>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<mp_cpp, EnableType>& my_z)
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<mp_cpp, EnableType>&)
     {
       std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
