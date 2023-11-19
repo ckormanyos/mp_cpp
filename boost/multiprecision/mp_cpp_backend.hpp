@@ -42,6 +42,10 @@
   #include <string>
   #include <type_traits>
 
+  #if !defined(BOOST_MP_STANDALONE)
+  #define BOOST_MP_STANDALONE
+  #endif
+
   #include <boost/config.hpp>
   #include <boost/multiprecision/number.hpp>
   #include <boost/multiprecision/mp_cpp_backend_base.hpp>
