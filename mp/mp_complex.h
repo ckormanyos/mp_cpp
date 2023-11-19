@@ -1270,7 +1270,7 @@
     }
 
     template<typename char_type, typename traits_type, typename EnableType>
-    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>&, const complex<mp_cpp, EnableType>&)
+    std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& my_ostream, const complex<mp_cpp, EnableType>& my_z)
     {
       std::basic_ostringstream<char_type, traits_type> my_tmp_ostream;
 
