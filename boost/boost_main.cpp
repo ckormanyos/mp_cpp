@@ -22,6 +22,10 @@
 #include <iomanip>
 #include <iostream>
 
+#if !defined(BOOST_MATH_STANDALONE)
+#define BOOST_MATH_STANDALONE
+#endif
+
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
