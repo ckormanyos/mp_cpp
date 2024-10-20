@@ -63,7 +63,6 @@ GCCFLAGS          = -Werror                                   \
                     -Wall                                     \
                     -Wextra                                   \
                     -Wpedantic                                \
-                    -Wno-strict-prototypes                    \
                     -O3                                       \
                     -march=native                             \
                     -mtune=native                             \
@@ -76,6 +75,7 @@ GCCFLAGS         := $(GCCFLAGS)                               \
 endif
 
 CFLAGS            = $(GCCFLAGS)                               \
+                    -Wno-strict-prototypes                    \
                     -std=c11                                  \
                     -x c
 
