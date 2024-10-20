@@ -22,7 +22,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++11, c++20 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: gcc-native
@@ -50,7 +50,7 @@ jobs:
         standard: [ c++20 ]
         algo: [ -m0, -m1, -m2 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: gcc-native
@@ -71,7 +71,7 @@ jobs:
       matrix:
         standard: [ c++11 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: gcc-native-sanitize
@@ -94,7 +94,7 @@ jobs:
       matrix:
         standard: [ c++11, c++20 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: macos-native
@@ -117,10 +117,10 @@ jobs:
       matrix:
         example: [ Bessel, Gamma, Ln2, Pi, Test ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
@@ -146,13 +146,13 @@ jobs:
       matrix:
         example: [ Bessel, Gamma, Ln2, Pi, Test ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.3
+          toolset: 14.4
       - name: msvc-release-lib-vs2022-x64
         shell: cmd
         working-directory: ./
@@ -171,7 +171,7 @@ jobs:
   msvc-release-boost-x64:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -184,7 +184,7 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
