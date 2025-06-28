@@ -55,12 +55,8 @@ of mathematical functions.
 
 Continuous integration runs on push using GitHub Actions.
 Various compilers, operating systems and C++ standards
-ranging from C++11, 14, 17, 20 are included in CI.
+ranging from C++14, 17, 20, 23 are included in CI.
 Sanitizer runs add improved confidence to the code-integrity.
-
-There is also a scheduled nightly build. This ensures compatibility
-with modern language evolution and Modular-Boost's
-Math/Multiprecision _develop_ branches.
 
 ## Licensing
 
