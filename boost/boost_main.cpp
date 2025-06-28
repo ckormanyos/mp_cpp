@@ -88,6 +88,8 @@ int main()
   const mp_type result_tgamma_half  { boost::math::tgamma(mp_type(0.5F)) };
   const mp_type result_sqrt_pi      { sqrt(boost::math::constants::pi<mp_type>()) };
 
+  bool result_is_ok { local::is_close_fraction(result_tgamma_half, result_sqrt_pi) };
+
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << boost::math::constants::pi<mp_type>() << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << mp_type(0.5F)                         << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << z                                     << std::endl;
@@ -105,10 +107,9 @@ int main()
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << sqrt(eps)              << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << boost::math::cbrt(eps) << std::endl;
 
-  std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << result_tgamma_half     << std::endl;
-  std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << result_sqrt_pi         << std::endl;
-
-  bool result_is_ok { true };
+  std::cout << "\nGamma check\n";
+  std::cout << "tgamma(1/2): " << std::setprecision(std::numeric_limits<mp_type>::digits10) << result_tgamma_half     << std::endl;
+  std::cout << "sqrt(pi)   : " << std::setprecision(std::numeric_limits<mp_type>::digits10) << result_sqrt_pi         << '\n' << std::endl;
 
   {
     // N[BesselJ[1/7, 25/10], 100]
@@ -138,11 +139,13 @@ int main()
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << frexp(mp_type(2), &nexp) << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10) << ldexp(mp_type(1), 2)     << std::endl;
 
-  std::cout << std::boolalpha << (x < y) << ", Expect: false" << std::endl; // Expect false
-  std::cout << std::boolalpha << (y > x) << ", Expect: false" << std::endl; // Expect false
+  bool result_compare { };
 
-  std::cout << std::boolalpha << (lg_max > (std::numeric_limits<std::int64_t>::max)()) <<  ", Expect: false" << std::endl; // Expect false
-  std::cout << std::boolalpha << (lg_max > (std::numeric_limits<std::int64_t>::min)()) << " , Expect: true"  << std::endl; // Expect true
+  std::cout << std::boolalpha << (result_compare = (x < y)) << ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok); // Expect false
+  std::cout << std::boolalpha << (result_compare = (y > x)) << ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok); // Expect false
+
+  std::cout << std::boolalpha << (result_compare = (lg_max > (std::numeric_limits<std::int64_t>::max)())) <<  ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok); // Expect false
+  std::cout << std::boolalpha << (result_compare = (lg_max > (std::numeric_limits<std::int64_t>::min)())) << " , Expect: true"  << std::endl; result_is_ok = (  result_compare  && result_is_ok); // Expect true
 
   const mp_type a3(("33." + std::string(std::size_t(std::numeric_limits<mp_type>::digits10 - 2), '3') + std::string(16U, '4')).c_str());
   const mp_type b3(mp_type(100U) / 3);
@@ -150,9 +153,9 @@ int main()
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << a3 << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << b3 << std::endl;
 
-  std::cout << std::boolalpha << (a3 == b3) <<  ", Expect: false" << std::endl; // Expect false
-  std::cout << std::boolalpha << (a3 >  b3) << " , Expect: true" << std::endl; // Expect true
-  std::cout << std::boolalpha << (a3 <  b3) <<  ", Expect: false" << std::endl; // Expect false
+  std::cout << std::boolalpha << (result_compare = (a3 == b3)) <<  ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok); // Expect false
+  std::cout << std::boolalpha << (result_compare = (a3 >  b3)) << " , Expect: true"  << std::endl; result_is_ok = (  result_compare  && result_is_ok); // Expect true
+  std::cout << std::boolalpha << (result_compare = (a3 <  b3)) <<  ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok); // Expect false
 
   const mp_type c3(("33." + std::string(120U, '3')).c_str());
   const mp_type d3(mp_type(100U) / 3);
@@ -160,9 +163,11 @@ int main()
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << c3 << std::endl;
   std::cout << std::setprecision(std::numeric_limits<mp_type>::digits10 + 4) << d3 << std::endl;
 
-  std::cout << std::boolalpha << (c3 == d3) <<  ", Expect: false" << std::endl;
-  std::cout << std::boolalpha << (c3 >  d3) <<  ", Expect: false" << std::endl;
-  std::cout << std::boolalpha << (c3 <  d3) << " , Expect: true"  << std::endl;
+  std::cout << std::boolalpha << (result_compare = (c3 == d3)) <<  ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok);
+  std::cout << std::boolalpha << (result_compare = (c3 >  d3)) <<  ", Expect: false" << std::endl; result_is_ok = ((!result_compare) && result_is_ok);
+  std::cout << std::boolalpha << (result_compare = (c3 <  d3)) << " , Expect: true"  << std::endl; result_is_ok = (  result_compare  && result_is_ok);
+
+  std::cout << std::boolalpha << "\nresult_is_ok: " << result_is_ok << std::endl;
 
   return (result_is_ok ? 0 : -1);
 }
