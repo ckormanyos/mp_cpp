@@ -21,7 +21,9 @@ Initial work began sometime late last century in the early 1990's
 and wrapped up around 2002.
 
 Continuous maintenance has kept the library up-to-date
-and compatible with modern C++.
+and compatible with modern C++. A sample wrapper for
+[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_88_0/libs/multiprecision/doc/html/index.html)
+was made somewhere around 2015 and is still maintained (see notes below).
 
 ## Description
 
@@ -35,18 +37,18 @@ and a variety of non-trivial examples, including a somewhat fast
 _million_ (i.e., $10^{6}$) decimal-digit $\pi$-calculation.
 
 `mp_cpp` still compiles and runs on modern C++ compilers
-from C++11, 14, 17, 20, 23 and beyond.
+from C++14, 17, 20, 23 and beyond.
 
 This original work was subsequently cloned, renamed and adapted to become
 [`e_float`](https://github.com/ckormanyos/e_float-2021),
 which itself ultimately provided some motivation for
-[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html).
+[`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_88_0/libs/multiprecision/doc/html/index.html).
 
 ## Boost.Multiprecision Backend
 
 `mp_cpp` also features a full [backend-wrapper](./boost/multiprecision/mp_cpp_backend.hpp)
-for use with [`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html)
-and [`Boost.Math`](https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html).
+for use with [`Boost.Multiprecision`](https://www.boost.org/doc/libs/1_88_0/libs/multiprecision/doc/html/index.html)
+and [`Boost.Math`](https://www.boost.org/doc/libs/1_88_0/libs/math/doc/html/index.html).
 This ties an old legacy project together with modern
 template representations of _big_-_floats_ and implementations
 of mathematical functions.
@@ -55,12 +57,8 @@ of mathematical functions.
 
 Continuous integration runs on push using GitHub Actions.
 Various compilers, operating systems and C++ standards
-ranging from C++11, 14, 17, 20 are included in CI.
+are included in CI.
 Sanitizer runs add improved confidence to the code-integrity.
-
-There is also a scheduled nightly build. This ensures compatibility
-with modern language evolution and Modular-Boost's
-Math/Multiprecision _develop_ branches.
 
 ## Licensing
 

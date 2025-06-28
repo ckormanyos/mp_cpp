@@ -20,13 +20,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Boost_Exe_Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Boost_Exe_Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -42,14 +42,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Boost_Exe_Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);C:\boost\boost_1_83_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);C:\boost\boost_1_88_0;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)_Out\mp_cpp\$(PlatformName)\$(Configuration)\</OutDir>
     <IntDir>$(OutDir)</IntDir>
     <TargetName>$(Configuration)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Boost_Exe_Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir);C:\boost\boost_1_83_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);C:\boost\boost_1_88_0;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)_Out\mp_cpp\$(PlatformName)\$(Configuration)\</OutDir>
     <IntDir>$(OutDir)</IntDir>
     <TargetName>$(Configuration)</TargetName>
