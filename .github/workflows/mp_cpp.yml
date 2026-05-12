@@ -128,7 +128,7 @@ jobs:
         working-directory: ./
         run: |
           set INCLUDE=%cd%\fft\FFTW\215\fftw;%cd%\fft\FFTW\215\rfftw;%cd%\fft\FFTW\215\threads;%cd%;%INCLUDE%
-          MSBuild -m mp_cpp.sln -p:useenv=true -p:Configuration=Mp_Cpp_Lib_Release -p:Platform=x64 /t:Rebuild
+          MSBuild -m mp_cpp.sln -p:WindowsTargetPlatformVersion=10.0 -p:useenv=true -p:Configuration=Mp_Cpp_Lib_Release -p:Platform=x64 /t:Rebuild
           dir %cd%\_Out\mp_cpp\x64\Mp_Cpp_Lib_Release\Mp_Cpp_Lib_Release.lib
       - name: msvc-release-x64
         shell: cmd
