@@ -121,9 +121,8 @@ jobs:
         with:
           fetch-depth: '0'
       - uses: actions/checkout@v6
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          toolset: 14.4
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
       - name: msvc-release-lib-x64
         shell: cmd
         working-directory: ./
