@@ -111,7 +111,7 @@ jobs:
           ./unix/gamma.exe
           ./unix/test.exe
   msvc-release-x64:
-    runs-on: windows-2025-vs2026
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -140,7 +140,7 @@ jobs:
           dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
           %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
   msvc-release-vs2022-x64:
-    runs-on: windows-2025-vs2026
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -169,7 +169,7 @@ jobs:
           dir %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
           %cd%\_Out\mp_cpp\x64\${{ matrix.example }}_Exe_Release\${{ matrix.example }}_Exe_Release.exe
   msvc-release-boost-x64:
-    runs-on: windows-2025-vs2026
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
         with:
